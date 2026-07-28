@@ -1,0 +1,69 @@
+# Derived from Data Landscape and Data Landscape for Regulation.
+# Harrer, S. (2026), Entropy Data, https://www.data-landscape.com/
+# Upstream data is MIT-licensed; see ATTRIBUTION.md and LICENSE in this package.
+
+@prefix dl: <https://www.entropy-data.com/data-landscape/ontology/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dl: a owl:Ontology ;
+  dcterms:title "Data Landscape ontology"@en-GB ;
+  dcterms:description "Schema-first ontology for entries in the Data Standard and Data Regulation landscapes, their classifications, editorial assessments and sourced mappings."@en-GB ;
+  dcterms:source <https://www.data-landscape.com/>, <https://www.data-landscape.com/regulation.html> ;
+  dcterms:license <https://opensource.org/licenses/MIT> ;
+  dcterms:rights "Upstream data copyright (c) 2026 Entropy Data; transformed with attribution."@en-GB ;
+  owl:versionInfo "2.0.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-07-28"^^xsd:date .
+
+dl:LandscapeEntry a owl:Class ; rdfs:label "Landscape entry"@en-GB ;
+  rdfs:comment "An entry curated into one of the two Data Landscape catalogues. The class records landscape membership and does not assert that every entry is intrinsically a standard or a law."@en-GB .
+dl:DataStandardLandscapeEntry a owl:Class ; rdfs:subClassOf dl:LandscapeEntry ; rdfs:label "Data Standard Landscape entry"@en-GB .
+dl:DataRegulationLandscapeEntry a owl:Class ; rdfs:subClassOf dl:LandscapeEntry ; rdfs:label "Data Regulation Landscape entry"@en-GB .
+dl:LandscapeAssessment a owl:Class ; rdfs:label "Landscape assessment"@en-GB ;
+  rdfs:comment "A contextual editorial opinion about one Data Standard Landscape entry."@en-GB .
+dl:ComplianceMapping a owl:Class ; rdfs:label "Compliance mapping"@en-GB ;
+  rdfs:comment "A versioned, attributable assertion connecting two landscape entries. It does not itself assert that an organisation complies with a law."@en-GB .
+dl:Category a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Category concept"@en-GB .
+dl:StandardCategory a owl:Class ; rdfs:subClassOf dl:Category ; rdfs:label "Data Standard Landscape category"@en-GB .
+dl:RegulationCategory a owl:Class ; rdfs:subClassOf dl:Category ; rdfs:label "Data Regulation Landscape category"@en-GB .
+dl:Judgement a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Judgement concept"@en-GB .
+dl:Tier a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Tier concept"@en-GB .
+dl:GovernanceType a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Governance type concept"@en-GB ;
+  rdfs:comment "The principal authority or stewardship arrangement under which an entry is established and maintained."@en-GB .
+dl:Jurisdiction a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Jurisdiction concept"@en-GB .
+dl:MappingRelation a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Mapping relation concept"@en-GB .
+dl:MappingAuthorityType a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Mapping authority type concept"@en-GB .
+
+dl:identifier a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "identifier"@en-GB .
+dl:fullName a owl:DatatypeProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range xsd:string ; rdfs:label "full name"@en-GB .
+dl:inStandardCategory a owl:ObjectProperty ; rdfs:domain dl:DataStandardLandscapeEntry ; rdfs:range dl:StandardCategory ; rdfs:label "in Data Standard Landscape category"@en-GB .
+dl:inRegulationCategory a owl:ObjectProperty ; rdfs:domain dl:DataRegulationLandscapeEntry ; rdfs:range dl:RegulationCategory ; rdfs:label "in Data Regulation Landscape category"@en-GB .
+dl:assessmentOf a owl:ObjectProperty ; rdfs:domain dl:LandscapeAssessment ; rdfs:range dl:DataStandardLandscapeEntry ; rdfs:label "assessment of"@en-GB .
+dl:hasJudgement a owl:ObjectProperty ; rdfs:domain dl:LandscapeAssessment ; rdfs:range dl:Judgement ; rdfs:label "has judgement"@en-GB .
+dl:judgementReason a owl:DatatypeProperty ; rdfs:domain dl:LandscapeAssessment ; rdfs:range xsd:string ; rdfs:label "judgement reason"@en-GB .
+dl:hasTier a owl:ObjectProperty ; rdfs:domain dl:LandscapeAssessment ; rdfs:range dl:Tier ; rdfs:label "has tier"@en-GB .
+dl:hasGovernanceType a owl:ObjectProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range dl:GovernanceType ; rdfs:label "has governance type"@en-GB .
+dl:governanceStatement a owl:DatatypeProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range xsd:string ; rdfs:label "governance statement"@en-GB .
+dl:statusStatement a owl:DatatypeProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range xsd:string ; rdfs:label "status statement"@en-GB .
+dl:firstReleaseYear a owl:DatatypeProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range xsd:gYear ; rdfs:label "first release year"@en-GB .
+dl:description a owl:DatatypeProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range xsd:string ; rdfs:label "description"@en-GB .
+dl:referenceLink a owl:DatatypeProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range xsd:anyURI ; rdfs:label "reference link"@en-GB .
+dl:sourceJurisdictionLabel a owl:DatatypeProperty ; rdfs:domain dl:DataRegulationLandscapeEntry ; rdfs:range xsd:string ; rdfs:label "source jurisdiction label"@en-GB .
+dl:appliesIn a owl:ObjectProperty ; rdfs:domain dl:DataRegulationLandscapeEntry ; rdfs:range dl:Jurisdiction ; rdfs:label "applies in or is relevant in"@en-GB .
+dl:whyAStandard a owl:DatatypeProperty ; rdfs:domain dl:DataStandardLandscapeEntry ; rdfs:range xsd:string ; rdfs:label "why a standard"@en-GB .
+dl:isNiche a owl:DatatypeProperty ; rdfs:domain dl:DataStandardLandscapeEntry ; rdfs:range xsd:boolean ; rdfs:label "is niche"@en-GB .
+dl:describesSameResourceAs a owl:ObjectProperty, owl:SymmetricProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range dl:LandscapeEntry ; rdfs:label "describes same resource as"@en-GB ;
+  rdfs:comment "Links two source-specific landscape entries that describe the same underlying resource without merging their landscape-specific statements."@en-GB .
+
+dl:mappingSourceEntry a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:LandscapeEntry ; rdfs:label "mapping source entry"@en-GB .
+dl:mappingTargetEntry a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:LandscapeEntry ; rdfs:label "mapping target entry"@en-GB .
+dl:hasMappingRelation a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:MappingRelation ; rdfs:label "has mapping relation"@en-GB .
+dl:hasMappingAuthorityType a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:MappingAuthorityType ; rdfs:label "has mapping authority type"@en-GB .
+dl:assertedBy a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:string ; rdfs:label "asserted by"@en-GB .
+dl:authoritativeSource a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:anyURI ; rdfs:label "authoritative source"@en-GB .
+dl:sourceVersion a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:string ; rdfs:label "source version"@en-GB .
+dl:mappingStatus a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:string ; rdfs:label "mapping status"@en-GB .
+dl:evidenceStatus a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "evidence status"@en-GB ;
+  rdfs:comment "Distinguishes direct source data, deterministic normalisation and assertions from separately identified official sources."@en-GB .

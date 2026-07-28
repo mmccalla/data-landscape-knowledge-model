@@ -1,0 +1,54 @@
+# Derived from Data Landscape and Data Landscape for Regulation.
+# Harrer, S. (2026), Entropy Data, https://www.data-landscape.com/
+# Upstream data is MIT-licensed; see ATTRIBUTION.md and LICENSE in this package.
+
+@prefix dl: <https://www.entropy-data.com/data-landscape/ontology/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dl:LandscapeEntryShape a sh:NodeShape ; sh:targetClass dl:LandscapeEntry ;
+  sh:property [ sh:path dl:identifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:pattern "^[a-z0-9]+(?:-[a-z0-9]+)*$" ] ;
+  sh:property [ sh:path skos:prefLabel ; sh:uniqueLang true ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:fullName ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:firstReleaseYear ; sh:datatype xsd:gYear ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:governanceStatement ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:statusStatement ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:hasGovernanceType ; sh:class dl:GovernanceType ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+dl:DataStandardLandscapeEntryShape a sh:NodeShape ; sh:targetClass dl:DataStandardLandscapeEntry ;
+  sh:node dl:LandscapeEntryShape ;
+  sh:property [ sh:path dl:inStandardCategory ; sh:class dl:StandardCategory ; sh:nodeKind sh:IRI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:whyAStandard ; sh:datatype xsd:string ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:isNiche ; sh:datatype xsd:boolean ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+dl:DataRegulationLandscapeEntryShape a sh:NodeShape ; sh:targetClass dl:DataRegulationLandscapeEntry ;
+  sh:node dl:LandscapeEntryShape ;
+  sh:property [ sh:path dl:inRegulationCategory ; sh:class dl:RegulationCategory ; sh:nodeKind sh:IRI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:sourceJurisdictionLabel ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:appliesIn ; sh:class dl:Jurisdiction ; sh:nodeKind sh:IRI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:description ; sh:datatype xsd:string ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:referenceLink ; sh:datatype xsd:anyURI ; sh:minCount 1 ] .
+
+dl:LandscapeAssessmentShape a sh:NodeShape ; sh:targetClass dl:LandscapeAssessment ;
+  sh:property [ sh:path dl:identifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:assessmentOf ; sh:class dl:DataStandardLandscapeEntry ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:hasJudgement ; sh:class dl:Judgement ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:judgementReason ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:hasTier ; sh:class dl:Tier ; sh:nodeKind sh:IRI ; sh:minCount 1 ] .
+
+dl:ComplianceMappingShape a sh:NodeShape ; sh:targetClass dl:ComplianceMapping ;
+  sh:property [ sh:path dl:identifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingSourceEntry ; sh:class dl:LandscapeEntry ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingTargetEntry ; sh:class dl:LandscapeEntry ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:hasMappingRelation ; sh:class dl:MappingRelation ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:hasMappingAuthorityType ; sh:class dl:MappingAuthorityType ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:assertedBy ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:authoritativeSource ; sh:datatype xsd:anyURI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingStatus ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:sparql [ a sh:SPARQLConstraint ; sh:message "A compliance mapping cannot map an entry to itself."@en-GB ;
+    sh:select "SELECT $this WHERE { $this dl:mappingSourceEntry ?entry ; dl:mappingTargetEntry ?entry . }" ] .
+
+dl:ConceptLabelShape a sh:NodeShape ; sh:targetClass skos:Concept ;
+  sh:property [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:uniqueLang true ] ;
+  sh:property [ sh:path skos:inScheme ; sh:class skos:ConceptScheme ; sh:minCount 1 ; sh:maxCount 1 ] .

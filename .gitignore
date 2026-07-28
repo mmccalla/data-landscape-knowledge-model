@@ -1,0 +1,49 @@
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor and IDE state
+.idea/
+.vscode/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+.direnv/
+.venv/
+venv/
+
+# Python tooling caches (pre-commit and RDF/SHACL tooling)
+__pycache__/
+*.py[cod]
+.cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Java and Node tooling that may be used for RDF/docs validation
+.gradle/
+target/
+node_modules/
+
+# Generated validation and local database output
+bundle.ttl
+report.ttl
+report.txt
+.neo4j/
+data/
+logs/
+
+# Temporary and backup files
+*.bak
+*.tmp
+*.temp
