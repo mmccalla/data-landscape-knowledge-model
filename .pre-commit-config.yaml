@@ -20,6 +20,14 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
 
+  - repo: local
+    hooks:
+      - id: detect-secrets
+        name: detect secrets
+        entry: python3 scripts/check-secrets.py
+        language: system
+        types: [text]
+
   - repo: meta
     hooks:
       - id: check-hooks-apply

@@ -95,6 +95,7 @@ The delivered mappings are deliberately limited to three assertions supported by
 | [`regulation-instances.ttl`](regulation-instances.ttl) | Data Regulation Landscape entries. | [Instances](docs/04-instances.md) |
 | [`mapping-instances.ttl`](mapping-instances.ttl) | Officially supported mapping assertions. | [Mappings](docs/10-compliance-mappings.md) |
 | [`component-mappings.ttl`](component-mappings.ttl) | Curated implementation options linking pipeline components to landscape entries. | [Instances](docs/04-instances.md) |
+| [`graph.html`](graph.html) | Standalone D3 visualisation with node-type filters and pipeline-scoped views. | Open directly in a browser. |
 | [`nodes.csv`](nodes.csv) | Neo4j nodes for all RDF resources. | [Neo4j CSV](docs/05-neo4j-csv.md) |
 | [`relationships.csv`](relationships.csv) | Neo4j relationships. | [Neo4j CSV](docs/05-neo4j-csv.md) |
 | [`neo4j-schema.cypher`](neo4j-schema.cypher) | Neo4j keys, constraints and indexes. | [Neo4j schema](docs/06-neo4j-schema.md) |
@@ -205,3 +206,13 @@ pre-commit run --all-files
 ```
 
 These checks complement, rather than replace, the RDF, SHACL and Neo4j integrity checks in the [loading and validation guide](docs/07-loading-and-validation.md).
+
+## Rebuild the standalone graph
+
+[`graph.html`](graph.html) contains D3 and the complete CSV projection inline, so it opens locally without a web server or network connection. Rebuild it after changing either CSV file:
+
+```sh
+npm install
+npm run build
+npm test
+```

@@ -52,3 +52,7 @@ When redistributing this package or a substantial portion of its source-derived 
 - [`LICENSE`](LICENSE).
 
 Regulatory and framework information changes over time. Check current official documents before relying on any entry or mapping.
+
+## Visualisation dependency
+
+[`graph.html`](graph.html) embeds D3.js 7.9.0 for offline use. D3 is copyright 2010–2023 Mike Bostock and distributed under the ISC licence. The required licence notice is retained inside the standalone HTML file; the canonical project and licence are available at <https://github.com/d3/d3>.

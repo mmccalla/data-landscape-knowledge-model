@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive graph of the Data Landscape knowledge model.">
+  <title>Data Landscape knowledge graph</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #121a2a;
+      --muted: #526078;
+      --line: #d7deea;
+      --panel: #f7f8fc;
+      --surface: #ffffff;
+      --accent: #5547e8;
+      --focus: #005fcc;
+      --shadow: 0 12px 35px rgba(28, 38, 74, 0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: #eef1f8;
+      color: var(--ink);
+      font: 15px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, select, input { font: inherit; }
+    button, select { min-height: 44px; }
+    button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+    .page-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px clamp(18px, 4vw, 56px);
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow { margin: 0 0 4px; color: var(--accent); font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.05; }
+    .lede { max-width: 760px; margin: 8px 0 0; color: var(--muted); }
+    .model-count { margin: 0; color: var(--muted); white-space: nowrap; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr) minmax(260px, 340px);
+      gap: 18px;
+      padding: 18px;
+      min-height: calc(100vh - 130px);
+    }
+    .sidebar, .workspace, .details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+    .sidebar { padding: 20px; overflow: auto; }
+    .sidebar h2, .details h2 { margin: 0 0 14px; font-size: 1.1rem; }
+    .control { display: grid; gap: 7px; margin-bottom: 20px; }
+    .control label { font-weight: 700; }
+    select { width: 100%; padding: 8px 36px 8px 10px; border: 1px solid #aeb9cc; border-radius: 8px; background: var(--surface); color: var(--ink); }
+    .hint { margin: 0; color: var(--muted); font-size: .88rem; }
+    fieldset { margin: 0; padding: 0; border: 0; }
+    legend { margin-bottom: 10px; font-weight: 750; }
+    .filter-list { display: grid; gap: 8px; }
+    .filter-toggle {
+      display: grid;
+      grid-template-columns: 20px 12px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 5px 6px;
+      border-radius: 7px;
+    }
+    .filter-toggle:hover { background: var(--panel); }
+    .filter-toggle input { width: 18px; height: 18px; margin: 0; }
+    .layout-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-bottom: 20px; }
+    .layout-option { display: flex; align-items: center; gap: 7px; min-height: 40px; padding: 6px 8px; border: 1px solid #c8d0df; border-radius: 8px; cursor: pointer; }
+    .layout-option:has(input:checked) { border-color: var(--accent); background: #efefff; font-weight: 700; }
+    .layout-option input { width: 18px; height: 18px; margin: 0; }
+    .swatch { width: 11px; height: 11px; border-radius: 50%; background: var(--swatch); }
+    .count { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .sidebar-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; }
+    .button { border: 1px solid #aeb9cc; border-radius: 8px; background: var(--surface); color: var(--ink); cursor: pointer; font-weight: 700; }
+    .button:hover { background: var(--panel); }
+    .workspace { display: grid; grid-template-rows: auto minmax(480px, 1fr); min-width: 0; overflow: hidden; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+    .toolbar p { margin: 0; color: var(--muted); }
+    .zoom-actions { display: flex; gap: 6px; }
+    .zoom-actions button { flex: 0 0 auto; }
+    .zoom-actions .icon-button { width: 44px; padding: 0; font-size: 1.2rem; }
+    .view-button { width: auto; padding: 0 12px; font-size: .95rem; white-space: nowrap; }
+    .graph-wrap { position: relative; min-height: 480px; background: radial-gradient(circle at 50% 50%, #fff 0, #f8f9fd 70%); }
+    #graph { display: block; width: 100%; height: 100%; min-height: 480px; }
+    .link { stroke: #aab4c8; stroke-opacity: .45; }
+    .link.compliance { stroke: #c2561a; stroke-width: 2.4; stroke-opacity: .85; }
+    .link.highlighted { stroke: #3327c7; stroke-width: 3; stroke-opacity: 1; }
+    .link.dimmed, .link-label.dimmed { opacity: .1; }
+    .link-label { fill: #59667e; font-size: 8px; paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+    .node circle { stroke: #fff; stroke-width: 1.5; filter: drop-shadow(0 2px 2px rgba(20,30,55,.22)); }
+    .node text { fill: #263047; font-size: 10px; paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+    .node:hover circle, .node:focus circle { stroke: var(--focus); stroke-width: 3; }
+    .node.selected circle { stroke: #17117f; stroke-width: 4; }
+    .node.connected circle { stroke: #564bdd; stroke-width: 3; }
+    .node.dimmed { opacity: .18; }
+    .empty-state { position: absolute; inset: 0; display: none; place-items: center; padding: 30px; text-align: center; color: var(--muted); }
+    .details { position: sticky; top: 18px; align-self: start; max-height: calc(100vh - 36px); overflow-y: auto; padding: 20px; }
+    .details p { margin: 5px 0; }
+    .details dl { display: grid; grid-template-columns: max-content 1fr; gap: 5px 12px; margin: 8px 0 0; }
+    .details dt { font-weight: 700; }
+    .details dd { margin: 0; overflow-wrap: anywhere; }
+    .details a { color: #3430aa; }
+    .source-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .source-link { display: inline-flex; align-items: center; min-height: 44px; padding: 7px 10px; border: 1px solid #aeb9cc; border-radius: 8px; background: #fff; }
+    .badge { display: inline-block; margin: 2px 5px 2px 0; padding: 2px 7px; border-radius: 999px; background: #e8e9fb; font-size: .82rem; }
+    .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    @media (max-width: 1000px) {
+      .page-header { align-items: start; flex-direction: column; }
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { max-height: none; }
+      .workspace { min-height: 700px; }
+      .details { position: static; max-height: none; overflow-y: visible; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Entropy Data · Knowledge model</p>
+      <h1>Data Landscape graph</h1>
+      <p class="lede">Explore the two landscapes, official compliance mappings, and the pipeline patterns that connect design components to implementation options.</p>
+    </div>
+    <p class="model-count"><strong>381</strong> nodes · <strong>897</strong> relationships</p>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar" aria-labelledby="filters-title">
+      <h2 id="filters-title">Filter the graph</h2>
+      <div class="control">
+        <label for="pipeline-select">Data pipeline type</label>
+        <select id="pipeline-select">
+          <option value="all">All pipeline types and landscape entries</option>
+          <option value="pattern-type:batch-file-ingestion">Batch file ingestion</option>
+          <option value="pattern-type:api-pull-ingestion">API pull ingestion</option>
+          <option value="pattern-type:event-driven-ingestion">Event-driven ingestion</option>
+          <option value="pattern-type:database-cdc-ingestion">Database CDC ingestion</option>
+          <option value="pattern-type:object-store-replication">Object store replication</option>
+          <option value="pattern-type:table-format-streaming">Table format streaming</option>
+        </select>
+        <label for="module-select">Module</label>
+        <select id="module-select">
+          <option value="all">All modules</option>
+        </select>
+        <label for="component-select">Component</label>
+        <select id="component-select">
+          <option value="all">All components</option>
+        </select>
+        <p class="hint">A pipeline selection limits the graph to its modules, components, implementation mappings and associated landscape classifications.</p>
+      </div>
+
+      <fieldset>
+        <legend>Graph layout</legend>
+        <div class="layout-options">
+          <label class="layout-option"><input id="layout-force" type="radio" name="graph-layout" value="force" checked><span>Force</span></label>
+          <label class="layout-option"><input id="layout-hierarchy" type="radio" name="graph-layout" value="hierarchy"><span>Hierarchy</span></label>
+          <label class="layout-option"><input id="layout-tree" type="radio" name="graph-layout" value="tree"><span>Tree</span></label>
+          <label class="layout-option"><input id="layout-radial" type="radio" name="graph-layout" value="radial"><span>Radial</span></label>
+          <label class="layout-option"><input id="layout-star" type="radio" name="graph-layout" value="star"><span>Star</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Show node types</legend>
+        <div class="filter-list">
+          <label class="filter-toggle" style="--swatch:#3156d3"><input id="filter-standard-categories" type="checkbox" data-group="standardCategory" checked><span class="swatch" aria-hidden="true"></span><span>Data standard categories</span><span class="count" data-count="standardCategory"></span></label>
+          <label class="filter-toggle" style="--swatch:#b75016"><input id="filter-regulation-categories" type="checkbox" data-group="regulationCategory" checked><span class="swatch" aria-hidden="true"></span><span>Data regulation categories</span><span class="count" data-count="regulationCategory"></span></label>
+          <label class="filter-toggle" style="--swatch:#6a45a6"><input id="filter-governance-types" type="checkbox" data-group="governanceType" checked><span class="swatch" aria-hidden="true"></span><span>Governance types</span><span class="count" data-count="governanceType"></span></label>
+          <label class="filter-toggle" style="--swatch:#168062"><input id="filter-data-standard-landscape" type="checkbox" data-group="standardLandscapeEntry" checked><span class="swatch" aria-hidden="true"></span><span>Data Standard Landscape</span><span class="count" data-count="standardLandscapeEntry"></span></label>
+          <label class="filter-toggle" style="--swatch:#2b7f9e"><input id="filter-data-regulation-landscape" type="checkbox" data-group="regulationLandscapeEntry" checked><span class="swatch" aria-hidden="true"></span><span>Data Regulation Landscape</span><span class="count" data-count="regulationLandscapeEntry"></span></label>
+          <label class="filter-toggle" style="--swatch:#d55220"><input id="filter-compliance-mappings" type="checkbox" data-group="complianceMapping" checked><span class="swatch" aria-hidden="true"></span><span>Compliance mappings</span><span class="count" data-count="complianceMapping"></span></label>
+          <label class="filter-toggle" style="--swatch:#efad1f"><input id="filter-ingestion-patterns" type="checkbox" data-group="ingestionPattern" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion patterns</span><span class="count" data-count="ingestionPattern"></span></label>
+          <label class="filter-toggle" style="--swatch:#268eb7"><input id="filter-ingestion-modules" type="checkbox" data-group="ingestionModule" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion modules</span><span class="count" data-count="ingestionModule"></span></label>
+          <label class="filter-toggle" style="--swatch:#d34783"><input id="filter-ingestion-components" type="checkbox" data-group="ingestionComponent" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion components</span><span class="count" data-count="ingestionComponent"></span></label>
+        </div>
+      </fieldset>
+      <fieldset style="margin-top:18px">
+        <legend>Labels</legend>
+        <div class="filter-list">
+          <label class="filter-toggle"><input id="toggle-node-labels" type="checkbox" checked><span aria-hidden="true">Aa</span><span>Node labels</span></label>
+          <label class="filter-toggle"><input id="toggle-edge-labels" type="checkbox"><span aria-hidden="true">↔</span><span>Edge labels</span></label>
+        </div>
+      </fieldset>
+      <div class="sidebar-actions">
+        <button class="button" id="show-all" type="button">Show all</button>
+        <button class="button" id="hide-all" type="button">Hide all</button>
+      </div>
+    </aside>
+
+    <section class="workspace" aria-labelledby="graph-title">
+      <div class="toolbar">
+        <div>
+          <h2 class="visually-hidden" id="graph-title">Interactive knowledge graph</h2>
+          <p id="visible-count">Preparing graph…</p>
+        </div>
+        <div class="zoom-actions" aria-label="Graph view controls">
+          <button class="button view-button" id="toggle-freeze" type="button" aria-pressed="false">Freeze graph</button>
+          <button class="button icon-button" id="zoom-in" type="button" aria-label="Zoom in">+</button>
+          <button class="button icon-button" id="zoom-out" type="button" aria-label="Zoom out">−</button>
+          <button class="button view-button" id="reset-view" type="button">Reset view</button>
+        </div>
+      </div>
+      <div class="graph-wrap">
+        <svg id="graph" role="img" aria-labelledby="svg-title svg-description">
+          <title id="svg-title">Data Landscape knowledge graph</title>
+          <desc id="svg-description">A force-directed graph. Use the filters and pipeline selector to change the visible subgraph. Focus a node and press Enter to inspect it.</desc>
+        </svg>
+        <div class="empty-state" id="empty-state"><p>No nodes match the current filters. Enable a node type or reset the pipeline selection.</p></div>
+      </div>
+      <p id="graph-summary" class="visually-hidden" aria-live="polite"></p>
+    </section>
+    <aside class="details" aria-labelledby="details-title" aria-live="polite">
+      <h2 id="details-title">Selection details</h2>
+      <div id="details-content"><p>Select a node to see its identifiers, classifications and connected relationships.</p></div>
+    </aside>
+  </main>
+
+  <!--
+    D3.js v7.9.0 — Copyright 2010-2023 Mike Bostock.
+    Permission to use, copy, modify, and/or distribute this software for any purpose
+    with or without fee is hereby granted, provided that the above copyright notice
+    and this permission notice appear in all copies.
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+    REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+    FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
+    OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+    DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+    ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+    Source: https://github.com/d3/d3/blob/main/LICENSE
+  -->
+  <script>/*__D3__*/</script>
+  <script>/*__LAYOUT_ORDERING__*/</script>
+  <script>/*__GRAPH_SELECTION__*/</script>
+  <script id="graph-data" type="application/json">/*__GRAPH_DATA__*/</script>
+  <script>
+    "use strict";
+    const raw = JSON.parse(document.getElementById("graph-data").textContent);
+    const nodeById = new Map(raw.nodes.map(node => [node.id, node]));
+    const filterInputs = [...document.querySelectorAll("[data-group]")];
+    const pipelineSelect = document.getElementById("pipeline-select");
+    const moduleSelect = document.getElementById("module-select");
+    const componentSelect = document.getElementById("component-select");
+    const layoutInputs = [...document.querySelectorAll('input[name="graph-layout"]')];
+    const nodeLabelsToggle = document.getElementById("toggle-node-labels");
+    const edgeLabelsToggle = document.getElementById("toggle-edge-labels");
+    const freezeToggle = document.getElementById("toggle-freeze");
+    const svg = d3.select("#graph");
+    const viewport = svg.append("g");
+    const linkLayer = viewport.append("g").attr("aria-hidden", "true");
+    const linkLabelLayer = viewport.append("g").attr("aria-hidden", "true");
+    const nodeLayer = viewport.append("g");
+    const colours = {
+      standardCategory: "#3156d3", regulationCategory: "#b75016", governanceType: "#6a45a6",
+      standardLandscapeEntry: "#168062", regulationLandscapeEntry: "#2b7f9e",
+      complianceMapping: "#d55220", ingestionPattern: "#efad1f",
+      ingestionModule: "#268eb7", ingestionComponent: "#d34783"
+    };
+    const radii = { standardLandscapeEntry: 6, regulationLandscapeEntry: 6, standardCategory: 9, regulationCategory: 9, governanceType: 10, complianceMapping: 11, ingestionPattern: 14, ingestionModule: 12, ingestionComponent: 9 };
+
+    function groupFor(node) {
+      const labels = node.labels;
+      if (labels.includes("DataIngestionPatternType")) return "ingestionPattern";
+      if (labels.includes("DataPipelineModuleType")) return "ingestionModule";
+      if (labels.includes("DataPipelineComponentType") || labels.includes("ComponentImplementationMapping")) return "ingestionComponent";
+      if (labels.includes("ComplianceMapping")) return "complianceMapping";
+      if (labels.includes("DataStandardLandscapeEntry")) return "standardLandscapeEntry";
+      if (labels.includes("DataRegulationLandscapeEntry")) return "regulationLandscapeEntry";
+      if (labels.includes("StandardCategory")) return "standardCategory";
+      if (labels.includes("RegulationCategory")) return "regulationCategory";
+      if (labels.includes("GovernanceType")) return "governanceType";
+      return null;
+    }
+
+    const displayNodes = raw.nodes.filter(node => groupFor(node));
+    const displayNodeIds = new Set(displayNodes.map(node => node.id));
+    const displayLinks = raw.links.filter(link => displayNodeIds.has(link.source) && displayNodeIds.has(link.target));
+    const linksFrom = d3.group(raw.links, link => link.source);
+    const linksTo = d3.group(raw.links, link => link.target);
+
+    function addTargets(startIds, relationType, direction = "out") {
+      const result = new Set();
+      for (const id of startIds) {
+        const candidates = direction === "out" ? (linksFrom.get(id) || []) : (linksTo.get(id) || []);
+        for (const link of candidates) {
+          if (link.type === relationType) result.add(direction === "out" ? link.target : link.source);
+        }
+      }
+      return result;
+    }
+
+    function selectableNodes(ids) {
+      return [...ids].map(id => nodeById.get(id)).filter(Boolean).sort((a, b) => nodeLabel(a).localeCompare(nodeLabel(b)));
+    }
+
+    function replaceOptions(select, allLabel, nodes, reset) {
+      const previousValue = reset ? "all" : select.value;
+      select.replaceChildren();
+      select.add(new Option(allLabel, "all"));
+      for (const node of nodes) select.add(new Option(nodeLabel(node), node.id));
+      select.value = [...select.options].some(option => option.value === previousValue) ? previousValue : "all";
+    }
+
+    function populateModuleOptions(reset = false) {
+      const moduleIds = pipelineSelect.value === "all"
+        ? new Set(displayNodes.filter(node => node.labels.includes("DataPipelineModuleType")).map(node => node.id))
+        : addTargets([pipelineSelect.value], "HAS_MODULE");
+      replaceOptions(moduleSelect, "All modules", selectableNodes(moduleIds), reset);
+    }
+
+    function populateComponentOptions(reset = false) {
+      let moduleIds;
+      if (moduleSelect.value !== "all") moduleIds = new Set([moduleSelect.value]);
+      else if (pipelineSelect.value !== "all") moduleIds = addTargets([pipelineSelect.value], "HAS_MODULE");
+      else moduleIds = new Set(displayNodes.filter(node => node.labels.includes("DataPipelineModuleType")).map(node => node.id));
+      replaceOptions(componentSelect, "All components", selectableNodes(addTargets(moduleIds, "HAS_COMPONENT")), reset);
+    }
+
+    function selectionClosure(patternId, moduleId, componentId) {
+      if (patternId === "all" && moduleId === "all" && componentId === "all") return new Set(displayNodeIds);
+
+      let components = componentId === "all" ? new Set() : new Set([componentId]);
+      let modules = moduleId === "all" ? new Set() : new Set([moduleId]);
+      let patterns = patternId === "all" ? new Set() : new Set([patternId]);
+
+      if (!modules.size && components.size) modules = addTargets(components, "HAS_COMPONENT", "in");
+      if (!patterns.size && modules.size) patterns = addTargets(modules, "HAS_MODULE", "in");
+      if (!modules.size) modules = addTargets(patterns, "HAS_MODULE");
+      if (!components.size) components = addTargets(modules, "HAS_COMPONENT");
+
+      const scope = new Set([...patterns, ...modules, ...components]);
+      const implementationMappings = addTargets(components, "MAPS_COMPONENT_TYPE", "in");
+      const entries = addTargets(implementationMappings, "IMPLEMENTATION_OPTION");
+      const categories = new Set([...addTargets(entries, "IN_STANDARD_CATEGORY"), ...addTargets(entries, "IN_REGULATION_CATEGORY")]);
+      const governance = addTargets(entries, "HAS_GOVERNANCE_TYPE");
+      const sameResources = new Set([...addTargets(entries, "DESCRIBES_SAME_RESOURCE_AS"), ...addTargets(entries, "DESCRIBES_SAME_RESOURCE_AS", "in")]);
+      const relatedEntries = new Set([...entries, ...sameResources]);
+      const complianceMappings = new Set();
+      for (const entryId of relatedEntries) {
+        for (const link of linksTo.get(entryId) || []) {
+          if (link.type === "SOURCE_ENTRY" || link.type === "TARGET_ENTRY") complianceMappings.add(link.source);
+        }
+      }
+      const complianceEntries = new Set();
+      for (const mappingId of complianceMappings) {
+        for (const link of linksFrom.get(mappingId) || []) {
+          if (link.type === "SOURCE_ENTRY" || link.type === "TARGET_ENTRY") complianceEntries.add(link.target);
+        }
+      }
+      for (const id of [...modules, ...components, ...implementationMappings, ...relatedEntries, ...complianceEntries, ...categories, ...governance, ...complianceMappings]) scope.add(id);
+      for (const id of addTargets(complianceEntries, "IN_REGULATION_CATEGORY")) scope.add(id);
+      for (const id of addTargets(complianceEntries, "HAS_GOVERNANCE_TYPE")) scope.add(id);
+      return scope;
+    }
+
+    function enabledGroups() {
+      return new Set(filterInputs.filter(input => input.checked).map(input => input.dataset.group));
+    }
+
+    function selectedLayout() {
+      return layoutInputs.find(input => input.checked).value;
+    }
+
+    const zoom = d3.zoom().scaleExtent([0.18, 5]).on("zoom", event => viewport.attr("transform", event.transform));
+    svg.call(zoom);
+    let simulation;
+    let graphFrozen = false;
+    let selectedNodeId = null;
+    const pinnedPositions = new Map();
+
+    function nodeLabel(node) { return node.name || node.fullName || node.id; }
+    function showDetails(node) {
+      const connected = raw.links.filter(link => link.source === node.id || link.target === node.id);
+      const fields = [
+        ["Identifier", node.id], ["Type", node.labels.join(", ")], ["Evidence", node.evidenceStatus],
+        ["Status", node.statusStatement], ["Governance", node.governanceStatement], ["First release", node["firstReleaseYear:int"]]
+      ].filter(([, value]) => value);
+      const source = node.authoritativeSources.length
+        ? `<div class="source-links">${node.authoritativeSources.map((url, index) => `<a class="source-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Open authoritative source${node.authoritativeSources.length > 1 ? ` ${index + 1}` : ""}</a>`).join("")}</div>`
+        : "";
+      document.getElementById("details-content").innerHTML = `
+        <p><strong>${escapeHtml(nodeLabel(node))}</strong></p>
+        ${node.description ? `<p>${escapeHtml(node.description)}</p>` : ""}
+        <dl>${fields.map(([term, value]) => `<dt>${term}</dt><dd>${escapeHtml(value)}</dd>`).join("")}</dl>
+        <p>${connected.slice(0, 12).map(link => `<span class="badge">${escapeHtml(link.type)}</span>`).join("") || "No displayed relationships"}</p>${source}`;
+    }
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"]/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[character]);
+    }
+
+    function applyFilters() {
+      const groups = enabledGroups();
+      const scope = selectionClosure(pipelineSelect.value, moduleSelect.value, componentSelect.value);
+      const nodes = displayNodes.filter(node => groups.has(groupFor(node)) && scope.has(node.id)).map(node => {
+        const position = pinnedPositions.get(node.id);
+        return position ? {...node, ...position, x: position.fx, y: position.fy} : {...node};
+      });
+      const visibleIds = new Set(nodes.map(node => node.id));
+      const links = displayLinks.filter(link => visibleIds.has(link.source) && visibleIds.has(link.target)).map(link => ({...link}));
+      render(nodes, links);
+      const selectionLabels = [pipelineSelect, moduleSelect, componentSelect]
+        .map(select => select.options[select.selectedIndex].text)
+        .filter(label => !label.startsWith("All "));
+      const selectionDescription = selectionLabels.length ? selectionLabels.join(" · ") : "All pipeline types and landscape entries";
+      const message = `${nodes.length} nodes and ${links.length} relationships visible. ${selectionDescription}.`;
+      document.getElementById("visible-count").textContent = message;
+      document.getElementById("graph-summary").textContent = message;
+      document.getElementById("empty-state").style.display = nodes.length ? "none" : "grid";
+      updateCounts(scope);
+    }
+
+    function updateCounts(scope) {
+      for (const element of document.querySelectorAll("[data-count]")) {
+        const group = element.dataset.count;
+        element.textContent = displayNodes.filter(node => groupFor(node) === group && scope.has(node.id)).length;
+      }
+    }
+
+    function setPosition(node, x, y) {
+      if (pinnedPositions.has(node.id)) return;
+      node.x = x;
+      node.y = y;
+    }
+
+    function semanticLevel(node) {
+      if (node.labels.includes("DataIngestionPatternType")) return 0;
+      if (node.labels.includes("DataPipelineModuleType")) return 1;
+      if (node.labels.includes("DataPipelineComponentType")) return 2;
+      if (node.labels.includes("ComponentImplementationMapping")) return 3;
+      if (node.labels.includes("DataStandardLandscapeEntry") || node.labels.includes("DataRegulationLandscapeEntry")) return 4;
+      return 5;
+    }
+
+    function rootNodeFor(nodes, links) {
+      const selected = nodes.find(node => node.id === pipelineSelect.value);
+      if (selected) return selected;
+      const pattern = nodes.find(node => node.labels.includes("DataIngestionPatternType"));
+      if (pattern) return pattern;
+      const degree = new Map(nodes.map(node => [node.id, 0]));
+      for (const link of links) {
+        const source = typeof link.source === "object" ? link.source.id : link.source;
+        const target = typeof link.target === "object" ? link.target.id : link.target;
+        degree.set(source, (degree.get(source) || 0) + 1);
+        degree.set(target, (degree.get(target) || 0) + 1);
+      }
+      return [...nodes].sort((a, b) => degree.get(b.id) - degree.get(a.id))[0];
+    }
+
+    function buildSpanningTree(nodes, links) {
+      const byId = new Map(nodes.map(node => [node.id, node]));
+      const adjacency = new Map(nodes.map(node => [node.id, []]));
+      for (const link of links) {
+        const source = typeof link.source === "object" ? link.source.id : link.source;
+        const target = typeof link.target === "object" ? link.target.id : link.target;
+        if (adjacency.has(source) && adjacency.has(target)) {
+          adjacency.get(source).push(target);
+          adjacency.get(target).push(source);
+        }
+      }
+      const visited = new Set();
+      function grow(start) {
+        const root = {node: byId.get(start), children: []};
+        visited.add(start);
+        const queue = [root];
+        while (queue.length) {
+          const branch = queue.shift();
+          for (const id of adjacency.get(branch.node.id).sort()) {
+            if (visited.has(id)) continue;
+            visited.add(id);
+            const child = {node: byId.get(id), children: []};
+            branch.children.push(child);
+            queue.push(child);
+          }
+        }
+        return root;
+      }
+      const preferredRoot = rootNodeFor(nodes, links);
+      const roots = preferredRoot ? [grow(preferredRoot.id)] : [];
+      for (const node of nodes) if (!visited.has(node.id)) roots.push(grow(node.id));
+      return d3.hierarchy({children: roots}, item => item.children);
+    }
+
+    function applyStaticLayout(layout, nodes, links, width, height) {
+      const margin = 44;
+      const byId = new Map(nodes.map(node => [node.id, node]));
+      for (const link of links) {
+        if (typeof link.source !== "object") link.source = byId.get(link.source);
+        if (typeof link.target !== "object") link.target = byId.get(link.target);
+      }
+      if (layout === "hierarchy") {
+        const levels = optimiseLayerOrder(nodes, links, semanticLevel, nodeLabel);
+        const maxLevel = d3.max([...levels.keys()]) || 0;
+        for (const [level, members] of levels) {
+          members.forEach((item, index) => setPosition(item, margin + level * (width - margin * 2) / Math.max(1, maxLevel), margin + (index + 1) * (height - margin * 2) / (members.length + 1)));
+        }
+      } else if (layout === "tree") {
+        const root = buildSpanningTree(nodes, links);
+        d3.tree().size([Math.max(1, height - margin * 2), Math.max(1, width - margin * 2)])(root);
+        for (const branch of root.descendants().slice(1)) setPosition(branch.data.node, margin + branch.y, margin + branch.x);
+      } else if (layout === "radial") {
+        const levels = d3.group(nodes, semanticLevel);
+        const ringCount = Math.max(1, levels.size);
+        for (const [ringIndex, [, members]] of [...levels].sort(([a], [b]) => a - b).entries()) {
+          members.sort((a, b) => nodeLabel(a).localeCompare(nodeLabel(b)));
+          const radius = (Math.min(width, height) / 2 - margin) * (ringIndex + 1) / ringCount;
+          members.forEach((item, index) => {
+            const angle = index * Math.PI * 2 / members.length - Math.PI / 2;
+            setPosition(item, width / 2 + Math.cos(angle) * radius, height / 2 + Math.sin(angle) * radius);
+          });
+        }
+      } else if (layout === "star") {
+        const root = rootNodeFor(nodes, links);
+        if (!root) return;
+        setPosition(root, width / 2, height / 2);
+        const others = nodes.filter(node => node !== root).sort((a, b) => nodeLabel(a).localeCompare(nodeLabel(b)));
+        const radius = Math.max(40, Math.min(width, height) / 2 - margin);
+        others.forEach((item, index) => {
+          const angle = index * Math.PI * 2 / Math.max(1, others.length) - Math.PI / 2;
+          setPosition(item, width / 2 + Math.cos(angle) * radius, height / 2 + Math.sin(angle) * radius);
+        });
+      }
+    }
+
+    function render(nodes, links) {
+      if (simulation) simulation.stop();
+      linkLayer.selectAll("line").remove();
+      linkLabelLayer.selectAll("text").remove();
+      nodeLayer.selectAll("g").remove();
+      const width = document.querySelector(".graph-wrap").clientWidth || 900;
+      const height = document.querySelector(".graph-wrap").clientHeight || 600;
+      svg.attr("viewBox", [0, 0, width, height]);
+
+      const link = linkLayer.selectAll("line").data(links).join("line")
+        .attr("class", item => `link ${["SOURCE_ENTRY", "TARGET_ENTRY"].includes(item.type) ? "compliance" : ""}`)
+        .attr("stroke-width", item => item.type === "BROADER" ? 1.7 : 1.1);
+      const linkLabel = edgeLabelsToggle.checked
+        ? linkLabelLayer.selectAll("text").data(links).join("text").attr("class", "link-label").attr("text-anchor", "middle").text(item => item.type.replaceAll("_", " "))
+        : linkLabelLayer.selectAll("text");
+      const node = nodeLayer.selectAll("g").data(nodes, item => item.id).join("g")
+        .attr("class", "node").attr("tabindex", 0).attr("role", "button")
+        .attr("aria-pressed", "false")
+        .attr("aria-label", item => `${nodeLabel(item)}, ${groupFor(item).replace(/([A-Z])/g, " $1").toLowerCase()}`)
+        .on("click", (_, item) => selectNode(item))
+        .on("keydown", (event, item) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectNode(item); } });
+      node.append("circle").attr("r", item => radii[groupFor(item)]).attr("fill", item => colours[groupFor(item)]);
+      if (nodeLabelsToggle.checked) {
+        node.append("text").attr("x", item => radii[groupFor(item)] + 4).attr("y", 3).text(item => nodeLabel(item));
+      }
+
+      function updatePositions() {
+        link.attr("x1", item => item.source.x).attr("y1", item => item.source.y).attr("x2", item => item.target.x).attr("y2", item => item.target.y);
+        linkLabel.attr("x", item => (item.source.x + item.target.x) / 2).attr("y", item => (item.source.y + item.target.y) / 2);
+        node.attr("transform", item => `translate(${item.x},${item.y})`);
+      }
+
+      function highlightSelection() {
+        if (!selectedNodeId || !nodes.some(item => item.id === selectedNodeId)) {
+          selectedNodeId = null;
+          node.classed("selected", false).classed("connected", false).classed("dimmed", false).attr("aria-pressed", "false");
+          link.classed("highlighted", false).classed("dimmed", false);
+          linkLabel.classed("dimmed", false);
+          return;
+        }
+        const neighbourhood = dagLineageFor(selectedNodeId, links, id => semanticLevel(nodeById.get(id)));
+        node
+          .classed("selected", item => item.id === selectedNodeId)
+          .classed("connected", item => item.id !== selectedNodeId && neighbourhood.nodeIds.has(item.id))
+          .classed("dimmed", item => !neighbourhood.nodeIds.has(item.id))
+          .attr("aria-pressed", item => String(item.id === selectedNodeId));
+        link
+          .classed("highlighted", item => neighbourhood.linkIds.has(item.id))
+          .classed("dimmed", item => !neighbourhood.linkIds.has(item.id));
+        linkLabel.classed("dimmed", item => !neighbourhood.linkIds.has(item.id));
+      }
+
+      function selectNode(item) {
+        if (selectedNodeId === item.id) {
+          selectedNodeId = null;
+          document.getElementById("details-content").innerHTML = "<p>Select a node to see its identifiers, classifications and connected relationships.</p>";
+          highlightSelection();
+          return;
+        }
+        selectedNodeId = item.id;
+        showDetails(item);
+        highlightSelection();
+      }
+
+      const drag = d3.drag()
+        .on("start", (_, item) => { item.fx = item.x; item.fy = item.y; })
+        .on("drag", (event, item) => {
+          item.fx = event.x;
+          item.fy = event.y;
+          item.x = event.x;
+          item.y = event.y;
+          pinnedPositions.set(item.id, {fx: item.fx, fy: item.fy});
+          updatePositions();
+        })
+        .on("end", (_, item) => {
+          pinnedPositions.set(item.id, {fx: item.fx, fy: item.fy});
+          updatePositions();
+        });
+      node.call(drag);
+      highlightSelection();
+
+      const layout = selectedLayout();
+      document.getElementById("svg-description").textContent = `A ${layout} layout of the Data Landscape knowledge graph. Use the filters and pipeline selector to change the visible subgraph. Focus a node and press Enter to inspect it.`;
+      if (layout !== "force") {
+        simulation = null;
+        applyStaticLayout(layout, nodes, links, width, height);
+        updatePositions();
+        return;
+      }
+
+      simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(item => item.id).distance(item => ["HAS_MODULE", "HAS_COMPONENT"].includes(item.type) ? 70 : 52).strength(.45))
+        .force("charge", d3.forceManyBody().strength(nodes.length > 150 ? -32 : -85))
+        .force("centre", d3.forceCenter(width / 2, height / 2))
+        .force("collision", d3.forceCollide().radius(item => radii[groupFor(item)] + 5))
+        .on("tick", updatePositions);
+      if (graphFrozen) {
+        simulation.tick(120).stop();
+        updatePositions();
+      }
+    }
+
+    function setGraphFrozen(frozen) {
+      graphFrozen = frozen;
+      freezeToggle.setAttribute("aria-pressed", String(frozen));
+      freezeToggle.textContent = frozen ? "Unfreeze graph" : "Freeze graph";
+      if (!simulation) return;
+      if (frozen) simulation.stop();
+      else simulation.alpha(.25).restart();
+    }
+
+    function changeLayout() {
+      pinnedPositions.clear();
+      applyFilters();
+    }
+
+    function setAllFilters(checked) { filterInputs.forEach(input => { input.checked = checked; }); applyFilters(); }
+    filterInputs.forEach(input => input.addEventListener("change", applyFilters));
+    pipelineSelect.addEventListener("change", () => {
+      populateModuleOptions(true);
+      populateComponentOptions(true);
+      applyFilters();
+    });
+    moduleSelect.addEventListener("change", () => {
+      populateComponentOptions(true);
+      applyFilters();
+    });
+    componentSelect.addEventListener("change", applyFilters);
+    layoutInputs.forEach(input => input.addEventListener("change", changeLayout));
+    nodeLabelsToggle.addEventListener("change", applyFilters);
+    edgeLabelsToggle.addEventListener("change", applyFilters);
+    freezeToggle.addEventListener("click", () => setGraphFrozen(!graphFrozen));
+    document.getElementById("show-all").addEventListener("click", () => setAllFilters(true));
+    document.getElementById("hide-all").addEventListener("click", () => setAllFilters(false));
+    document.getElementById("zoom-in").addEventListener("click", () => svg.transition().duration(180).call(zoom.scaleBy, 1.35));
+    document.getElementById("zoom-out").addEventListener("click", () => svg.transition().duration(180).call(zoom.scaleBy, .74));
+    document.getElementById("reset-view").addEventListener("click", () => svg.transition().duration(180).call(zoom.transform, d3.zoomIdentity));
+    window.addEventListener("resize", () => applyFilters());
+    populateModuleOptions();
+    populateComponentOptions();
+    applyFilters();
+  </script>
+</body>
+</html>
