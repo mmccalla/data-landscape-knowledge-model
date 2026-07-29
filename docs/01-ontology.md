@@ -17,6 +17,11 @@ LandscapeEntry
 
 LandscapeAssessment
 ComplianceMapping
+DataIngestionPattern
+DataPipelineModule
+DataPipelineComponent
+ComponentImplementationMapping
+Attestation
 ```
 
 | Class | Meaning |
@@ -26,6 +31,11 @@ ComplianceMapping
 | `DataRegulationLandscapeEntry` | A record in the regulation and compliance landscape. |
 | `LandscapeAssessment` | The publisher's judgement, reason and tiers for a standard-landscape entry. |
 | `ComplianceMapping` | A versioned and attributable assertion connecting two entries. |
+| `DataIngestionPattern` | The parent of the six ingestion-pattern classes. |
+| `DataPipelineModule` | The parent of Define, Trigger, Orchestrate, Govern and Store module classes. |
+| `DataPipelineComponent` | The parent of the listed functional component classes. |
+| `ComponentImplementationMapping` | A curated design-time option linking a component type to a landscape entry. |
+| `Attestation` | A traceable record of an actor's action, risks, controls and successful control evidence. |
 
 The subclass names describe landscape membership. They do not assert that everything in the standards landscape is a formal standard or that everything in the regulation landscape is a law.
 
@@ -65,6 +75,14 @@ ComplianceMapping
 ```
 
 A mapping is a node because it has identity, provenance, version and status. It does not assert operational compliance. `COMPLIES_WITH` and `SATISFIES` are deliberately absent from this catalogue-level ontology.
+
+## Ingestion structure
+
+Each of the six pattern subclasses requires the five module types through `hasModule`. Each module class requires only its listed component types through `hasComponent`. These are schema restrictions; concrete pipelines and pattern instances remain out of scope.
+
+## Attestation traceability
+
+An attestation requires its own ID, pipeline ID, module ID, component ID and timestamp. It links to an identified actor and identified actions, risks, controls and evidence. A risk points to its action, a control points to the risk it mitigates, and successful evidence points to its control.
 
 ## Literals and relationships
 

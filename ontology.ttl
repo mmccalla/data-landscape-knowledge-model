@@ -15,7 +15,7 @@ dl: a owl:Ontology ;
   dcterms:source <https://www.data-landscape.com/>, <https://www.data-landscape.com/regulation.html> ;
   dcterms:license <https://opensource.org/licenses/MIT> ;
   dcterms:rights "Upstream data copyright (c) 2026 Entropy Data; transformed with attribution."@en-GB ;
-  owl:versionInfo "2.0.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-07-28"^^xsd:date .
+  owl:versionInfo "3.0.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-07-29"^^xsd:date .
 
 dl:LandscapeEntry a owl:Class ; rdfs:label "Landscape entry"@en-GB ;
   rdfs:comment "An entry curated into one of the two Data Landscape catalogues. The class records landscape membership and does not assert that every entry is intrinsically a standard or a law."@en-GB .
@@ -25,6 +25,90 @@ dl:LandscapeAssessment a owl:Class ; rdfs:label "Landscape assessment"@en-GB ;
   rdfs:comment "A contextual editorial opinion about one Data Standard Landscape entry."@en-GB .
 dl:ComplianceMapping a owl:Class ; rdfs:label "Compliance mapping"@en-GB ;
   rdfs:comment "A versioned, attributable assertion connecting two landscape entries. It does not itself assert that an organisation complies with a law."@en-GB .
+dl:DataIngestionPattern a owl:Class ; rdfs:label "Data ingestion pattern"@en-GB .
+dl:BatchFileIngestion a owl:Class ; rdfs:subClassOf dl:DataIngestionPattern ; rdfs:label "Batch file ingestion"@en-GB .
+dl:APIPullIngestion a owl:Class ; rdfs:subClassOf dl:DataIngestionPattern ; rdfs:label "API pull ingestion"@en-GB .
+dl:EventDrivenIngestion a owl:Class ; rdfs:subClassOf dl:DataIngestionPattern ; rdfs:label "Event-driven ingestion"@en-GB .
+dl:DatabaseCDCIngestion a owl:Class ; rdfs:subClassOf dl:DataIngestionPattern ; rdfs:label "Database CDC ingestion"@en-GB .
+dl:ObjectStoreReplication a owl:Class ; rdfs:subClassOf dl:DataIngestionPattern ; rdfs:label "Object-store replication"@en-GB .
+dl:TableFormatStreaming a owl:Class ; rdfs:subClassOf dl:DataIngestionPattern ; rdfs:label "Table-format streaming"@en-GB .
+dl:DataPipelineModule a owl:Class ; rdfs:label "Data pipeline module"@en-GB .
+dl:DefineModule a owl:Class ; rdfs:subClassOf dl:DataPipelineModule ; rdfs:label "Define module"@en-GB .
+dl:TriggerModule a owl:Class ; rdfs:subClassOf dl:DataPipelineModule ; rdfs:label "Trigger module"@en-GB .
+dl:OrchestrateModule a owl:Class ; rdfs:subClassOf dl:DataPipelineModule ; rdfs:label "Orchestrate module"@en-GB .
+dl:GovernModule a owl:Class ; rdfs:subClassOf dl:DataPipelineModule ; rdfs:label "Govern module"@en-GB .
+dl:StoreModule a owl:Class ; rdfs:subClassOf dl:DataPipelineModule ; rdfs:label "Store module"@en-GB .
+dl:DataPipelineComponent a owl:Class ; rdfs:label "Data pipeline component"@en-GB .
+dl:DataProductDefinition a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Data product definition"@en-GB .
+dl:DataContractDefinition a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Data contract definition"@en-GB .
+dl:SemanticDescription a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Semantic description"@en-GB .
+dl:TriggerInvocation a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Trigger invocation"@en-GB .
+dl:WorkloadPlanning a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Workload planning"@en-GB .
+dl:SecureReadAccess a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Secure read access"@en-GB .
+dl:SourceConnectivity a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Source connectivity"@en-GB .
+dl:WorkloadExecutionOrchestration a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Workload execution/orchestration"@en-GB .
+dl:StateAndIdempotency a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "State and idempotency"@en-GB .
+dl:ValidationAndContractBinding a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Validation and contract binding"@en-GB .
+dl:FailureIsolation a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Failure isolation"@en-GB .
+dl:SecureWriteAccess a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Secure write access"@en-GB .
+dl:MetadataRegistration a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Metadata registration"@en-GB .
+dl:StoreWriteDataProduct a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Store/write data product"@en-GB .
+dl:BatchFileIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:DefineModule ] .
+dl:BatchFileIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:TriggerModule ] .
+dl:BatchFileIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:OrchestrateModule ] .
+dl:BatchFileIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:GovernModule ] .
+dl:BatchFileIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:StoreModule ] .
+dl:APIPullIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:DefineModule ] .
+dl:APIPullIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:TriggerModule ] .
+dl:APIPullIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:OrchestrateModule ] .
+dl:APIPullIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:GovernModule ] .
+dl:APIPullIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:StoreModule ] .
+dl:EventDrivenIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:DefineModule ] .
+dl:EventDrivenIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:TriggerModule ] .
+dl:EventDrivenIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:OrchestrateModule ] .
+dl:EventDrivenIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:GovernModule ] .
+dl:EventDrivenIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:StoreModule ] .
+dl:DatabaseCDCIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:DefineModule ] .
+dl:DatabaseCDCIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:TriggerModule ] .
+dl:DatabaseCDCIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:OrchestrateModule ] .
+dl:DatabaseCDCIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:GovernModule ] .
+dl:DatabaseCDCIngestion rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:StoreModule ] .
+dl:ObjectStoreReplication rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:DefineModule ] .
+dl:ObjectStoreReplication rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:TriggerModule ] .
+dl:ObjectStoreReplication rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:OrchestrateModule ] .
+dl:ObjectStoreReplication rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:GovernModule ] .
+dl:ObjectStoreReplication rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:StoreModule ] .
+dl:TableFormatStreaming rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:DefineModule ] .
+dl:TableFormatStreaming rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:TriggerModule ] .
+dl:TableFormatStreaming rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:OrchestrateModule ] .
+dl:TableFormatStreaming rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:GovernModule ] .
+dl:TableFormatStreaming rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasModule ; owl:someValuesFrom dl:StoreModule ] .
+dl:DefineModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:DataProductDefinition ] .
+dl:DefineModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:DataContractDefinition ] .
+dl:DefineModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:SemanticDescription ] .
+dl:TriggerModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:TriggerInvocation ] .
+dl:TriggerModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:WorkloadPlanning ] .
+dl:OrchestrateModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:SecureReadAccess ] .
+dl:OrchestrateModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:SourceConnectivity ] .
+dl:OrchestrateModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:WorkloadExecutionOrchestration ] .
+dl:GovernModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:StateAndIdempotency ] .
+dl:GovernModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:ValidationAndContractBinding ] .
+dl:GovernModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:FailureIsolation ] .
+dl:StoreModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:SecureWriteAccess ] .
+dl:StoreModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:MetadataRegistration ] .
+dl:StoreModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:StoreWriteDataProduct ] .
+dl:ComponentImplementationMapping a owl:Class ; rdfs:label "Component implementation mapping"@en-GB ;
+  rdfs:comment "A curated design-time mapping from a pipeline component type to a landscape entry that can implement or support it."@en-GB .
+
+dl:Attestation a owl:Class ; rdfs:label "Attestation"@en-GB .
+dl:Actor a owl:Class ; rdfs:label "Actor"@en-GB .
+dl:SystemActor a owl:Class ; rdfs:subClassOf dl:Actor ; rdfs:label "System actor"@en-GB .
+dl:AgentActor a owl:Class ; rdfs:subClassOf dl:Actor ; rdfs:label "Agent actor"@en-GB .
+dl:HumanActor a owl:Class ; rdfs:subClassOf dl:Actor ; rdfs:label "Human actor"@en-GB .
+dl:Action a owl:Class ; rdfs:label "Action"@en-GB .
+dl:Risk a owl:Class ; rdfs:label "Risk"@en-GB .
+dl:Control a owl:Class ; rdfs:label "Control"@en-GB .
+dl:ControlEvidence a owl:Class ; rdfs:label "Control evidence"@en-GB .
 dl:Category a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Category concept"@en-GB .
 dl:StandardCategory a owl:Class ; rdfs:subClassOf dl:Category ; rdfs:label "Data Standard Landscape category"@en-GB .
 dl:RegulationCategory a owl:Class ; rdfs:subClassOf dl:Category ; rdfs:label "Data Regulation Landscape category"@en-GB .
@@ -67,3 +151,32 @@ dl:sourceVersion a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdf
 dl:mappingStatus a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:string ; rdfs:label "mapping status"@en-GB .
 dl:evidenceStatus a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "evidence status"@en-GB ;
   rdfs:comment "Distinguishes direct source data, deterministic normalisation and assertions from separately identified official sources."@en-GB .
+
+dl:hasModule a owl:ObjectProperty ; rdfs:domain dl:DataIngestionPattern ; rdfs:range dl:DataPipelineModule ; rdfs:label "has module"@en-GB .
+dl:hasComponent a owl:ObjectProperty ; rdfs:domain dl:DataPipelineModule ; rdfs:range dl:DataPipelineComponent ; rdfs:label "has component"@en-GB .
+dl:mapsComponentType a owl:ObjectProperty ; rdfs:domain dl:ComponentImplementationMapping ; rdfs:range owl:Class ; rdfs:label "maps component type"@en-GB .
+dl:implementationOption a owl:ObjectProperty ; rdfs:domain dl:ComponentImplementationMapping ; rdfs:range dl:DataStandardLandscapeEntry ; rdfs:label "implementation option"@en-GB .
+dl:mappingRationale a owl:DatatypeProperty ; rdfs:domain dl:ComponentImplementationMapping ; rdfs:range xsd:string ; rdfs:label "mapping rationale"@en-GB .
+
+dl:attestationId a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:string ; rdfs:label "attestation identifier"@en-GB .
+dl:pipelineId a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:string ; rdfs:label "pipeline identifier"@en-GB .
+dl:moduleId a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:string ; rdfs:label "module identifier"@en-GB .
+dl:componentId a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:string ; rdfs:label "component identifier"@en-GB .
+dl:attestedAt a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:dateTime ; rdfs:label "attested at"@en-GB .
+dl:performedBy a owl:ObjectProperty ; rdfs:domain dl:Attestation ; rdfs:range dl:Actor ; rdfs:label "performed by"@en-GB .
+dl:recordsAction a owl:ObjectProperty ; rdfs:domain dl:Attestation ; rdfs:range dl:Action ; rdfs:label "records action"@en-GB .
+dl:recordsRisk a owl:ObjectProperty ; rdfs:domain dl:Attestation ; rdfs:range dl:Risk ; rdfs:label "records risk"@en-GB .
+dl:recordsControl a owl:ObjectProperty ; rdfs:domain dl:Attestation ; rdfs:range dl:Control ; rdfs:label "records control"@en-GB .
+dl:recordsEvidence a owl:ObjectProperty ; rdfs:domain dl:Attestation ; rdfs:range dl:ControlEvidence ; rdfs:label "records evidence"@en-GB .
+dl:actorId a owl:DatatypeProperty ; rdfs:domain dl:Actor ; rdfs:range xsd:string ; rdfs:label "actor identifier"@en-GB .
+dl:actionId a owl:DatatypeProperty ; rdfs:domain dl:Action ; rdfs:range xsd:string ; rdfs:label "action identifier"@en-GB .
+dl:riskId a owl:DatatypeProperty ; rdfs:domain dl:Risk ; rdfs:range xsd:string ; rdfs:label "risk identifier"@en-GB .
+dl:controlId a owl:DatatypeProperty ; rdfs:domain dl:Control ; rdfs:range xsd:string ; rdfs:label "control identifier"@en-GB .
+dl:evidenceId a owl:DatatypeProperty ; rdfs:domain dl:ControlEvidence ; rdfs:range xsd:string ; rdfs:label "evidence identifier"@en-GB .
+dl:riskForAction a owl:ObjectProperty ; rdfs:domain dl:Risk ; rdfs:range dl:Action ; rdfs:label "risk for action"@en-GB .
+dl:mitigatesRisk a owl:ObjectProperty ; rdfs:domain dl:Control ; rdfs:range dl:Risk ; rdfs:label "mitigates risk"@en-GB .
+dl:controlRequired a owl:DatatypeProperty ; rdfs:domain dl:Control ; rdfs:range xsd:boolean ; rdfs:label "control required"@en-GB .
+dl:controlApplied a owl:DatatypeProperty ; rdfs:domain dl:Control ; rdfs:range xsd:boolean ; rdfs:label "control applied"@en-GB .
+dl:evidenceForControl a owl:ObjectProperty ; rdfs:domain dl:ControlEvidence ; rdfs:range dl:Control ; rdfs:label "evidence for control"@en-GB .
+dl:controlPassed a owl:DatatypeProperty ; rdfs:domain dl:ControlEvidence ; rdfs:range xsd:boolean ; rdfs:label "control passed"@en-GB .
+dl:evidenceReference a owl:DatatypeProperty ; rdfs:domain dl:ControlEvidence ; rdfs:range xsd:string ; rdfs:label "evidence reference"@en-GB .

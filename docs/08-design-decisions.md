@@ -40,9 +40,13 @@ Frameworks do not themselves comply with laws, and adopting a standard does not 
 
 The delivered mapping layer includes only three reviewed examples from official publishers or regulators. A page merely hosting a community mapping is not automatically treated as endorsing its correctness; authority type remains explicit.
 
-## Keep extraction sources outside the graph
+## Separate pattern structure, implementation options and runtime evidence
 
-Checksums and attribution belong in build records and documentation.
+Patterns, modules and components define reusable structure. `ComponentImplementationMapping` records candidate technologies separately. `Attestation` records what a concrete pipeline execution actually did and proved. This prevents design guidance from being mistaken for runtime compliance evidence.
+
+## Keep extensions distinct from upstream observations
+
+Airflow, Prefect and Temporal are source-backed local extensions. Their entries use `OFFICIAL_SOURCE_EXTENSION`; their judgement, reason and tier use `EDITORIAL_ASSESSMENT`. This avoids attributing local decisions to the upstream landscape publisher.
 
 ## Preserve source omissions
 

@@ -6,6 +6,14 @@
 
 A contextual editorial opinion containing a judgement, reason and one or more tiers.
 
+## Attestation
+
+A timestamped, traceable record for one pipeline component execution, linking an actor and identified actions to risks, applied controls and successful control evidence.
+
+## Data ingestion pattern, module and component
+
+A pattern describes a reusable ingestion approach. It is composed of the five module types, and each module is composed of its defined functional component types.
+
 ## Cardinality
 
 The permitted number of values. `1..*` means one or more; `0..1` means optional and at most one.

@@ -49,6 +49,43 @@ dl:ComplianceMappingShape a sh:NodeShape ; sh:targetClass dl:ComplianceMapping ;
   sh:sparql [ a sh:SPARQLConstraint ; sh:message "A compliance mapping cannot map an entry to itself."@en-GB ;
     sh:select "SELECT $this WHERE { $this dl:mappingSourceEntry ?entry ; dl:mappingTargetEntry ?entry . }" ] .
 
+dl:ComponentImplementationMappingShape a sh:NodeShape ; sh:targetClass dl:ComponentImplementationMapping ;
+  sh:property [ sh:path dl:identifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mapsComponentType ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:implementationOption ; sh:class dl:DataStandardLandscapeEntry ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingRationale ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:authoritativeSource ; sh:datatype xsd:anyURI ; sh:minCount 1 ] .
+
+dl:AttestationShape a sh:NodeShape ; sh:targetClass dl:Attestation ;
+  sh:property [ sh:path dl:attestationId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:pipelineId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:moduleId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:componentId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:attestedAt ; sh:datatype xsd:dateTime ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:performedBy ; sh:class dl:Actor ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:recordsAction ; sh:class dl:Action ; sh:nodeKind sh:IRI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:recordsRisk ; sh:class dl:Risk ; sh:nodeKind sh:IRI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:recordsControl ; sh:class dl:Control ; sh:nodeKind sh:IRI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:recordsEvidence ; sh:class dl:ControlEvidence ; sh:nodeKind sh:IRI ; sh:minCount 1 ] .
+
+dl:ActorShape a sh:NodeShape ; sh:targetClass dl:Actor, dl:SystemActor, dl:AgentActor, dl:HumanActor ;
+  sh:property [ sh:path dl:actorId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] .
+dl:ActionShape a sh:NodeShape ; sh:targetClass dl:Action ;
+  sh:property [ sh:path dl:actionId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] .
+dl:RiskShape a sh:NodeShape ; sh:targetClass dl:Risk ;
+  sh:property [ sh:path dl:riskId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:riskForAction ; sh:class dl:Action ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] .
+dl:ControlShape a sh:NodeShape ; sh:targetClass dl:Control ;
+  sh:property [ sh:path dl:controlId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mitigatesRisk ; sh:class dl:Risk ; sh:nodeKind sh:IRI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:controlRequired ; sh:datatype xsd:boolean ; sh:hasValue true ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:controlApplied ; sh:datatype xsd:boolean ; sh:hasValue true ; sh:minCount 1 ; sh:maxCount 1 ] .
+dl:ControlEvidenceShape a sh:NodeShape ; sh:targetClass dl:ControlEvidence ;
+  sh:property [ sh:path dl:evidenceId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:evidenceForControl ; sh:class dl:Control ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:controlPassed ; sh:datatype xsd:boolean ; sh:hasValue true ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:evidenceReference ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] .
+
 dl:ConceptLabelShape a sh:NodeShape ; sh:targetClass skos:Concept ;
   sh:property [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:uniqueLang true ] ;
   sh:property [ sh:path skos:inScheme ; sh:class skos:ConceptScheme ; sh:minCount 1 ; sh:maxCount 1 ] .

@@ -12,6 +12,9 @@ Unique `id` constraints are created for:
 - `DataRegulationLandscapeEntry`;
 - `LandscapeAssessment`;
 - `ComplianceMapping`;
+- `ComponentImplementationMapping`;
+- ingestion pattern, module and component types;
+- attestation, actor, action, risk, control and evidence identifiers;
 - `Concept`.
 
 ```cypher
@@ -30,6 +33,7 @@ Indexes support common lookup and sorting by:
 - standard-entry name;
 - regulation-entry name;
 - concept name.
+- attestation pipeline, module and component IDs.
 
 ## Full-text indexes
 

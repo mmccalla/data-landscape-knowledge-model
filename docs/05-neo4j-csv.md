@@ -17,6 +17,10 @@ LandscapeEntry
 
 LandscapeAssessment
 ComplianceMapping
+ComponentImplementationMapping
+DataIngestionPatternType
+DataPipelineModuleType
+DataPipelineComponentType
 Concept
 ├── StandardCategory
 ├── RegulationCategory
@@ -70,13 +74,17 @@ SOURCE_ENTRY
 TARGET_ENTRY
 HAS_MAPPING_RELATION
 HAS_AUTHORITY_TYPE
+MAPS_COMPONENT_TYPE
+IMPLEMENTATION_OPTION
 ```
+
+Ingestion structure uses `HAS_MODULE` and `HAS_COMPONENT`. Future runtime attestations use the ontology's actor, action, risk, control and evidence relationships; no concrete runtime attestations are included yet.
 
 `BROADER` connects each detailed category to its section.
 
 ## Counts
 
-The delivered projection contains **321 nodes** and **777 relationships**. Counts are generated rather than handwritten; the validation process checks unique import IDs and every relationship endpoint.
+The delivered projection contains **381 nodes** and **897 relationships**. Counts are generated rather than handwritten; the validation process checks unique import IDs and every relationship endpoint.
 
 ## RDF-to-property-graph mapping
 

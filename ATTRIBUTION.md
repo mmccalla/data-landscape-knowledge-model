@@ -25,6 +25,8 @@ Source-derived values include identifiers, names, full names, categories, govern
 
 These values remain attributable to the Data Landscape. Their inclusion is not independent verification or endorsement by the author of this derived model.
 
+Airflow, Prefect and Temporal are local extensions and are not attributed to the upstream Data Landscape dataset. Their factual descriptions are grounded in their official documentation; their judgement, reason and tier are editorial decisions in this model.
+
 ## Mapping sources
 
 The three delivered compliance mappings are supported by separately identified official sources:
@@ -35,13 +37,11 @@ The three delivered compliance mappings are supported by separately identified o
 
 The mappings are represented as bounded assertions with authority and source. They are not legal advice or proof of operational compliance.
 
+Component implementation mappings cite the official documentation recorded on each mapped entry. They are candidate design options, not claims of complete feature coverage or endorsement by the upstream publisher.
+
 ## Original transformation work
 
 The ontology structure, SKOS schemes, SHACL constraints, normalisation rules, compliance-mapping representation, RDF-to-Neo4j projection, CSVs, Cypher schema and explanatory documentation are transformation work built around the attributed source data. They must not be represented as authored by the upstream project.
-
-## No extraction-source model
-
-HTML files and screenshots were used to understand and verify the pages. They are not represented as business-domain nodes. Checksums and acquisition details belong in build documentation rather than a `SourceCapture` class.
 
 ## Responsible reuse
 

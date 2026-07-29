@@ -14,15 +14,18 @@ Class:    DataRegulationLandscapeEntry
 Instance: GDPR
 ```
 
-## Three instance files
+## Four instance files
 
 | File | Contents |
 |---|---|
-| [`instances.ttl`](../instances.ttl) | 81 standard-landscape entries and 81 assessments. |
+| [`instances.ttl`](../instances.ttl) | 84 standard-landscape entries and 84 assessments. |
 | [`regulation-instances.ttl`](../regulation-instances.ttl) | 73 regulation-landscape entries. |
 | [`mapping-instances.ttl`](../mapping-instances.ttl) | Three officially supported mapping assertions. |
+| [`component-mappings.ttl`](../component-mappings.ttl) | 29 curated component-to-landscape implementation options. |
 
 They are separate so each domain can be refreshed without pretending that all statements came from the same source or have the same semantics.
+
+Airflow, Prefect and Temporal are local, officially sourced extensions rather than upstream landscape observations. Their assessments are explicitly editorial. Component mappings are candidate design options, not proof that a tool completely implements a component in every pipeline context.
 
 ## Standard example
 

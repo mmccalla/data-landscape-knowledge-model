@@ -5,7 +5,7 @@ This package turns two related catalogues into a schema-first knowledge model:
 - [Data Landscape: Open Standards for Modern Data Architecture](https://www.data-landscape.com/);
 - [Data Landscape for Regulation](https://www.data-landscape.com/regulation.html).
 
-It contains **81 Data Standard Landscape entries**, **73 Data Regulation Landscape entries**, their controlled classifications, validation rules, three conservatively sourced cross-document mappings, and a Neo4j property-graph projection.
+It contains **84 Data Standard Landscape entries** (81 upstream records plus three source-backed extensions), **73 Data Regulation Landscape entries**, an ingestion-pattern schema, attestation rules, controlled classifications, validation rules, conservative mappings, and a Neo4j property-graph projection.
 
 You do not need prior knowledge of ontologies, RDF, SKOS, SHACL or Neo4j. This page gives the overview; each artefact has its own plain-English guide.
 
@@ -47,6 +47,23 @@ ComplianceMapping
 ├── TARGET_ENTRY ──────────────→ LandscapeEntry
 ├── HAS_MAPPING_RELATION ──────→ MappingRelation
 └── HAS_AUTHORITY_TYPE ────────→ MappingAuthorityType
+
+DataIngestionPattern
+├── BatchFileIngestion
+├── APIPullIngestion
+├── EventDrivenIngestion
+├── DatabaseCDCIngestion
+├── ObjectStoreReplication
+└── TableFormatStreaming
+    └── HAS_MODULE ─────────────→ DataPipelineModule
+                                  └── HAS_COMPONENT ──→ DataPipelineComponent
+
+Attestation
+├── pipelineId / moduleId / componentId / timestamp
+├── PERFORMED_BY ───────────────→ Actor
+├── RECORDS_ACTION ─────────────→ Action ←── RISK_FOR_ACTION ── Risk
+├── RECORDS_CONTROL ────────────→ Control ── MITIGATES_RISK ──→ Risk
+└── RECORDS_EVIDENCE ───────────→ ControlEvidence ── EVIDENCE_FOR_CONTROL ──→ Control
 ```
 
 The subclass names deliberately describe membership in a landscape. A `DataRegulationLandscapeEntry` may be a law, standard, control catalogue or assurance scheme. `GovernanceType` identifies how the entry is established or stewarded.
@@ -77,12 +94,14 @@ The delivered mappings are deliberately limited to three assertions supported by
 | [`instances.ttl`](instances.ttl) | Data Standard Landscape entries and assessments. | [Instances](docs/04-instances.md) |
 | [`regulation-instances.ttl`](regulation-instances.ttl) | Data Regulation Landscape entries. | [Instances](docs/04-instances.md) |
 | [`mapping-instances.ttl`](mapping-instances.ttl) | Officially supported mapping assertions. | [Mappings](docs/10-compliance-mappings.md) |
+| [`component-mappings.ttl`](component-mappings.ttl) | Curated implementation options linking pipeline components to landscape entries. | [Instances](docs/04-instances.md) |
 | [`nodes.csv`](nodes.csv) | Neo4j nodes for all RDF resources. | [Neo4j CSV](docs/05-neo4j-csv.md) |
 | [`relationships.csv`](relationships.csv) | Neo4j relationships. | [Neo4j CSV](docs/05-neo4j-csv.md) |
 | [`neo4j-schema.cypher`](neo4j-schema.cypher) | Neo4j keys, constraints and indexes. | [Neo4j schema](docs/06-neo4j-schema.md) |
 | [`ATTRIBUTION.md`](ATTRIBUTION.md) | Authorship, reuse and transformation boundary. | [Attribution](ATTRIBUTION.md) |
 | [`CITATION.bib`](CITATION.bib) | BibTeX citations. | [Citation](CITATION.bib) |
 | [`SOURCE-MANIFEST.md`](SOURCE-MANIFEST.md) | Input URLs, record counts and checksums. | [Source manifest](SOURCE-MANIFEST.md) |
+| [`standard-extensions.json`](standard-extensions.json) | The three locally curated, officially sourced standard entries. | [Source manifest](SOURCE-MANIFEST.md) |
 | [`LICENSE`](LICENSE) | Upstream MIT licence. | [Licence](LICENSE) |
 
 ## Suggested reading paths
@@ -110,17 +129,19 @@ Read [Compliance mappings](docs/10-compliance-mappings.md), followed by the mapp
 
 | Measure | Count |
 |---|---:|
-| Data Standard Landscape records | 81 |
-| Unique standard display names | 80 |
-| Standard category memberships | 82 |
+| Data Standard Landscape records | 84 |
+| Upstream / locally extended standard records | 81 / 3 |
+| Unique standard display names | 83 |
+| Standard category memberships | 85 |
 | Data Regulation Landscape records | 73 |
 | Regulation categories | 19 |
 | Regulation category memberships | 73 |
 | Normalised jurisdiction memberships | 81 |
 | Confirmed cross-landscape identity links | 2 pairs: ODRL and OPA |
 | Official mapping assertions | 3 |
-| Neo4j nodes | 321 |
-| Neo4j relationships | 777 |
+| Component implementation mappings | 29 |
+| Neo4j nodes | 381 |
+| Neo4j relationships | 897 |
 
 Compound jurisdiction labels explain why 73 regulation entries produce 81 jurisdiction memberships. For example, `EU / Germany` becomes links to both European Union and Germany while the original text is preserved.
 
@@ -132,9 +153,10 @@ The `evidenceStatus` value distinguishes how a statement entered the graph:
 - `NORMALISED_FROM_SOURCE`: deterministically split or normalised from a source value;
 - `IDENTITY_CONFIRMED`: a reviewed cross-landscape identity link;
 - `OFFICIAL_SOURCE`: supported by a separately identified official document;
-- `MODELLED_VOCABULARY`: terminology introduced by this model.
-
-The HTML files and screenshots are extraction inputs, not domain entities. There is no screenshot or source-capture class.
+- `MODELLED_VOCABULARY`: terminology introduced by this model;
+- `OFFICIAL_SOURCE_EXTENSION`: a local landscape extension grounded in official product documentation;
+- `EDITORIAL_ASSESSMENT`: a locally curated judgement and tier rather than an upstream statement;
+- `CURATED_DESIGN_MAPPING`: a design-time implementation option, not a claim of complete capability coverage.
 
 ## Namespace
 

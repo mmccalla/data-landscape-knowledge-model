@@ -30,6 +30,14 @@ Requires exactly one assessed Data Standard entry, one judgement, one reason and
 
 Requires exactly one source entry, target entry, mapping relation, authority type, asserting body, official source and mapping status. A SPARQL constraint rejects a self-mapping.
 
+### ComponentImplementationMappingShape
+
+Requires one component type, one implementation option, a rationale and at least one authoritative source.
+
+### Attestation shapes
+
+Require traceable IDs for the attestation, actor, action, risk, control and evidence. The attestation also requires pipeline, module and component IDs plus a timestamp. Risks must reference actions, controls must reference mitigated risks, and evidence must reference a control and record a successful pass. Required and applied control flags must both be true.
+
 ### ConceptLabelShape
 
 Requires every SKOS concept to have a preferred label and exactly one concept scheme.
@@ -53,7 +61,7 @@ RDF and OWL use open-world semantics: absence can mean “unknown”. Publicatio
 
 ## Expected result
 
-Validating ontology, taxonomy and all three instance files should report:
+Validating ontology, taxonomy and all four instance files should report:
 
 ```text
 Conforms: True

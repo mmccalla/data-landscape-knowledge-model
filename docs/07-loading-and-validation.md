@@ -20,7 +20,8 @@ Combine the data graph and run SHACL:
 ```sh
 riot --formatted=turtle \
   ontology.ttl taxonomy.ttl instances.ttl \
-  regulation-instances.ttl mapping-instances.ttl > bundle.ttl
+  regulation-instances.ttl mapping-instances.ttl \
+  component-mappings.ttl > bundle.ttl
 
 pyshacl -s shapes.ttl bundle.ttl
 ```
@@ -43,9 +44,9 @@ Then apply [`neo4j-schema.cypher`](../neo4j-schema.cypher). Bulk import creates 
 ## Expected principal counts
 
 ```cypher
-MATCH (n:DataStandardLandscapeEntry) RETURN count(n);   // 81
+MATCH (n:DataStandardLandscapeEntry) RETURN count(n);   // 84
 MATCH (n:DataRegulationLandscapeEntry) RETURN count(n); // 73
-MATCH (n:LandscapeAssessment) RETURN count(n);          // 81
+MATCH (n:LandscapeAssessment) RETURN count(n);          // 84
 MATCH (n:ComplianceMapping) RETURN count(n);             // 3
 MATCH (n:LandscapeEntry)-[:APPLIES_IN]->() RETURN count(*); // 81
 ```
@@ -90,11 +91,12 @@ RETURN s.name, r.name;
 
 The build must verify:
 
-- 81 standards and 73 regulation entries;
-- 82 standard and 73 regulation category memberships;
+- 84 standards and 73 regulation entries;
+- 85 standard and 73 regulation category memberships;
 - 81 normalised jurisdiction memberships;
 - two cross-landscape identity pairs;
 - three official mappings;
+- 29 component implementation mappings;
 - unique CSV import IDs;
 - no dangling relationship endpoints;
 - consistent CSV column widths;

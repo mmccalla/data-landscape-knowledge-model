@@ -1,0 +1,62 @@
+{
+  "airflow": {
+    "name": "Apache Airflow",
+    "fullName": "Apache Airflow",
+    "category": "Processing",
+    "governance": "Apache Software Foundation",
+    "status": "Stable; mature platform for scheduled, finite batch workflows",
+    "judgement": "Situational",
+    "judgementReason": "Mature and widely supported for scheduled, finite batch workflows; consider alternatives for highly dynamic, decentralised or continuously running event-stream workloads.",
+    "tier": "stable",
+    "description": [
+      "Open-source platform for developing, scheduling and monitoring batch-oriented workflows as directed acyclic graphs."
+    ],
+    "links": [
+      { "label": "Apache Airflow documentation", "url": "https://airflow.apache.org/docs/apache-airflow/stable/index.html" }
+    ],
+    "firstReleased": 2015,
+    "standardization": "foundation",
+    "evidenceStatus": "OFFICIAL_SOURCE_EXTENSION",
+    "assessmentEvidenceStatus": "EDITORIAL_ASSESSMENT"
+  },
+  "prefect": {
+    "name": "Prefect",
+    "fullName": "Prefect",
+    "category": "Processing",
+    "governance": "Prefect Technologies, Inc. (vendor-led open source)",
+    "status": "Actively maintained open-source workflow orchestration platform",
+    "judgement": "Assess",
+    "judgementReason": "Python-native orchestration with dynamic workflows, retries, state tracking and transactional controls; promising for data pipelines, but independent evidence remains limited and governance is vendor-led.",
+    "tier": "vendor",
+    "description": [
+      "Python-native workflow orchestration platform providing tracked states, retries, caching and transactional workflow controls."
+    ],
+    "links": [
+      { "label": "Prefect documentation", "url": "https://docs.prefect.io/v3/" }
+    ],
+    "firstReleased": 2018,
+    "standardization": "vendor-led",
+    "evidenceStatus": "OFFICIAL_SOURCE_EXTENSION",
+    "assessmentEvidenceStatus": "EDITORIAL_ASSESSMENT"
+  },
+  "temporal": {
+    "name": "Temporal",
+    "fullName": "Temporal",
+    "category": "Processing",
+    "governance": "Temporal Technologies, Inc. (vendor-led open source)",
+    "status": "Actively maintained durable-execution platform",
+    "judgement": "Situational",
+    "judgementReason": "Strong choice when durable execution, recovery and long-running workflow state are primary requirements; less data-pipeline-specific than conventional orchestrators and requires additional operational commitment.",
+    "tier": "vendor",
+    "description": [
+      "Durable-execution platform that persists workflow state and resumes execution after process or infrastructure failure."
+    ],
+    "links": [
+      { "label": "Temporal documentation", "url": "https://docs.temporal.io/" }
+    ],
+    "firstReleased": 2019,
+    "standardization": "vendor-led",
+    "evidenceStatus": "OFFICIAL_SOURCE_EXTENSION",
+    "assessmentEvidenceStatus": "EDITORIAL_ASSESSMENT"
+  }
+}
