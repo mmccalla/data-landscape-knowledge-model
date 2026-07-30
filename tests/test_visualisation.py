@@ -30,6 +30,7 @@ class StandaloneGraphPageTest(unittest.TestCase):
         graph = json.loads(match.group(1))
         self.assertEqual(381, len(graph["nodes"]))
         self.assertEqual(897, len(graph["links"]))
+        self.assertEqual(29, len(graph["mappingExplanations"]))
 
         node_ids = {node["id"] for node in graph["nodes"]}
         self.assertEqual(len(graph["nodes"]), len(node_ids))
@@ -150,6 +151,7 @@ class StandaloneGraphPageTest(unittest.TestCase):
             all(source.startswith("https://") for source in mapping["authoritativeSources"])
         )
         self.assertIn('class="source-link"', self.html)
+        self.assertIn("Authoritative sources", self.html)
 
     def test_selection_details_use_a_scrollable_right_hand_panel(self):
         self.assertIn('<aside class="details"', self.html)
@@ -159,6 +161,28 @@ class StandaloneGraphPageTest(unittest.TestCase):
         )
         self.assertRegex(self.html, r"\.details\s*\{[^}]*position:\s*sticky")
         self.assertRegex(self.html, r"\.details\s*\{[^}]*overflow-y:\s*auto")
+
+    def test_component_mappings_have_display_only_rationale_and_boundaries(self):
+        match = re.search(
+            r'<script id="graph-data" type="application/json">(.*?)</script>',
+            self.html,
+            flags=re.DOTALL,
+        )
+        graph = json.loads(match.group(1))
+        mapping_ids = {
+            node["id"]
+            for node in graph["nodes"]
+            if "ComponentImplementationMapping" in node["labels"]
+        }
+        self.assertEqual(mapping_ids, set(graph["mappingExplanations"]))
+        for explanation in graph["mappingExplanations"].values():
+            self.assertTrue(explanation["rationale"])
+            self.assertTrue(explanation["boundary"])
+            self.assertTrue(explanation["sources"])
+            self.assertTrue(all(source.startswith("https://") for source in explanation["sources"]))
+        self.assertIn("Why this mapping?", self.html)
+        self.assertIn("Boundary", self.html)
+        self.assertIn("Rationale evidence", self.html)
 
 
 if __name__ == "__main__":
