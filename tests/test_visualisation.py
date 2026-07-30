@@ -61,6 +61,14 @@ class StandaloneGraphPageTest(unittest.TestCase):
         self.assertIn('id="toggle-edge-labels"', self.html)
         self.assertIn('"link-label"', self.html)
 
+    def test_edges_have_directional_arrowheads_clear_of_target_nodes(self):
+        for marker_id in ("arrow-default", "arrow-compliance", "arrow-highlighted"):
+            self.assertIn(f'["{marker_id}"', self.html)
+            self.assertIn(f"marker-end: url(#{marker_id})", self.html)
+        self.assertIn('attr("orient", "auto")', self.html)
+        self.assertIn('function edgeEndpoints(item)', self.html)
+        self.assertIn('const targetOffset = radii[groupFor(item.target)] + 4', self.html)
+
     def test_graph_can_be_frozen_and_dragged_nodes_remain_pinned(self):
         self.assertIn('id="toggle-freeze"', self.html)
         self.assertIn('aria-pressed="false"', self.html)
@@ -126,6 +134,20 @@ class StandaloneGraphPageTest(unittest.TestCase):
         self.assertIn("function selectionClosure", self.html)
         self.assertIn('moduleSelect.addEventListener("change"', self.html)
         self.assertIn('componentSelect.addEventListener("change"', self.html)
+
+    def test_standard_and_regulation_category_selectors_filter_independently(self):
+        self.assertIn('<label for="standard-category-select">Data standard category</label>', self.html)
+        self.assertIn('<select id="standard-category-select">', self.html)
+        self.assertIn('<option value="all">All data standard categories</option>', self.html)
+        self.assertIn('<label for="regulation-category-select">Data regulation category</label>', self.html)
+        self.assertIn('<select id="regulation-category-select">', self.html)
+        self.assertIn('<option value="all">All data regulation categories</option>', self.html)
+        self.assertIn("function populateCategoryOptions()", self.html)
+        self.assertIn("function categorySelection()", self.html)
+        self.assertIn('standardCategorySelect.addEventListener("change", applyFilters)', self.html)
+        self.assertIn('regulationCategorySelect.addEventListener("change", applyFilters)', self.html)
+        self.assertIn('const allowedStandardEntries = restrictLandscape(standardCategorySelect', self.html)
+        self.assertIn('const allowedRegulationEntries = restrictLandscape(regulationCategorySelect', self.html)
 
     def test_pipeline_scope_and_accessible_alternative_are_implemented(self):
         self.assertIn("function selectionClosure", self.html)
