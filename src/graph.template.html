@@ -103,13 +103,14 @@
     .node.dimmed { opacity: .18; }
     .empty-state { position: absolute; inset: 0; display: none; place-items: center; padding: 30px; text-align: center; color: var(--muted); }
     .details { position: sticky; top: 18px; align-self: start; max-height: calc(100vh - 36px); overflow-y: auto; padding: 20px; }
+    .details h3 { margin: 16px 0 5px; font-size: .95rem; }
     .details p { margin: 5px 0; }
     .details dl { display: grid; grid-template-columns: max-content 1fr; gap: 5px 12px; margin: 8px 0 0; }
     .details dt { font-weight: 700; }
     .details dd { margin: 0; overflow-wrap: anywhere; }
     .details a { color: #3430aa; }
     .source-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .source-link { display: inline-flex; align-items: center; min-height: 44px; padding: 7px 10px; border: 1px solid #aeb9cc; border-radius: 8px; background: #fff; }
+    .source-link { display: inline-flex; align-items: center; max-width: 100%; min-height: 44px; padding: 7px 10px; overflow-wrap: anywhere; border: 1px solid #aeb9cc; border-radius: 8px; background: #fff; }
     .badge { display: inline-block; margin: 2px 5px 2px 0; padding: 2px 7px; border-radius: 999px; background: #e8e9fb; font-size: .82rem; }
     .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
     @media (max-width: 1000px) {
@@ -378,16 +379,24 @@
     function nodeLabel(node) { return node.name || node.fullName || node.id; }
     function showDetails(node) {
       const connected = raw.links.filter(link => link.source === node.id || link.target === node.id);
+      const explanation = raw.mappingExplanations[node.id];
       const fields = [
         ["Identifier", node.id], ["Type", node.labels.join(", ")], ["Evidence", node.evidenceStatus],
         ["Status", node.statusStatement], ["Governance", node.governanceStatement], ["First release", node["firstReleaseYear:int"]]
       ].filter(([, value]) => value);
       const source = node.authoritativeSources.length
-        ? `<div class="source-links">${node.authoritativeSources.map((url, index) => `<a class="source-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Open authoritative source${node.authoritativeSources.length > 1 ? ` ${index + 1}` : ""}</a>`).join("")}</div>`
+        ? `<h3>Authoritative sources</h3><div class="source-links">${node.authoritativeSources.map(url => `<a class="source-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`).join("")}</div>`
+        : "";
+      const explanationSources = explanation
+        ? `<h3>Rationale evidence</h3><div class="source-links">${explanation.sources.map(url => `<a class="source-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`).join("")}</div>`
+        : "";
+      const explanationDetails = explanation
+        ? `<h3>Why this mapping?</h3><p>${escapeHtml(explanation.rationale)}</p><h3>Boundary</h3><p>${escapeHtml(explanation.boundary)}</p>${explanationSources}`
         : "";
       document.getElementById("details-content").innerHTML = `
         <p><strong>${escapeHtml(nodeLabel(node))}</strong></p>
         ${node.description ? `<p>${escapeHtml(node.description)}</p>` : ""}
+        ${explanationDetails}
         <dl>${fields.map(([term, value]) => `<dt>${term}</dt><dd>${escapeHtml(value)}</dd>`).join("")}</dl>
         <p>${connected.slice(0, 12).map(link => `<span class="badge">${escapeHtml(link.type)}</span>`).join("") || "No displayed relationships"}</p>${source}`;
     }
