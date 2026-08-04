@@ -22,7 +22,7 @@ Instance: GDPR
 | [`regulation-instances.ttl`](../regulation-instances.ttl) | 73 regulation-landscape entries. |
 | [`mapping-instances.ttl`](../mapping-instances.ttl) | Three officially supported mapping assertions. |
 | [`component-mappings.ttl`](../component-mappings.ttl) | 29 curated component-to-landscape implementation options. |
-| [`component-regulatory-mappings.ttl`](../component-regulatory-mappings.ttl) | 12 curated component-to-regulatory-context mappings grounded in primary sources. |
+| [`component-regulatory-mappings.ttl`](../component-regulatory-mappings.ttl) | 33 curated component-to-regulatory-context mappings grounded in primary sources. |
 
 They are separate so each domain can be refreshed without pretending that all statements came from the same source or have the same semantics.
 

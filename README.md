@@ -146,9 +146,9 @@ Read [Compliance mappings](docs/10-compliance-mappings.md), followed by the mapp
 | Confirmed cross-landscape identity links | 2 pairs: ODRL and OPA |
 | Official mapping assertions | 3 |
 | Component implementation mappings | 29 |
-| Component regulatory mappings | 12 |
-| Neo4j nodes | 393 |
-| Neo4j relationships | 921 |
+| Component regulatory mappings | 33 |
+| Neo4j nodes | 414 |
+| Neo4j relationships | 963 |
 
 Compound jurisdiction labels explain why 73 regulation entries produce 81 jurisdiction memberships. For example, `EU / Germany` becomes links to both European Union and Germany while the original text is preserved.
 
