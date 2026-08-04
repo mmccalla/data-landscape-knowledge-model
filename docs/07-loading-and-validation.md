@@ -50,7 +50,7 @@ MATCH (n:DataStandardLandscapeEntry) RETURN count(n);   // 84
 MATCH (n:DataRegulationLandscapeEntry) RETURN count(n); // 73
 MATCH (n:LandscapeAssessment) RETURN count(n);          // 84
 MATCH (n:ComplianceMapping) RETURN count(n);             // 3
-MATCH (n:ComponentRegulatoryMapping) RETURN count(n);    // 12
+MATCH (n:ComponentRegulatoryMapping) RETURN count(n);    // 33
 MATCH (n:LandscapeEntry)-[:APPLIES_IN]->() RETURN count(*); // 81
 ```
 
@@ -109,7 +109,7 @@ The build must verify:
 - two cross-landscape identity pairs;
 - three official mappings;
 - 29 component implementation mappings;
-- 12 component regulatory mappings;
+- 33 component regulatory mappings;
 - unique CSV import IDs;
 - no dangling relationship endpoints;
 - consistent CSV column widths;

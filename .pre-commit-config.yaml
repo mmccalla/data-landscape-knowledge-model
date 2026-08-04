@@ -27,6 +27,12 @@ repos:
         entry: python3 scripts/check-secrets.py
         language: system
         types: [text]
+      - id: reject-cruft-files
+        name: reject cruft files
+        entry: python3 scripts/check-cruft.py
+        language: system
+        pass_filenames: false
+        always_run: true
 
   - repo: meta
     hooks:

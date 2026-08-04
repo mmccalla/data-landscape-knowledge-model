@@ -62,9 +62,9 @@ const baseline = await page.evaluate(() => {
   };
 });
 
-assert(baseline.nodeCount === 393, `expected 393 nodes, got ${baseline.nodeCount}`);
-assert(baseline.linkCount === 921, `expected 921 links, got ${baseline.linkCount}`);
-assert(baseline.regulatoryMappingCount === 12, `expected 12 regulatory mappings, got ${baseline.regulatoryMappingCount}`);
+  assert(baseline.nodeCount === 414, `expected 414 nodes, got ${baseline.nodeCount}`);
+  assert(baseline.linkCount === 963, `expected 963 links, got ${baseline.linkCount}`);
+  assert(baseline.regulatoryMappingCount === 33, `expected 33 regulatory mappings, got ${baseline.regulatoryMappingCount}`);
 assert(baseline.filterPresent, "component regulatory filter missing");
 assert(baseline.arrowRegulatory, "arrow-regulatory marker missing");
 assert(baseline.regulatoryLinks > 0, "no visible REGULATORY_CONTEXT edges styled as regulatory");
