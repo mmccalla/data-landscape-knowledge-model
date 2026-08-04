@@ -18,6 +18,7 @@ LandscapeEntry
 LandscapeAssessment
 ComplianceMapping
 ComponentImplementationMapping
+ComponentRegulatoryMapping
 DataIngestionPatternType
 DataPipelineModuleType
 DataPipelineComponentType
@@ -76,6 +77,7 @@ HAS_MAPPING_RELATION
 HAS_AUTHORITY_TYPE
 MAPS_COMPONENT_TYPE
 IMPLEMENTATION_OPTION
+REGULATORY_CONTEXT
 ```
 
 Ingestion structure uses `HAS_MODULE` and `HAS_COMPONENT`. Future runtime attestations use the ontology's actor, action, risk, control and evidence relationships; no concrete runtime attestations are included yet.
@@ -84,7 +86,7 @@ Ingestion structure uses `HAS_MODULE` and `HAS_COMPONENT`. Future runtime attest
 
 ## Counts
 
-The delivered projection contains **381 nodes** and **897 relationships**. Counts are generated rather than handwritten; the validation process checks unique import IDs and every relationship endpoint.
+The delivered projection contains **393 nodes** and **921 relationships**. Counts are generated rather than handwritten; the validation process checks unique import IDs and every relationship endpoint.
 
 ## RDF-to-property-graph mapping
 

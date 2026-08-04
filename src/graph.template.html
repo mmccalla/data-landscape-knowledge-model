@@ -92,6 +92,7 @@
     #graph { display: block; width: 100%; height: 100%; min-height: 480px; }
     .link { stroke: #aab4c8; stroke-opacity: .45; marker-end: url(#arrow-default); }
     .link.compliance { stroke: #c2561a; stroke-width: 2.4; stroke-opacity: .85; marker-end: url(#arrow-compliance); }
+    .link.regulatory { stroke: #8b5a2b; stroke-width: 2.2; stroke-opacity: .85; marker-end: url(#arrow-regulatory); }
     .link.highlighted { stroke: #3327c7; stroke-width: 3; stroke-opacity: 1; marker-end: url(#arrow-highlighted); }
     .link.dimmed, .link-label.dimmed { opacity: .1; }
     .link-label { fill: #59667e; font-size: 8px; paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
@@ -186,6 +187,7 @@
           <label class="filter-toggle" style="--swatch:#168062"><input id="filter-data-standard-landscape" type="checkbox" data-group="standardLandscapeEntry" checked><span class="swatch" aria-hidden="true"></span><span>Data Standard Landscape</span><span class="count" data-count="standardLandscapeEntry"></span></label>
           <label class="filter-toggle" style="--swatch:#2b7f9e"><input id="filter-data-regulation-landscape" type="checkbox" data-group="regulationLandscapeEntry" checked><span class="swatch" aria-hidden="true"></span><span>Data Regulation Landscape</span><span class="count" data-count="regulationLandscapeEntry"></span></label>
           <label class="filter-toggle" style="--swatch:#d55220"><input id="filter-compliance-mappings" type="checkbox" data-group="complianceMapping" checked><span class="swatch" aria-hidden="true"></span><span>Compliance mappings</span><span class="count" data-count="complianceMapping"></span></label>
+          <label class="filter-toggle" style="--swatch:#8b5a2b"><input id="filter-component-regulatory-mappings" type="checkbox" data-group="componentRegulatoryMapping" checked><span class="swatch" aria-hidden="true"></span><span>Component regulatory mappings</span><span class="count" data-count="componentRegulatoryMapping"></span></label>
           <label class="filter-toggle" style="--swatch:#efad1f"><input id="filter-ingestion-patterns" type="checkbox" data-group="ingestionPattern" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion patterns</span><span class="count" data-count="ingestionPattern"></span></label>
           <label class="filter-toggle" style="--swatch:#268eb7"><input id="filter-ingestion-modules" type="checkbox" data-group="ingestionModule" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion modules</span><span class="count" data-count="ingestionModule"></span></label>
           <label class="filter-toggle" style="--swatch:#d34783"><input id="filter-ingestion-components" type="checkbox" data-group="ingestionComponent" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion components</span><span class="count" data-count="ingestionComponent"></span></label>
@@ -265,7 +267,7 @@
     const freezeToggle = document.getElementById("toggle-freeze");
     const svg = d3.select("#graph");
     const definitions = svg.append("defs");
-    for (const [id, colour] of [["arrow-default", "#aab4c8"], ["arrow-compliance", "#c2561a"], ["arrow-highlighted", "#3327c7"]]) {
+    for (const [id, colour] of [["arrow-default", "#aab4c8"], ["arrow-compliance", "#c2561a"], ["arrow-regulatory", "#8b5a2b"], ["arrow-highlighted", "#3327c7"]]) {
       definitions.append("marker")
         .attr("id", id)
         .attr("viewBox", "0 -5 10 10")
@@ -285,16 +287,17 @@
     const colours = {
       standardCategory: "#3156d3", regulationCategory: "#b75016", governanceType: "#6a45a6",
       standardLandscapeEntry: "#168062", regulationLandscapeEntry: "#2b7f9e",
-      complianceMapping: "#d55220", ingestionPattern: "#efad1f",
+      complianceMapping: "#d55220", componentRegulatoryMapping: "#8b5a2b", ingestionPattern: "#efad1f",
       ingestionModule: "#268eb7", ingestionComponent: "#d34783"
     };
-    const radii = { standardLandscapeEntry: 6, regulationLandscapeEntry: 6, standardCategory: 9, regulationCategory: 9, governanceType: 10, complianceMapping: 11, ingestionPattern: 14, ingestionModule: 12, ingestionComponent: 9 };
+    const radii = { standardLandscapeEntry: 6, regulationLandscapeEntry: 6, standardCategory: 9, regulationCategory: 9, governanceType: 10, complianceMapping: 11, componentRegulatoryMapping: 11, ingestionPattern: 14, ingestionModule: 12, ingestionComponent: 9 };
 
     function groupFor(node) {
       const labels = node.labels;
       if (labels.includes("DataIngestionPatternType")) return "ingestionPattern";
       if (labels.includes("DataPipelineModuleType")) return "ingestionModule";
       if (labels.includes("DataPipelineComponentType") || labels.includes("ComponentImplementationMapping")) return "ingestionComponent";
+      if (labels.includes("ComponentRegulatoryMapping")) return "componentRegulatoryMapping";
       if (labels.includes("ComplianceMapping")) return "complianceMapping";
       if (labels.includes("DataStandardLandscapeEntry")) return "standardLandscapeEntry";
       if (labels.includes("DataRegulationLandscapeEntry")) return "regulationLandscapeEntry";
@@ -383,6 +386,10 @@
           const targets = new Set([...addTargets([node.id], "SOURCE_ENTRY"), ...addTargets([node.id], "TARGET_ENTRY")]);
           if (![...targets].some(id => allowedRegulationEntries.has(id))) allowed.delete(node.id);
         }
+        for (const node of displayNodes.filter(item => item.labels.includes("ComponentRegulatoryMapping"))) {
+          const targets = addTargets([node.id], "REGULATORY_CONTEXT");
+          if (![...targets].some(id => allowedRegulationEntries.has(id))) allowed.delete(node.id);
+        }
       }
       return allowed;
     }
@@ -400,8 +407,8 @@
       if (!components.size) components = addTargets(modules, "HAS_COMPONENT");
 
       const scope = new Set([...patterns, ...modules, ...components]);
-      const implementationMappings = addTargets(components, "MAPS_COMPONENT_TYPE", "in");
-      const entries = addTargets(implementationMappings, "IMPLEMENTATION_OPTION");
+      const componentMappings = addTargets(components, "MAPS_COMPONENT_TYPE", "in");
+      const entries = new Set([...addTargets(componentMappings, "IMPLEMENTATION_OPTION"), ...addTargets(componentMappings, "REGULATORY_CONTEXT")]);
       const categories = new Set([...addTargets(entries, "IN_STANDARD_CATEGORY"), ...addTargets(entries, "IN_REGULATION_CATEGORY")]);
       const governance = addTargets(entries, "HAS_GOVERNANCE_TYPE");
       const sameResources = new Set([...addTargets(entries, "DESCRIBES_SAME_RESOURCE_AS"), ...addTargets(entries, "DESCRIBES_SAME_RESOURCE_AS", "in")]);
@@ -418,7 +425,7 @@
           if (link.type === "SOURCE_ENTRY" || link.type === "TARGET_ENTRY") complianceEntries.add(link.target);
         }
       }
-      for (const id of [...modules, ...components, ...implementationMappings, ...relatedEntries, ...complianceEntries, ...categories, ...governance, ...complianceMappings]) scope.add(id);
+      for (const id of [...modules, ...components, ...componentMappings, ...relatedEntries, ...complianceEntries, ...categories, ...governance, ...complianceMappings]) scope.add(id);
       for (const id of addTargets(complianceEntries, "IN_REGULATION_CATEGORY")) scope.add(id);
       for (const id of addTargets(complianceEntries, "HAS_GOVERNANCE_TYPE")) scope.add(id);
       return scope;
@@ -445,7 +452,8 @@
       const explanation = raw.mappingExplanations[node.id];
       const fields = [
         ["Identifier", node.id], ["Type", node.labels.join(", ")], ["Evidence", node.evidenceStatus],
-        ["Status", node.statusStatement], ["Governance", node.governanceStatement], ["First release", node["firstReleaseYear:int"]]
+        ["Status", node.statusStatement], ["Governance", node.governanceStatement], ["First release", node["firstReleaseYear:int"]],
+        ["Requirement", node.regulatoryRequirementReference], ["Source version", node.sourceVersion], ["Asserted by", node.assertedBy]
       ].filter(([, value]) => value);
       const source = node.authoritativeSources.length
         ? `<h3>Authoritative sources</h3><div class="source-links">${node.authoritativeSources.map(url => `<a class="source-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`).join("")}</div>`
@@ -506,7 +514,7 @@
       if (node.labels.includes("DataIngestionPatternType")) return 0;
       if (node.labels.includes("DataPipelineModuleType")) return 1;
       if (node.labels.includes("DataPipelineComponentType")) return 2;
-      if (node.labels.includes("ComponentImplementationMapping")) return 3;
+      if (node.labels.includes("ComponentImplementationMapping") || node.labels.includes("ComponentRegulatoryMapping")) return 3;
       if (node.labels.includes("DataStandardLandscapeEntry") || node.labels.includes("DataRegulationLandscapeEntry")) return 4;
       return 5;
     }
@@ -611,7 +619,11 @@
       svg.attr("viewBox", [0, 0, width, height]);
 
       const link = linkLayer.selectAll("line").data(links).join("line")
-        .attr("class", item => `link ${["SOURCE_ENTRY", "TARGET_ENTRY"].includes(item.type) ? "compliance" : ""}`)
+        .attr("class", item => {
+          if (item.type === "SOURCE_ENTRY" || item.type === "TARGET_ENTRY") return "link compliance";
+          if (item.type === "REGULATORY_CONTEXT") return "link regulatory";
+          return "link";
+        })
         .attr("stroke-width", item => item.type === "BROADER" ? 1.7 : 1.1);
       const linkLabel = edgeLabelsToggle.checked
         ? linkLabelLayer.selectAll("text").data(links).join("text").attr("class", "link-label").attr("text-anchor", "middle").text(item => item.type.replaceAll("_", " "))
