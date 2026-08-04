@@ -34,6 +34,10 @@ Requires exactly one source entry, target entry, mapping relation, authority typ
 
 Requires one component type, one implementation option, a rationale and at least one authoritative source.
 
+### ComponentRegulatoryMappingShape
+
+Requires one component type, one regulation-landscape context, a precise requirement reference, rationale, asserting party, source version and at least one authoritative source. Status must be `REVIEWED` and evidence status must be `CURATED_REGULATORY_RELEVANCE`.
+
 ### Attestation shapes
 
 Require traceable IDs for the attestation, actor, action, risk, control and evidence. The attestation also requires pipeline, module and component IDs plus a timestamp. Risks must reference actions, controls must reference mitigated risks, and evidence must reference a control and record a successful pass. Required and applied control flags must both be true.
@@ -61,7 +65,7 @@ RDF and OWL use open-world semantics: absence can mean “unknown”. Publicatio
 
 ## Expected result
 
-Validating ontology, taxonomy and all four instance files should report:
+Validating ontology, taxonomy and all instance and mapping files should report:
 
 ```text
 Conforms: True

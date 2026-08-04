@@ -13,6 +13,8 @@ riot --validate shapes.ttl
 riot --validate instances.ttl
 riot --validate regulation-instances.ttl
 riot --validate mapping-instances.ttl
+riot --validate component-mappings.ttl
+riot --validate component-regulatory-mappings.ttl
 ```
 
 Combine the data graph and run SHACL:
@@ -21,7 +23,7 @@ Combine the data graph and run SHACL:
 riot --formatted=turtle \
   ontology.ttl taxonomy.ttl instances.ttl \
   regulation-instances.ttl mapping-instances.ttl \
-  component-mappings.ttl > bundle.ttl
+  component-mappings.ttl component-regulatory-mappings.ttl > bundle.ttl
 
 pyshacl -s shapes.ttl bundle.ttl
 ```
@@ -48,6 +50,7 @@ MATCH (n:DataStandardLandscapeEntry) RETURN count(n);   // 84
 MATCH (n:DataRegulationLandscapeEntry) RETURN count(n); // 73
 MATCH (n:LandscapeAssessment) RETURN count(n);          // 84
 MATCH (n:ComplianceMapping) RETURN count(n);             // 3
+MATCH (n:ComponentRegulatoryMapping) RETURN count(n);    // 12
 MATCH (n:LandscapeEntry)-[:APPLIES_IN]->() RETURN count(*); // 81
 ```
 
@@ -79,6 +82,15 @@ RETURN source.name, relation.name, target.name,
        m.assertedBy, m.authoritativeSource;
 ```
 
+Find component regulatory context:
+
+```cypher
+MATCH (component:DataPipelineComponentType)<-[:MAPS_COMPONENT_TYPE]-(m:ComponentRegulatoryMapping)
+      -[:REGULATORY_CONTEXT]->(entry:DataRegulationLandscapeEntry)
+RETURN component.name, entry.name, m.regulatoryRequirementReference,
+       m.description, m.authoritativeSource;
+```
+
 Find the two confirmed cross-landscape identity pairs:
 
 ```cypher
@@ -97,6 +109,7 @@ The build must verify:
 - two cross-landscape identity pairs;
 - three official mappings;
 - 29 component implementation mappings;
+- 12 component regulatory mappings;
 - unique CSV import IDs;
 - no dangling relationship endpoints;
 - consistent CSV column widths;

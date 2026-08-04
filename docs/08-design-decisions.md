@@ -44,6 +44,8 @@ The delivered mapping layer includes only three reviewed examples from official 
 
 Patterns, modules and components define reusable structure. `ComponentImplementationMapping` records candidate technologies separately. `Attestation` records what a concrete pipeline execution actually did and proved. This prevents design guidance from being mistaken for runtime compliance evidence.
 
+`ComponentRegulatoryMapping` is a third, separate concern: it identifies why a component is relevant to a cited requirement. The mapping is curated interpretation grounded in a primary source, not an assertion by the regulator and not evidence that a pipeline complies. Incomplete component coverage is intentional; blank components are not treated as defects.
+
 ## Keep extensions distinct from upstream observations
 
 Airflow, Prefect and Temporal are source-backed local extensions. Their entries use `OFFICIAL_SOURCE_EXTENSION`; their judgement, reason and tier use `EDITORIAL_ASSESSMENT`. This avoids attributing local decisions to the upstream landscape publisher.

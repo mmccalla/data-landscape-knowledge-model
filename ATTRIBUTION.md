@@ -39,6 +39,8 @@ The mappings are represented as bounded assertions with authority and source. Th
 
 Component implementation mappings cite the official documentation recorded on each mapped entry. They are candidate design options, not claims of complete feature coverage or endorsement by the upstream publisher.
 
+Component regulatory mappings are original curated interpretations by Entropy Data, grounded in the primary sources recorded on each mapping. They are not authored or endorsed by the cited regulator or standards body and are not legal advice or proof of compliance.
+
 ## Original transformation work
 
 The ontology structure, SKOS schemes, SHACL constraints, normalisation rules, compliance-mapping representation, RDF-to-Neo4j projection, CSVs, Cypher schema and explanatory documentation are transformation work built around the attributed source data. They must not be represented as authored by the upstream project.

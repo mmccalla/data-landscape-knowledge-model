@@ -40,3 +40,9 @@ Community-submitted mappings may be represented, but must be labelled as such ra
 The present model maps whole entries. A later extension can introduce `Control` and `RegulatoryRequirement` resources so mapping strength—equivalent, partial, related or no coverage—can be expressed at the appropriate level.
 
 Do not infer clause-level equivalence from a broad document-level statement.
+
+## Component regulatory context
+
+[`component-regulatory-mappings.ttl`](../component-regulatory-mappings.ttl) adds design-time relevance mappings from pipeline component types to precisely cited requirements. Each mapping records its rationale, boundary, source version and primary source. These mappings answer “which regulatory concerns should this component design consider?” They do not answer “is this pipeline compliant?”.
+
+The delivered set covers secure read and write access, validation and contract binding, metadata registration, and failure isolation, with multiple independently cited regulations where the evidence supports them. It deliberately omits mappings where the source does not support a specific, defensible relationship, including several pipeline components that remain intentionally unmapped. Residual catalogue skew toward frequently cited instruments (for example GDPR and NIST SP 800-53) is accepted where those instruments supply the clearest primary citations; balance is not forced by inventing weaker links.

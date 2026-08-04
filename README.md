@@ -48,6 +48,10 @@ ComplianceMapping
 ├── HAS_MAPPING_RELATION ──────→ MappingRelation
 └── HAS_AUTHORITY_TYPE ────────→ MappingAuthorityType
 
+ComponentRegulatoryMapping
+├── MAPS_COMPONENT_TYPE ───────→ DataPipelineComponent
+└── REGULATORY_CONTEXT ────────→ DataRegulationLandscapeEntry
+
 DataIngestionPattern
 ├── BatchFileIngestion
 ├── APIPullIngestion
@@ -95,6 +99,7 @@ The delivered mappings are deliberately limited to three assertions supported by
 | [`regulation-instances.ttl`](regulation-instances.ttl) | Data Regulation Landscape entries. | [Instances](docs/04-instances.md) |
 | [`mapping-instances.ttl`](mapping-instances.ttl) | Officially supported mapping assertions. | [Mappings](docs/10-compliance-mappings.md) |
 | [`component-mappings.ttl`](component-mappings.ttl) | Curated implementation options linking pipeline components to landscape entries. | [Instances](docs/04-instances.md) |
+| [`component-regulatory-mappings.ttl`](component-regulatory-mappings.ttl) | Curated, primary-source-backed regulatory context for pipeline components. | [Mappings](docs/10-compliance-mappings.md) |
 | [`graph.html`](graph.html) | Standalone D3 visualisation with node-type filters and pipeline-scoped views. | Open directly in a browser. |
 | [`nodes.csv`](nodes.csv) | Neo4j nodes for all RDF resources. | [Neo4j CSV](docs/05-neo4j-csv.md) |
 | [`relationships.csv`](relationships.csv) | Neo4j relationships. | [Neo4j CSV](docs/05-neo4j-csv.md) |
@@ -141,8 +146,9 @@ Read [Compliance mappings](docs/10-compliance-mappings.md), followed by the mapp
 | Confirmed cross-landscape identity links | 2 pairs: ODRL and OPA |
 | Official mapping assertions | 3 |
 | Component implementation mappings | 29 |
-| Neo4j nodes | 381 |
-| Neo4j relationships | 897 |
+| Component regulatory mappings | 12 |
+| Neo4j nodes | 393 |
+| Neo4j relationships | 921 |
 
 Compound jurisdiction labels explain why 73 regulation entries produce 81 jurisdiction memberships. For example, `EU / Germany` becomes links to both European Union and Germany while the original text is preserved.
 
@@ -158,6 +164,7 @@ The `evidenceStatus` value distinguishes how a statement entered the graph:
 - `OFFICIAL_SOURCE_EXTENSION`: a local landscape extension grounded in official product documentation;
 - `EDITORIAL_ASSESSMENT`: a locally curated judgement and tier rather than an upstream statement;
 - `CURATED_DESIGN_MAPPING`: a design-time implementation option, not a claim of complete capability coverage.
+- `CURATED_REGULATORY_RELEVANCE`: a curated component-to-requirement relevance assertion grounded in a primary source; not regulator endorsement and not proof of compliance.
 
 ## Namespace
 
