@@ -13,6 +13,7 @@ Unique `id` constraints are created for:
 - `LandscapeAssessment`;
 - `ComplianceMapping`;
 - `ComponentImplementationMapping`;
+- `ComponentRegulatoryMapping`;
 - ingestion pattern, module and component types;
 - attestation, actor, action, risk, control and evidence identifiers;
 - `Concept`.

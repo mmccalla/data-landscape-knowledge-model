@@ -28,8 +28,8 @@ class StandaloneGraphPageTest(unittest.TestCase):
         )
         self.assertIsNotNone(match)
         graph = json.loads(match.group(1))
-        self.assertEqual(381, len(graph["nodes"]))
-        self.assertEqual(897, len(graph["links"]))
+        self.assertEqual(393, len(graph["nodes"]))
+        self.assertEqual(921, len(graph["links"]))
         self.assertEqual(29, len(graph["mappingExplanations"]))
 
         node_ids = {node["id"] for node in graph["nodes"]}
@@ -46,6 +46,7 @@ class StandaloneGraphPageTest(unittest.TestCase):
             "data-standard-landscape",
             "data-regulation-landscape",
             "compliance-mappings",
+            "component-regulatory-mappings",
             "ingestion-patterns",
             "ingestion-modules",
             "ingestion-components",
@@ -62,7 +63,7 @@ class StandaloneGraphPageTest(unittest.TestCase):
         self.assertIn('"link-label"', self.html)
 
     def test_edges_have_directional_arrowheads_clear_of_target_nodes(self):
-        for marker_id in ("arrow-default", "arrow-compliance", "arrow-highlighted"):
+        for marker_id in ("arrow-default", "arrow-compliance", "arrow-regulatory", "arrow-highlighted"):
             self.assertIn(f'["{marker_id}"', self.html)
             self.assertIn(f"marker-end: url(#{marker_id})", self.html)
         self.assertIn('attr("orient", "auto")', self.html)
@@ -205,6 +206,29 @@ class StandaloneGraphPageTest(unittest.TestCase):
         self.assertIn("Why this mapping?", self.html)
         self.assertIn("Boundary", self.html)
         self.assertIn("Rationale evidence", self.html)
+
+    def test_component_regulatory_mappings_are_traceable_and_pipeline_scoped(self):
+        match = re.search(
+            r'<script id="graph-data" type="application/json">(.*?)</script>',
+            self.html,
+            flags=re.DOTALL,
+        )
+        graph = json.loads(match.group(1))
+        mappings = [
+            node for node in graph["nodes"]
+            if "ComponentRegulatoryMapping" in node["labels"]
+        ]
+        self.assertEqual(12, len(mappings))
+        for mapping in mappings:
+            self.assertEqual("CURATED_REGULATORY_RELEVANCE", mapping["evidenceStatus"])
+            self.assertEqual("REVIEWED", mapping["mappingStatus"])
+            self.assertTrue(mapping["regulatoryRequirementReference"])
+            self.assertTrue(mapping["authoritativeSources"])
+        self.assertIn('addTargets(componentMappings, "REGULATORY_CONTEXT")', self.html)
+        self.assertIn('["Requirement", node.regulatoryRequirementReference]', self.html)
+        self.assertIn('.link.regulatory', self.html)
+        self.assertIn('if (item.type === "REGULATORY_CONTEXT") return "link regulatory"', self.html)
+        self.assertNotIn('["SOURCE_ENTRY", "TARGET_ENTRY", "REGULATORY_CONTEXT"].includes(item.type) ? "compliance"', self.html)
 
 
 if __name__ == "__main__":
