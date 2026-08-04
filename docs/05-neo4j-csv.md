@@ -86,7 +86,7 @@ Ingestion structure uses `HAS_MODULE` and `HAS_COMPONENT`. Future runtime attest
 
 ## Counts
 
-The delivered projection contains **393 nodes** and **921 relationships**. Counts are generated rather than handwritten; the validation process checks unique import IDs and every relationship endpoint.
+The delivered projection contains **414 nodes** and **963 relationships**. Counts are generated rather than handwritten; the validation process checks unique import IDs and every relationship endpoint.
 
 ## RDF-to-property-graph mapping
 

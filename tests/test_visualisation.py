@@ -28,8 +28,8 @@ class StandaloneGraphPageTest(unittest.TestCase):
         )
         self.assertIsNotNone(match)
         graph = json.loads(match.group(1))
-        self.assertEqual(393, len(graph["nodes"]))
-        self.assertEqual(921, len(graph["links"]))
+        self.assertEqual(414, len(graph["nodes"]))
+        self.assertEqual(963, len(graph["links"]))
         self.assertEqual(29, len(graph["mappingExplanations"]))
 
         node_ids = {node["id"] for node in graph["nodes"]}
@@ -218,7 +218,7 @@ class StandaloneGraphPageTest(unittest.TestCase):
             node for node in graph["nodes"]
             if "ComponentRegulatoryMapping" in node["labels"]
         ]
-        self.assertEqual(12, len(mappings))
+        self.assertEqual(33, len(mappings))
         for mapping in mappings:
             self.assertEqual("CURATED_REGULATORY_RELEVANCE", mapping["evidenceStatus"])
             self.assertEqual("REVIEWED", mapping["mappingStatus"])
