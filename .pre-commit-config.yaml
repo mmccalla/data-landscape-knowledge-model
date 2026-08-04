@@ -1,16 +1,27 @@
+# Pre-commit checks shaped for this RDF / Neo4j / visualisation repository.
+# Requires on PATH for domain hooks: riot (Apache Jena), pyshacl.
 minimum_pre_commit_version: "4.0.0"
 fail_fast: false
+default_stages: [pre-commit]
+
+# Generated standalone viz is intentionally large and not hand-edited.
+exclude: (?x)^(
+  graph\.html
+  )$
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
+        # graph.html (~800KB) is excluded above; keep headroom for CSV growth.
+        args: [--maxkb=1024]
       - id: check-case-conflict
       - id: check-illegal-windows-names
       - id: check-merge-conflict
       - id: check-shebang-scripts-are-executable
       - id: check-yaml
+      - id: check-json
       - id: destroyed-symlinks
       - id: detect-private-key
       - id: end-of-file-fixer
@@ -19,6 +30,8 @@ repos:
         args: [--fix=lf]
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
+        # Quoted CSV fields can contain intentional trailing spaces in names.
+        exclude: ^(nodes|relationships)\.csv$
 
   - repo: local
     hooks:
@@ -27,12 +40,30 @@ repos:
         entry: python3 scripts/check-secrets.py
         language: system
         types: [text]
+        exclude: ^package-lock\.json$
       - id: reject-cruft-files
         name: reject cruft files
         entry: python3 scripts/check-cruft.py
         language: system
         pass_filenames: false
         always_run: true
+      - id: validate-turtle
+        name: validate Turtle (riot)
+        entry: python3 scripts/check-turtle.py
+        language: system
+        files: \.ttl$
+      - id: validate-shacl
+        name: validate SHACL (pyshacl)
+        entry: python3 scripts/check-shacl.py
+        language: system
+        files: \.ttl$
+        pass_filenames: false
+      - id: validate-csv-projection
+        name: validate Neo4j CSV projection
+        entry: python3 scripts/check-csv-projection.py
+        language: system
+        files: ^(nodes|relationships)\.csv$
+        pass_filenames: false
 
   - repo: meta
     hooks:

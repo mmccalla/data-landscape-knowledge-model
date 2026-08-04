@@ -199,10 +199,11 @@ The instance data and publisher-authored wording are derived from the MIT-licens
 
 ## Contributor checks
 
-The repository uses [pre-commit](https://pre-commit.com/) for fast, language-neutral hygiene and secret-safety checks. Install and enable it once:
+The repository uses [pre-commit](https://pre-commit.com/) for hygiene, secret safety, cruft rejection, Turtle validation (`riot`), SHACL (`pyshacl`), and Neo4j CSV projection integrity. Install and enable it once:
 
 ```sh
-python3 -m pip install pre-commit
+python3 -m pip install pre-commit pyshacl
+# Apache Jena riot must also be on PATH (see docs/07-loading-and-validation.md)
 pre-commit install
 ```
 
@@ -212,8 +213,7 @@ Run every configured check against the complete repository before submitting a c
 pre-commit run --all-files
 ```
 
-These checks complement, rather than replace, the RDF, SHACL and Neo4j integrity checks in the [loading and validation guide](docs/07-loading-and-validation.md).
-
+`graph.html` is excluded from text hygiene hooks (it is a generated ~800KB standalone artefact). Domain hooks map to the scripts under `scripts/check-*.py` and align with the [loading and validation guide](docs/07-loading-and-validation.md).
 ## Rebuild the standalone graph
 
 [`graph.html`](graph.html) contains D3 and the complete CSV projection inline, so it opens locally without a web server or network connection. Rebuild it after changing either CSV file:
