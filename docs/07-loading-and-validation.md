@@ -7,6 +7,8 @@
 Parse every Turtle artefact:
 
 ```sh
+python3 scripts/check-turtle.py
+# or individually:
 riot --validate ontology.ttl
 riot --validate taxonomy.ttl
 riot --validate shapes.ttl
@@ -20,6 +22,8 @@ riot --validate component-regulatory-mappings.ttl
 Combine the data graph and run SHACL:
 
 ```sh
+python3 scripts/check-shacl.py
+# or manually:
 riot --formatted=turtle \
   ontology.ttl taxonomy.ttl instances.ttl \
   regulation-instances.ttl mapping-instances.ttl \
@@ -30,8 +34,15 @@ pyshacl -s shapes.ttl bundle.ttl
 
 Expected result: `Conforms: True`.
 
-## Neo4j bulk import
+## Neo4j CSV projection integrity
 
+Before import, confirm unique node IDs and that every relationship endpoint resolves:
+
+```sh
+python3 scripts/check-csv-projection.py
+```
+
+These three scripts are also wired into [pre-commit](../.pre-commit-config.yaml).
 Place the CSV files in an import-readable directory:
 
 ```sh
