@@ -56,6 +56,18 @@ dl:ComponentImplementationMappingShape a sh:NodeShape ; sh:targetClass dl:Compon
   sh:property [ sh:path dl:mappingRationale ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
   sh:property [ sh:path dl:authoritativeSource ; sh:datatype xsd:anyURI ; sh:minCount 1 ] .
 
+dl:ComponentRegulatoryMappingShape a sh:NodeShape ; sh:targetClass dl:ComponentRegulatoryMapping ;
+  sh:property [ sh:path dl:identifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mapsComponentType ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:regulatoryContext ; sh:class dl:DataRegulationLandscapeEntry ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingRationale ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:regulatoryRequirementReference ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:assertedBy ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:authoritativeSource ; sh:datatype xsd:anyURI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:sourceVersion ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingStatus ; sh:datatype xsd:string ; sh:hasValue "REVIEWED" ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:evidenceStatus ; sh:datatype xsd:string ; sh:hasValue "CURATED_REGULATORY_RELEVANCE" ; sh:minCount 1 ; sh:maxCount 1 ] .
+
 dl:AttestationShape a sh:NodeShape ; sh:targetClass dl:Attestation ;
   sh:property [ sh:path dl:attestationId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
   sh:property [ sh:path dl:pipelineId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;

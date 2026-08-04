@@ -11,3 +11,5 @@ This manifest records the machine-readable inputs used to generate the package o
 The regulation source was reconciled to 19 categories and the displayed jurisdiction filters: EU 16, Global 54 and US 9. Compound source labels overlap between those filters.
 
 The official mapping URLs are recorded on each `ComplianceMapping` instance and explained in [`ATTRIBUTION.md`](ATTRIBUTION.md).
+
+The twelve curated component regulatory mappings cite primary sources from EUR-Lex, the US Department of Health and Human Services, NIST, ISO and the Basel Committee. Their exact requirement references and source versions are recorded in [`component-regulatory-mappings.ttl`](component-regulatory-mappings.ttl). They are local interpretations rather than upstream source records. Coverage is intentionally incomplete: components without a precise, defensible citation remain unmapped.

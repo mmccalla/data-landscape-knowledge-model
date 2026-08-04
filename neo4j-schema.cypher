@@ -5,6 +5,7 @@ CREATE CONSTRAINT regulation_entry_id_unique IF NOT EXISTS FOR (n:DataRegulation
 CREATE CONSTRAINT assessment_id_unique IF NOT EXISTS FOR (n:LandscapeAssessment) REQUIRE n.id IS UNIQUE;
 CREATE CONSTRAINT mapping_id_unique IF NOT EXISTS FOR (n:ComplianceMapping) REQUIRE n.id IS UNIQUE;
 CREATE CONSTRAINT component_mapping_id_unique IF NOT EXISTS FOR (n:ComponentImplementationMapping) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT component_regulatory_mapping_id_unique IF NOT EXISTS FOR (n:ComponentRegulatoryMapping) REQUIRE n.id IS UNIQUE;
 CREATE CONSTRAINT pattern_type_id_unique IF NOT EXISTS FOR (n:DataIngestionPatternType) REQUIRE n.id IS UNIQUE;
 CREATE CONSTRAINT module_type_id_unique IF NOT EXISTS FOR (n:DataPipelineModuleType) REQUIRE n.id IS UNIQUE;
 CREATE CONSTRAINT component_type_id_unique IF NOT EXISTS FOR (n:DataPipelineComponentType) REQUIRE n.id IS UNIQUE;

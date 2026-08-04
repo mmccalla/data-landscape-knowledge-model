@@ -15,7 +15,7 @@ dl: a owl:Ontology ;
   dcterms:source <https://www.data-landscape.com/>, <https://www.data-landscape.com/regulation.html> ;
   dcterms:license <https://opensource.org/licenses/MIT> ;
   dcterms:rights "Upstream data copyright (c) 2026 Entropy Data; transformed with attribution."@en-GB ;
-  owl:versionInfo "3.0.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-07-29"^^xsd:date .
+  owl:versionInfo "3.1.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-07-31"^^xsd:date .
 
 dl:LandscapeEntry a owl:Class ; rdfs:label "Landscape entry"@en-GB ;
   rdfs:comment "An entry curated into one of the two Data Landscape catalogues. The class records landscape membership and does not assert that every entry is intrinsically a standard or a law."@en-GB .
@@ -23,7 +23,9 @@ dl:DataStandardLandscapeEntry a owl:Class ; rdfs:subClassOf dl:LandscapeEntry ; 
 dl:DataRegulationLandscapeEntry a owl:Class ; rdfs:subClassOf dl:LandscapeEntry ; rdfs:label "Data Regulation Landscape entry"@en-GB .
 dl:LandscapeAssessment a owl:Class ; rdfs:label "Landscape assessment"@en-GB ;
   rdfs:comment "A contextual editorial opinion about one Data Standard Landscape entry."@en-GB .
-dl:ComplianceMapping a owl:Class ; rdfs:label "Compliance mapping"@en-GB ;
+dl:SourcedMapping a owl:Class ; rdfs:label "Sourced mapping"@en-GB ;
+  rdfs:comment "A mapping assertion with explicit provenance, version and status."@en-GB .
+dl:ComplianceMapping a owl:Class ; rdfs:subClassOf dl:SourcedMapping ; rdfs:label "Compliance mapping"@en-GB ;
   rdfs:comment "A versioned, attributable assertion connecting two landscape entries. It does not itself assert that an organisation complies with a law."@en-GB .
 dl:DataIngestionPattern a owl:Class ; rdfs:label "Data ingestion pattern"@en-GB .
 dl:BatchFileIngestion a owl:Class ; rdfs:subClassOf dl:DataIngestionPattern ; rdfs:label "Batch file ingestion"@en-GB .
@@ -97,8 +99,11 @@ dl:GovernModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasCompo
 dl:StoreModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:SecureWriteAccess ] .
 dl:StoreModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:MetadataRegistration ] .
 dl:StoreModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:StoreWriteDataProduct ] .
-dl:ComponentImplementationMapping a owl:Class ; rdfs:label "Component implementation mapping"@en-GB ;
+dl:ComponentMapping a owl:Class ; rdfs:subClassOf dl:SourcedMapping ; rdfs:label "Component mapping"@en-GB .
+dl:ComponentImplementationMapping a owl:Class ; rdfs:subClassOf dl:ComponentMapping ; rdfs:label "Component implementation mapping"@en-GB ;
   rdfs:comment "A curated design-time mapping from a pipeline component type to a landscape entry that can implement or support it."@en-GB .
+dl:ComponentRegulatoryMapping a owl:Class ; rdfs:subClassOf dl:ComponentMapping ; rdfs:label "Component regulatory mapping"@en-GB ;
+  rdfs:comment "A curated design-time assertion that a pipeline component type is relevant to a cited requirement in a Data Regulation Landscape entry. It does not assert compliance or legal sufficiency."@en-GB .
 
 dl:Attestation a owl:Class ; rdfs:label "Attestation"@en-GB .
 dl:Actor a owl:Class ; rdfs:label "Actor"@en-GB .
@@ -145,18 +150,20 @@ dl:mappingSourceEntry a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; 
 dl:mappingTargetEntry a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:LandscapeEntry ; rdfs:label "mapping target entry"@en-GB .
 dl:hasMappingRelation a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:MappingRelation ; rdfs:label "has mapping relation"@en-GB .
 dl:hasMappingAuthorityType a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:MappingAuthorityType ; rdfs:label "has mapping authority type"@en-GB .
-dl:assertedBy a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:string ; rdfs:label "asserted by"@en-GB .
-dl:authoritativeSource a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:anyURI ; rdfs:label "authoritative source"@en-GB .
-dl:sourceVersion a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:string ; rdfs:label "source version"@en-GB .
-dl:mappingStatus a owl:DatatypeProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range xsd:string ; rdfs:label "mapping status"@en-GB .
+dl:assertedBy a owl:DatatypeProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range xsd:string ; rdfs:label "asserted by"@en-GB .
+dl:authoritativeSource a owl:DatatypeProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range xsd:anyURI ; rdfs:label "authoritative source"@en-GB .
+dl:sourceVersion a owl:DatatypeProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range xsd:string ; rdfs:label "source version"@en-GB .
+dl:mappingStatus a owl:DatatypeProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range xsd:string ; rdfs:label "mapping status"@en-GB .
 dl:evidenceStatus a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "evidence status"@en-GB ;
   rdfs:comment "Distinguishes direct source data, deterministic normalisation and assertions from separately identified official sources."@en-GB .
 
 dl:hasModule a owl:ObjectProperty ; rdfs:domain dl:DataIngestionPattern ; rdfs:range dl:DataPipelineModule ; rdfs:label "has module"@en-GB .
 dl:hasComponent a owl:ObjectProperty ; rdfs:domain dl:DataPipelineModule ; rdfs:range dl:DataPipelineComponent ; rdfs:label "has component"@en-GB .
-dl:mapsComponentType a owl:ObjectProperty ; rdfs:domain dl:ComponentImplementationMapping ; rdfs:range owl:Class ; rdfs:label "maps component type"@en-GB .
+dl:mapsComponentType a owl:ObjectProperty ; rdfs:domain dl:ComponentMapping ; rdfs:range owl:Class ; rdfs:label "maps component type"@en-GB .
 dl:implementationOption a owl:ObjectProperty ; rdfs:domain dl:ComponentImplementationMapping ; rdfs:range dl:DataStandardLandscapeEntry ; rdfs:label "implementation option"@en-GB .
-dl:mappingRationale a owl:DatatypeProperty ; rdfs:domain dl:ComponentImplementationMapping ; rdfs:range xsd:string ; rdfs:label "mapping rationale"@en-GB .
+dl:mappingRationale a owl:DatatypeProperty ; rdfs:domain dl:ComponentMapping ; rdfs:range xsd:string ; rdfs:label "mapping rationale"@en-GB .
+dl:regulatoryContext a owl:ObjectProperty ; rdfs:domain dl:ComponentRegulatoryMapping ; rdfs:range dl:DataRegulationLandscapeEntry ; rdfs:label "regulatory context"@en-GB .
+dl:regulatoryRequirementReference a owl:DatatypeProperty ; rdfs:domain dl:ComponentRegulatoryMapping ; rdfs:range xsd:string ; rdfs:label "regulatory requirement reference"@en-GB .
 
 dl:attestationId a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:string ; rdfs:label "attestation identifier"@en-GB .
 dl:pipelineId a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:string ; rdfs:label "pipeline identifier"@en-GB .
