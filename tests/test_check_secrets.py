@@ -21,7 +21,9 @@ class SecretScannerTests(unittest.TestCase):
             )
 
     def test_rejects_common_provider_token(self):
-        result = self.run_scanner("token = 'ghp_abcdefghijklmnopqrstuvwxyzABCDEFGHIJ'\n")
+        # Build the fixture at runtime so this test file itself is not flagged.
+        fixture = "token = 'ghp_" + ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJ") + "'\n"
+        result = self.run_scanner(fixture)
         self.assertEqual(result.returncode, 1)
         self.assertIn("possible GitHub token", result.stderr)
 
