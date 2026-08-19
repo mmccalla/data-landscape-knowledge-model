@@ -113,11 +113,13 @@ RDFS domains and ranges explain meaning. They do not make missing data invalid. 
 
 ## Namespace
 
+These prefixes are minted for this derived model; they are not Entropy Data namespaces.
+
 | Prefix | Namespace |
 |---|---|
-| `dl:` | `https://www.entropy-data.com/data-landscape/ontology/` |
-| `tax:` | `https://www.entropy-data.com/data-landscape/taxonomy/` |
-| `inst:` | `https://www.entropy-data.com/data-landscape/instance/` |
+| `dl:` | `https://polymathic.co.uk/data-landscape/ontology/` |
+| `tax:` | `https://polymathic.co.uk/data-landscape/taxonomy/` |
+| `inst:` | `https://polymathic.co.uk/data-landscape/instance/` |
 
 ## When this artefact changes
 

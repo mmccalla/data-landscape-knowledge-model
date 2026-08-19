@@ -15,9 +15,10 @@ Machine-readable sources:
 - https://www.data-landscape.com/standards.json
 - https://www.data-landscape.com/regulation.json
 
-The supplied source pages and datasets state an MIT licence. The licence and upstream copyright notice are reproduced in [`LICENSE`](LICENSE):
+The supplied source pages and datasets state an MIT licence. The dual copyright notice is reproduced in [`LICENSE`](LICENSE):
 
-> Copyright (c) 2026 Entropy Data
+> Copyright (c) 2026 Entropy Data (catalogue data from the Data Landscape)  
+> Copyright (c) 2026 Mark McCalla (this derived knowledge model)
 
 ## What is reproduced or transformed
 
@@ -39,11 +40,11 @@ The mappings are represented as bounded assertions with authority and source. Th
 
 Component implementation mappings cite the official documentation recorded on each mapped entry. They are candidate design options, not claims of complete feature coverage or endorsement by the upstream publisher.
 
-Component regulatory mappings are original curated interpretations by Entropy Data, grounded in the primary sources recorded on each mapping. They are not authored or endorsed by the cited regulator or standards body and are not legal advice or proof of compliance.
+Component regulatory mappings are original curated interpretations by Mark McCalla, grounded in the primary sources recorded on each mapping. They are not authored or endorsed by Entropy Data, the cited regulator or standards body and are not legal advice or proof of compliance.
 
 ## Original transformation work
 
-The ontology structure, SKOS schemes, SHACL constraints, normalisation rules, compliance-mapping representation, RDF-to-Neo4j projection, CSVs, Cypher schema and explanatory documentation are transformation work built around the attributed source data. They must not be represented as authored by the upstream project.
+The ontology structure, SKOS schemes, SHACL constraints, normalisation rules, compliance-mapping representation, RDF-to-Neo4j projection, CSVs, Cypher schema and explanatory documentation are transformation work built around the attributed source data. They must not be represented as authored by the upstream project. This GitHub repository is Mark McCalla’s derived model, not a publication by Entropy Data. Enterprise Solutions Consulting Ltd is the author’s affiliation, not the copyright holder.
 
 ## Responsible reuse
 

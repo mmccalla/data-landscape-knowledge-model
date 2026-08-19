@@ -105,7 +105,7 @@ const clicked = await page.evaluate(() => {
 assert(clicked, "could not click a regulatory mapping node");
 await page.waitForTimeout(300);
 const detailAfterClick = await page.evaluate(() => document.querySelector(".details")?.textContent || "");
-assert(/Requirement|CURATED_REGULATORY_RELEVANCE|Entropy Data|Article|AC-3|SI-|Principle/i.test(detailAfterClick), "details panel missing regulatory provenance after click");
+assert(/Requirement|CURATED_REGULATORY_RELEVANCE|Mark McCalla|Article|AC-3|SI-|Principle/i.test(detailAfterClick), "details panel missing regulatory provenance after click");
 
 await page.selectOption("#regulation-category-select", { index: 1 });
 await page.waitForTimeout(500);

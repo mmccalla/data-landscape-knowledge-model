@@ -2,9 +2,9 @@
 # Harrer, S. (2026), Entropy Data, https://www.data-landscape.com/
 # Upstream data is MIT-licensed; see ATTRIBUTION.md and LICENSE in this package.
 
-@prefix dl: <https://www.entropy-data.com/data-landscape/ontology/> .
-@prefix inst: <https://www.entropy-data.com/data-landscape/instance/> .
-@prefix tax: <https://www.entropy-data.com/data-landscape/taxonomy/> .
+@prefix dl: <https://polymathic.co.uk/data-landscape/ontology/> .
+@prefix inst: <https://polymathic.co.uk/data-landscape/instance/> .
+@prefix tax: <https://polymathic.co.uk/data-landscape/taxonomy/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 inst:mapping-csa-ccm-to-nist-csf a dl:ComplianceMapping ; dl:identifier "csa-ccm-to-nist-csf" ; dl:mappingSourceEntry inst:regulation-csa-ccm ; dl:mappingTargetEntry inst:regulation-nist-csf ; dl:hasMappingRelation tax:mapping-relation-maps-to ; dl:hasMappingAuthorityType tax:mapping-authority-source-author ; dl:assertedBy "Cloud Security Alliance" ; dl:authoritativeSource "https://cloudsecurityalliance.org/research/cloud-controls-matrix"^^xsd:anyURI ; dl:sourceVersion "4.1" ; dl:mappingStatus "PUBLISHED" ; dl:evidenceStatus "OFFICIAL_SOURCE" .

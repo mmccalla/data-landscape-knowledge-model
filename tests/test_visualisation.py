@@ -222,6 +222,7 @@ class StandaloneGraphPageTest(unittest.TestCase):
         for mapping in mappings:
             self.assertEqual("CURATED_REGULATORY_RELEVANCE", mapping["evidenceStatus"])
             self.assertEqual("REVIEWED", mapping["mappingStatus"])
+            self.assertEqual("Mark McCalla", mapping["assertedBy"])
             self.assertTrue(mapping["regulatoryRequirementReference"])
             self.assertTrue(mapping["authoritativeSources"])
         self.assertIn('addTargets(componentMappings, "REGULATORY_CONTEXT")', self.html)
