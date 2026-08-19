@@ -1,13 +1,27 @@
 # Data Landscape knowledge model
 
-This package turns two related catalogues into a schema-first knowledge model:
+> **Catalogues** by [Simon Harrer](https://www.data-landscape.com/) / Entropy Data, MIT-licensed.  
+> **Regulation sub-landscape** originally donated by Mark McCalla, curated by Simon Harrer.  
+> **This repository** is Mark McCalla’s schema-first transformation of those catalogues (Enterprise Solutions Consulting Ltd). It is not published by Entropy Data.  
+> **Licence:** catalogue data © Entropy Data, MIT; transformation by Mark McCalla. Keep [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md).
 
-- [Data Landscape: Open Standards for Modern Data Architecture](https://www.data-landscape.com/);
-- [Data Landscape for Regulation](https://www.data-landscape.com/regulation.html).
+You are designing CDC ingestion for EU personal data in a bank. Which open standards should you pick, and which regulations actually attach to those pipeline components?
 
-It contains **84 Data Standard Landscape entries** (81 upstream records plus three source-backed extensions), **73 Data Regulation Landscape entries**, an ingestion-pattern schema, attestation rules, controlled classifications, validation rules, conservative mappings, and a Neo4j property-graph projection.
+That is the job. In 2026 the same pipelines carry GDPR, DORA, NIS2 and the AI Act. The useful question is which obligations attach to an ingestion pattern, with sources.
 
-You do not need prior knowledge of ontologies, RDF, SKOS, SHACL or Neo4j. This page gives the overview; each artefact has its own plain-English guide.
+The catalogues already live at [data-landscape.com](https://www.data-landscape.com/) and the [regulation map](https://www.data-landscape.com/regulation.html). Simon’s site is the map people keep using. This package is a queryable version of that map: ingestion pattern → component → standard and regulatory context, with evidence grades. Wrapping the catalogues does not create a new landscape.
+
+Open [`graph.html`](graph.html) in a browser (local file; no server). Choose a **Data pipeline type** — for example Batch file ingestion — rather than the full landscape at once.
+
+![Batch file ingestion pattern scoped to related modules, components, and regulatory context](docs/images/pipeline-graph.png)
+
+### Who this is for
+
+- UK and EU enterprise and data architects in financial services, insurance and the public sector, who choose standards and then need a regulator-shaped story.
+- Data platform and data-mesh consultants who currently do this mapping in slides.
+- People already around Entropy Data and ODCS: adjacent context, not a product to buy.
+
+**84** Data Standard Landscape entries (81 upstream plus three source-backed extensions) and **73** Data Regulation Landscape entries sit behind that question. Official crosswalks are limited to the three assertions with cited sources; that bound is deliberate.
 
 ## Start with the four layers
 
@@ -82,7 +96,7 @@ The regulation landscape does not use those judgements or tiers. Its relevance d
 
 An official crosswalk has its own authority, version, status and supporting URL. A `ComplianceMapping` therefore represents the mapping assertion explicitly. It does **not** claim that a framework itself “complies with” a law or that adopting a standard automatically satisfies legislation.
 
-The delivered mappings are deliberately limited to three assertions supported by official sources:
+The delivered mappings are limited to three assertions supported by official sources. That is the honest set, not a backlog:
 
 - CSA CCM maps to NIST CSF;
 - CSA CCM maps to ISO/IEC 27001;
@@ -108,9 +122,15 @@ The delivered mappings are deliberately limited to three assertions supported by
 | [`CITATION.bib`](CITATION.bib) | BibTeX citations. | [Citation](CITATION.bib) |
 | [`SOURCE-MANIFEST.md`](SOURCE-MANIFEST.md) | Input URLs, record counts and checksums. | [Source manifest](SOURCE-MANIFEST.md) |
 | [`standard-extensions.json`](standard-extensions.json) | The three locally curated, officially sourced standard entries. | [Source manifest](SOURCE-MANIFEST.md) |
-| [`LICENSE`](LICENSE) | Upstream MIT licence. | [Licence](LICENSE) |
+| [`LICENSE`](LICENSE) | Dual MIT notice: catalogue data © Entropy Data; derived model © Mark McCalla. | [Licence](LICENSE) |
 
 ## Suggested reading paths
+
+### I have a pipeline pattern and need the attached obligations
+
+1. Open [`graph.html`](graph.html) and scope a pipeline type.
+2. [Compliance mappings](docs/10-compliance-mappings.md)
+3. [Design decisions](docs/08-design-decisions.md)
 
 ### I am completely new to knowledge modelling
 
@@ -121,15 +141,19 @@ The delivered mappings are deliberately limited to three assertions supported by
 5. [Instances](docs/04-instances.md)
 6. [Design decisions](docs/08-design-decisions.md)
 
-### I want to use Neo4j
+### I want to use the Neo4j projection
 
 1. [Neo4j CSV projection](docs/05-neo4j-csv.md)
 2. [Neo4j schema](docs/06-neo4j-schema.md)
 3. [Loading and validation](docs/07-loading-and-validation.md)
 
-### I want to understand compliance mappings
+### I need the schema and validation rules
 
-Read [Compliance mappings](docs/10-compliance-mappings.md), followed by the mapping decisions in [Design decisions](docs/08-design-decisions.md).
+1. [Glossary](docs/09-glossary.md)
+2. [Ontology](docs/01-ontology.md)
+3. [Taxonomy](docs/02-taxonomy.md)
+4. [SHACL](docs/03-shacl.md)
+5. [Instances](docs/04-instances.md)
 
 ## Counts and reconciliation
 
@@ -168,12 +192,12 @@ The `evidenceStatus` value distinguishes how a statement entered the graph:
 
 ## Namespace
 
-All locally defined IRIs use the concrete namespace family:
+Locally defined IRIs are minted for this derived model (not by Entropy Data) under:
 
 ```text
-https://www.entropy-data.com/data-landscape/ontology/
-https://www.entropy-data.com/data-landscape/taxonomy/
-https://www.entropy-data.com/data-landscape/instance/
+https://polymathic.co.uk/data-landscape/ontology/
+https://polymathic.co.uk/data-landscape/taxonomy/
+https://polymathic.co.uk/data-landscape/instance/
 ```
 
 ## Important limitations
@@ -187,7 +211,7 @@ https://www.entropy-data.com/data-landscape/instance/
 
 ## Attribution and responsible reuse
 
-The instance data and publisher-authored wording are derived from the MIT-licensed Data Landscape by Simon Harrer and Entropy Data. The regulation sub-landscape states that its original version was donated by Mark McCalla and has since been curated by Simon Harrer. Retain [`ATTRIBUTION.md`](ATTRIBUTION.md), [`CITATION.bib`](CITATION.bib) and [`LICENSE`](LICENSE) when redistributing this package or a substantial part of its data.
+Catalogue data and publisher-authored wording are © Entropy Data, MIT, from Simon Harrer’s Data Landscape. The regulation sub-landscape was originally donated by Mark McCalla and has since been curated by Simon Harrer. This GitHub repository is Mark McCalla’s derived model, not a publication by Entropy Data. Retain [`ATTRIBUTION.md`](ATTRIBUTION.md), [`CITATION.bib`](CITATION.bib) and [`LICENSE`](LICENSE) when redistributing this package or a substantial part of its data.
 
 ## External standards and documentation
 
