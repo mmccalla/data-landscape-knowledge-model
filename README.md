@@ -1,44 +1,41 @@
 # Data Landscape knowledge model
 
-> **Catalogues** by [Simon Harrer](https://www.data-landscape.com/) / Entropy Data, MIT-licensed.  
-> **Regulation sub-landscape** originally donated by Mark McCalla, curated by Simon Harrer.  
-> **This repository** is Mark McCalla’s schema-first transformation of those catalogues (Enterprise Solutions Consulting Ltd). It is not published by Entropy Data.  
-> **Licence:** catalogue data © Entropy Data, MIT; transformation by Mark McCalla. Keep [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md).
+A schema-first knowledge model of the Data Landscape catalogues published by [Simon Harrer](https://www.data-landscape.com/) and Entropy Data under the MIT licence. Mark McCalla originally donated the regulation sub-landscape, which Simon has since curated. This repository is Mark McCalla’s derived model of those catalogues, prepared with Enterprise Solutions Consulting Ltd.
 
-You are designing CDC ingestion for EU personal data in a bank. Which open standards should you pick, and which regulations actually attach to those pipeline components?
+**Licence:** catalogue data © Entropy Data, MIT; transformation by Mark McCalla. Retain [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md) if you redistribute the package.
 
-That is the job. In 2026 the same pipelines carry GDPR, DORA, NIS2 and the AI Act. The useful question is which obligations attach to an ingestion pattern, with sources.
+The intended use is straightforward. An architect choosing how to ingest data — for example CDC of EU personal data in a bank — needs to know which open standards apply to the pipeline components, and which UK and EU obligations are relevant to those components, with sources. In 2026 the same pipelines may sit under GDPR, DORA, NIS2 and the AI Act. This model records those links so they can be inspected rather than reconstructed in slides.
 
-The catalogues already live at [data-landscape.com](https://www.data-landscape.com/) and the [regulation map](https://www.data-landscape.com/regulation.html). Simon’s site is the map people keep using. This package is a queryable version of that map: ingestion pattern → component → standard and regulatory context, with evidence grades. Wrapping the catalogues does not create a new landscape.
+The catalogues remain the public reference: [data-landscape.com](https://www.data-landscape.com/) and the [regulation map](https://www.data-landscape.com/regulation.html). This package adds a queryable structure over them: ingestion pattern → component → standard and regulatory context, each statement carrying an evidence grade.
 
-Open [`graph.html`](graph.html) in a browser (local file; no server). Choose a **Data pipeline type** — for example Batch file ingestion — rather than the full landscape at once.
+Open [`graph.html`](graph.html) in a browser as a local file. No server is required. Choose a **Data pipeline type** to scope the view. The figure below is Batch file ingestion.
 
 ![Batch file ingestion pattern scoped to related modules, components, and regulatory context](docs/images/pipeline-graph.png)
 
-### Who this is for
+The work is aimed at:
 
-- UK and EU enterprise and data architects in financial services, insurance and the public sector, who choose standards and then need a regulator-shaped story.
-- Data platform and data-mesh consultants who currently do this mapping in slides.
-- People already around Entropy Data and ODCS: adjacent context, not a product to buy.
+- UK and EU enterprise and data architects in financial services, insurance and the public sector, who select standards and then need the regulatory context;
+- data platform and data-mesh consultants who currently maintain this mapping in presentations;
+- readers already using Entropy Data or ODCS, for whom this is adjacent context.
 
-**84** Data Standard Landscape entries (81 upstream plus three source-backed extensions) and **73** Data Regulation Landscape entries sit behind that question. Official crosswalks are limited to the three assertions with cited sources; that bound is deliberate.
+The model currently covers **84** Data Standard Landscape entries (81 from upstream and three source-backed extensions) and **73** Data Regulation Landscape entries. Official crosswalks are the three assertions that have a cited source.
 
 ## Start with the four layers
 
-Think of the package as a governed catalogue:
+Treat the package as a governed catalogue:
 
-1. **Ontology:** defines the types of things and relationships that may exist.
-2. **Taxonomy:** defines approved classification values and their hierarchy.
-3. **SHACL:** defines the data-quality rules that publishable records must pass.
-4. **Instances:** supplies the actual landscape entries and sourced mappings.
+1. **Ontology:** the types of things and relationships that may exist.
+2. **Taxonomy:** the approved classification values and their hierarchy.
+3. **SHACL:** the data-quality rules that publishable records must pass.
+4. **Instances:** the landscape entries and sourced mappings.
 
-The Neo4j CSV and Cypher files then project the same model into a labelled property graph.
+The Neo4j CSV and Cypher files project the same model into a labelled property graph.
 
 ```text
 Ontology → Taxonomy → SHACL → Instances → Neo4j projection
 ```
 
-This is “schema first, instances last”.
+Schema is defined before instances are published.
 
 ## The model in one picture
 
@@ -84,19 +81,19 @@ Attestation
 └── RECORDS_EVIDENCE ───────────→ ControlEvidence ── EVIDENCE_FOR_CONTROL ──→ Control
 ```
 
-The subclass names deliberately describe membership in a landscape. A `DataRegulationLandscapeEntry` may be a law, standard, control catalogue or assurance scheme. `GovernanceType` identifies how the entry is established or stewarded.
+Subclass names record membership in a landscape. A `DataRegulationLandscapeEntry` may be a law, a standard, a control catalogue or an assurance scheme. `GovernanceType` records how the entry is established or stewarded.
 
 ## Why the assessment is separate
 
-Adopt, Assess, Situational and Caution are publisher opinions about Data Standard Landscape entries. They can change without changing the underlying entry.
+Adopt, Assess, Situational and Caution are publisher opinions about Data Standard Landscape entries. They can change without changing the entry itself.
 
-The regulation landscape does not use those judgements or tiers. Its relevance depends instead on matters such as jurisdiction and context.
+The regulation landscape does not use those judgements or tiers. Relevance there depends on jurisdiction and context.
 
 ## Why mappings are separate nodes
 
-An official crosswalk has its own authority, version, status and supporting URL. A `ComplianceMapping` therefore represents the mapping assertion explicitly. It does **not** claim that a framework itself “complies with” a law or that adopting a standard automatically satisfies legislation.
+An official crosswalk has its own authority, version, status and supporting URL. A `ComplianceMapping` records that assertion as a node, so authority and source stay attached to the link rather than being implied by the two entries.
 
-The delivered mappings are limited to three assertions supported by official sources. That is the honest set, not a backlog:
+The package includes three such mappings, each with a cited official source:
 
 - CSA CCM maps to NIST CSF;
 - CSA CCM maps to ISO/IEC 27001;
@@ -174,11 +171,11 @@ The delivered mappings are limited to three assertions supported by official sou
 | Neo4j nodes | 414 |
 | Neo4j relationships | 963 |
 
-Compound jurisdiction labels explain why 73 regulation entries produce 81 jurisdiction memberships. For example, `EU / Germany` becomes links to both European Union and Germany while the original text is preserved.
+Compound jurisdiction labels explain why 73 regulation entries produce 81 jurisdiction memberships. For example, `EU / Germany` becomes links to both European Union and Germany, while the original text is kept.
 
 ## Direct, normalised and modelled information
 
-The `evidenceStatus` value distinguishes how a statement entered the graph:
+The `evidenceStatus` value records how a statement entered the graph:
 
 - `DIRECT_OBSERVATION`: present in the supplied landscape data;
 - `NORMALISED_FROM_SOURCE`: deterministically split or normalised from a source value;
@@ -192,7 +189,7 @@ The `evidenceStatus` value distinguishes how a statement entered the graph:
 
 ## Namespace
 
-Locally defined IRIs are minted for this derived model (not by Entropy Data) under:
+IRIs minted for this derived model use:
 
 ```text
 https://polymathic.co.uk/data-landscape/ontology/
@@ -211,7 +208,7 @@ https://polymathic.co.uk/data-landscape/instance/
 
 ## Attribution and responsible reuse
 
-Catalogue data and publisher-authored wording are © Entropy Data, MIT, from Simon Harrer’s Data Landscape. The regulation sub-landscape was originally donated by Mark McCalla and has since been curated by Simon Harrer. This GitHub repository is Mark McCalla’s derived model, not a publication by Entropy Data. Retain [`ATTRIBUTION.md`](ATTRIBUTION.md), [`CITATION.bib`](CITATION.bib) and [`LICENSE`](LICENSE) when redistributing this package or a substantial part of its data.
+Catalogue data and publisher-authored wording are © Entropy Data, MIT, from Simon Harrer’s Data Landscape. The regulation sub-landscape was originally donated by Mark McCalla and has since been curated by Simon Harrer. This GitHub repository is Mark McCalla’s derived model. Retain [`ATTRIBUTION.md`](ATTRIBUTION.md), [`CITATION.bib`](CITATION.bib) and [`LICENSE`](LICENSE) when redistributing this package or a substantial part of its data.
 
 ## External standards and documentation
 
@@ -237,7 +234,8 @@ Run every configured check against the complete repository before submitting a c
 pre-commit run --all-files
 ```
 
-`graph.html` is excluded from text hygiene hooks (it is a generated ~800KB standalone artefact). Domain hooks map to the scripts under `scripts/check-*.py` and align with the [loading and validation guide](docs/07-loading-and-validation.md).
+`graph.html` is excluded from text hygiene hooks because it is a generated standalone artefact of about 800KB. Domain hooks map to the scripts under `scripts/check-*.py` and follow the [loading and validation guide](docs/07-loading-and-validation.md).
+
 ## Rebuild the standalone graph
 
 [`graph.html`](graph.html) contains D3 and the complete CSV projection inline, so it opens locally without a web server or network connection. Rebuild it after changing either CSV file:
