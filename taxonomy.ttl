@@ -2,8 +2,8 @@
 # Harrer, S. (2026), Entropy Data, https://www.data-landscape.com/
 # Upstream data is MIT-licensed; see ATTRIBUTION.md and LICENSE in this package.
 
-@prefix dl: <https://www.entropy-data.com/data-landscape/ontology/> .
-@prefix tax: <https://www.entropy-data.com/data-landscape/taxonomy/> .
+@prefix dl: <https://polymathic.co.uk/data-landscape/ontology/> .
+@prefix tax: <https://polymathic.co.uk/data-landscape/taxonomy/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
 tax:standard-categories a skos:ConceptScheme ; skos:prefLabel "Data Standard Landscape categories"@en-GB .

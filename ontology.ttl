@@ -2,7 +2,7 @@
 # Harrer, S. (2026), Entropy Data, https://www.data-landscape.com/
 # Upstream data is MIT-licensed; see ATTRIBUTION.md and LICENSE in this package.
 
-@prefix dl: <https://www.entropy-data.com/data-landscape/ontology/> .
+@prefix dl: <https://polymathic.co.uk/data-landscape/ontology/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -14,8 +14,9 @@ dl: a owl:Ontology ;
   dcterms:description "Schema-first ontology for entries in the Data Standard and Data Regulation landscapes, their classifications, editorial assessments and sourced mappings."@en-GB ;
   dcterms:source <https://www.data-landscape.com/>, <https://www.data-landscape.com/regulation.html> ;
   dcterms:license <https://opensource.org/licenses/MIT> ;
-  dcterms:rights "Upstream data copyright (c) 2026 Entropy Data; transformed with attribution."@en-GB ;
-  owl:versionInfo "3.1.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-07-31"^^xsd:date .
+  dcterms:creator "Mark McCalla"@en-GB ;
+  dcterms:rights "Catalogue data copyright (c) 2026 Entropy Data; derived model copyright (c) 2026 Mark McCalla."@en-GB ;
+  owl:versionInfo "3.1.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-08-19"^^xsd:date .
 
 dl:LandscapeEntry a owl:Class ; rdfs:label "Landscape entry"@en-GB ;
   rdfs:comment "An entry curated into one of the two Data Landscape catalogues. The class records landscape membership and does not assert that every entry is intrinsically a standard or a law."@en-GB .

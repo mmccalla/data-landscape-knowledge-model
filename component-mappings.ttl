@@ -2,8 +2,8 @@
 # Harrer, S. (2026), Entropy Data, https://www.data-landscape.com/
 # Upstream data is MIT-licensed; see ATTRIBUTION.md and LICENSE in this package.
 
-@prefix dl: <https://www.entropy-data.com/data-landscape/ontology/> .
-@prefix inst: <https://www.entropy-data.com/data-landscape/instance/> .
+@prefix dl: <https://polymathic.co.uk/data-landscape/ontology/> .
+@prefix inst: <https://polymathic.co.uk/data-landscape/instance/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 inst:component-mapping-data-product-definition-odps a dl:ComponentImplementationMapping ; dl:identifier "data-product-definition-odps" ; dl:mapsComponentType dl:DataProductDefinition ; dl:implementationOption inst:standard-odps ; dl:mappingRationale "ODPS is a candidate implementation option for data product definition; selection remains subject to the pipeline's requirements and constraints." ; dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI, "https://bitol.io"^^xsd:anyURI ; dl:evidenceStatus "CURATED_DESIGN_MAPPING" .

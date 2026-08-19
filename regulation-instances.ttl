@@ -2,9 +2,9 @@
 # Harrer, S. (2026), Entropy Data, https://www.data-landscape.com/
 # Upstream data is MIT-licensed; see ATTRIBUTION.md and LICENSE in this package.
 
-@prefix dl: <https://www.entropy-data.com/data-landscape/ontology/> .
-@prefix inst: <https://www.entropy-data.com/data-landscape/instance/> .
-@prefix tax: <https://www.entropy-data.com/data-landscape/taxonomy/> .
+@prefix dl: <https://polymathic.co.uk/data-landscape/ontology/> .
+@prefix inst: <https://polymathic.co.uk/data-landscape/instance/> .
+@prefix tax: <https://polymathic.co.uk/data-landscape/taxonomy/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
