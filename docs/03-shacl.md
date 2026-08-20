@@ -46,6 +46,18 @@ Require traceable IDs for the attestation, actor, action, risk, control and evid
 
 Requires every SKOS concept to have a preferred label and exactly one concept scheme.
 
+### DataProductShape
+
+Requires one identifier, preferred label, exactly one personal-data posture, exactly one industry vertical, optional design-jurisdiction prompts (`hasDesignJurisdiction`, minCount 0), evidence status `CURATED_PRODUCT_EXAMPLE`, an asserting party and a product rationale.
+
+### ProductStandardRelevanceShape
+
+Requires one data product, one standard-landscape entry, rationale, asserting party, at least one authoritative source, status `REVIEWED` and evidence status `CURATED_PRODUCT_STANDARD_RELEVANCE`. Optional `hasMappingRelation` records an explicit qualifier such as `no-coverage`.
+
+### ProductRegulatoryRelevanceShape
+
+Requires one data product, one regulation-landscape entry, rationale, asserting party, source version, at least one authoritative source, status `REVIEWED` and evidence status `CURATED_PRODUCT_REGULATORY_RELEVANCE`.
+
 ## Reading a rule
 
 ```turtle

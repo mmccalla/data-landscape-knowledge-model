@@ -49,7 +49,7 @@ class AuthorshipConsistencyTests(unittest.TestCase):
     def test_component_regulatory_mappings_are_asserted_by_the_transformation_author(self):
         turtle = (ROOT / "component-regulatory-mappings.ttl").read_text(encoding="utf-8")
         asserted = re.findall(r'dl:assertedBy "([^"]+)"', turtle)
-        self.assertEqual(33, len(asserted))
+        self.assertEqual(38, len(asserted))
         self.assertEqual({TRANSFORMATION_AUTHOR}, set(asserted))
         self.assertNotIn(AFFILIATION, turtle)
 
@@ -59,7 +59,7 @@ class AuthorshipConsistencyTests(unittest.TestCase):
                 for row in csv.DictReader(handle)
                 if "ComponentRegulatoryMapping" in row[":LABEL"]
             ]
-        self.assertEqual(33, len(rows))
+        self.assertEqual(38, len(rows))
         self.assertEqual({TRANSFORMATION_AUTHOR}, {row["assertedBy"] for row in rows})
 
 

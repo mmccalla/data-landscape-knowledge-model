@@ -16,7 +16,7 @@ dl: a owl:Ontology ;
   dcterms:license <https://opensource.org/licenses/MIT> ;
   dcterms:creator "Mark McCalla"@en-GB ;
   dcterms:rights "Catalogue data copyright (c) 2026 Entropy Data; derived model copyright (c) 2026 Mark McCalla."@en-GB ;
-  owl:versionInfo "3.1.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-08-19"^^xsd:date .
+  owl:versionInfo "3.2.0" ; dcterms:created "2026-07-28"^^xsd:date ; dcterms:modified "2026-08-20"^^xsd:date .
 
 dl:LandscapeEntry a owl:Class ; rdfs:label "Landscape entry"@en-GB ;
   rdfs:comment "An entry curated into one of the two Data Landscape catalogues. The class records landscape membership and does not assert that every entry is intrinsically a standard or a law."@en-GB .
@@ -50,6 +50,8 @@ dl:WorkloadPlanning a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdf
 dl:SecureReadAccess a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Secure read access"@en-GB .
 dl:SourceConnectivity a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Source connectivity"@en-GB .
 dl:WorkloadExecutionOrchestration a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Workload execution/orchestration"@en-GB .
+dl:LineageEmission a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Lineage emission"@en-GB ;
+  rdfs:comment "Operational emission of job, run and dataset lineage events during pipeline execution. Distinct from metadata registration in Store."@en-GB .
 dl:StateAndIdempotency a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "State and idempotency"@en-GB .
 dl:ValidationAndContractBinding a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Validation and contract binding"@en-GB .
 dl:FailureIsolation a owl:Class ; rdfs:subClassOf dl:DataPipelineComponent ; rdfs:label "Failure isolation"@en-GB .
@@ -94,6 +96,7 @@ dl:TriggerModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComp
 dl:OrchestrateModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:SecureReadAccess ] .
 dl:OrchestrateModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:SourceConnectivity ] .
 dl:OrchestrateModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:WorkloadExecutionOrchestration ] .
+dl:OrchestrateModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:LineageEmission ] .
 dl:GovernModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:StateAndIdempotency ] .
 dl:GovernModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:ValidationAndContractBinding ] .
 dl:GovernModule rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dl:hasComponent ; owl:someValuesFrom dl:FailureIsolation ] .
@@ -105,6 +108,14 @@ dl:ComponentImplementationMapping a owl:Class ; rdfs:subClassOf dl:ComponentMapp
   rdfs:comment "A curated design-time mapping from a pipeline component type to a landscape entry that can implement or support it."@en-GB .
 dl:ComponentRegulatoryMapping a owl:Class ; rdfs:subClassOf dl:ComponentMapping ; rdfs:label "Component regulatory mapping"@en-GB ;
   rdfs:comment "A curated design-time assertion that a pipeline component type is relevant to a cited requirement in a Data Regulation Landscape entry. It does not assert compliance or legal sufficiency."@en-GB .
+dl:DataProduct a owl:Class ; rdfs:label "Data product"@en-GB ;
+  rdfs:comment "A curated published data product under inspection. Orthogonal to pipeline component types: personal-data posture and industry vertical classify the product for design inspection. Not a legal determination of applicability."@en-GB .
+dl:ProductMapping a owl:Class ; rdfs:subClassOf dl:SourcedMapping ; rdfs:label "Product mapping"@en-GB ;
+  rdfs:comment "A curated, attributable assertion linking a data product to a landscape entry that creators should consider. It does not assert compliance, completeness, or legal applicability."@en-GB .
+dl:ProductStandardRelevance a owl:Class ; rdfs:subClassOf dl:ProductMapping ; rdfs:label "Product standard relevance"@en-GB ;
+  rdfs:comment "A curated assertion linking a named data product to a Data Standard Landscape entry. Absent hasMappingRelation means the standard is worth considering; hasMappingRelation no-coverage records an explicit non-link rather than silence."@en-GB .
+dl:ProductRegulatoryRelevance a owl:Class ; rdfs:subClassOf dl:ProductMapping ; rdfs:label "Product regulatory relevance"@en-GB ;
+  rdfs:comment "A curated assertion that a Data Regulation Landscape entry is worth considering when designing the named data product. It is not a determination that the regulation applies."@en-GB .
 
 dl:Attestation a owl:Class ; rdfs:label "Attestation"@en-GB .
 dl:Actor a owl:Class ; rdfs:label "Actor"@en-GB .
@@ -125,6 +136,10 @@ dl:GovernanceType a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Gover
 dl:Jurisdiction a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Jurisdiction concept"@en-GB .
 dl:MappingRelation a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Mapping relation concept"@en-GB .
 dl:MappingAuthorityType a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Mapping authority type concept"@en-GB .
+dl:PersonalDataPosture a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Personal-data posture concept"@en-GB ;
+  rdfs:comment "Whether a curated data product is modelled as containing personal data (PII) or not (NO_PII). A design-inspection aid, not a legal determination."@en-GB .
+dl:IndustryVertical a owl:Class ; rdfs:subClassOf skos:Concept ; rdfs:label "Industry vertical concept"@en-GB ;
+  rdfs:comment "The primary industry stance of a curated data product. Selects which sector-shaped regulatory neighbourhood is relevant to inspect."@en-GB .
 
 dl:identifier a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "identifier"@en-GB .
 dl:fullName a owl:DatatypeProperty ; rdfs:domain dl:LandscapeEntry ; rdfs:range xsd:string ; rdfs:label "full name"@en-GB .
@@ -149,9 +164,11 @@ dl:describesSameResourceAs a owl:ObjectProperty, owl:SymmetricProperty ; rdfs:do
 
 dl:mappingSourceEntry a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:LandscapeEntry ; rdfs:label "mapping source entry"@en-GB .
 dl:mappingTargetEntry a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:LandscapeEntry ; rdfs:label "mapping target entry"@en-GB .
-dl:hasMappingRelation a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:MappingRelation ; rdfs:label "has mapping relation"@en-GB .
+dl:hasMappingRelation a owl:ObjectProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range dl:MappingRelation ; rdfs:label "has mapping relation"@en-GB ;
+  rdfs:comment "Qualifies a sourced mapping. Required on ComplianceMapping; optional on ProductStandardRelevance to record explicit non-coverage."@en-GB .
 dl:hasMappingAuthorityType a owl:ObjectProperty ; rdfs:domain dl:ComplianceMapping ; rdfs:range dl:MappingAuthorityType ; rdfs:label "has mapping authority type"@en-GB .
-dl:assertedBy a owl:DatatypeProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range xsd:string ; rdfs:label "asserted by"@en-GB .
+dl:assertedBy a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "asserted by"@en-GB ;
+  rdfs:comment "The party asserting a sourced mapping or a curated data-product typology statement."@en-GB .
 dl:authoritativeSource a owl:DatatypeProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range xsd:anyURI ; rdfs:label "authoritative source"@en-GB .
 dl:sourceVersion a owl:DatatypeProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range xsd:string ; rdfs:label "source version"@en-GB .
 dl:mappingStatus a owl:DatatypeProperty ; rdfs:domain dl:SourcedMapping ; rdfs:range xsd:string ; rdfs:label "mapping status"@en-GB .
@@ -162,9 +179,22 @@ dl:hasModule a owl:ObjectProperty ; rdfs:domain dl:DataIngestionPattern ; rdfs:r
 dl:hasComponent a owl:ObjectProperty ; rdfs:domain dl:DataPipelineModule ; rdfs:range dl:DataPipelineComponent ; rdfs:label "has component"@en-GB .
 dl:mapsComponentType a owl:ObjectProperty ; rdfs:domain dl:ComponentMapping ; rdfs:range owl:Class ; rdfs:label "maps component type"@en-GB .
 dl:implementationOption a owl:ObjectProperty ; rdfs:domain dl:ComponentImplementationMapping ; rdfs:range dl:DataStandardLandscapeEntry ; rdfs:label "implementation option"@en-GB .
-dl:mappingRationale a owl:DatatypeProperty ; rdfs:domain dl:ComponentMapping ; rdfs:range xsd:string ; rdfs:label "mapping rationale"@en-GB .
+dl:mappingRationale a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "mapping rationale"@en-GB ;
+  rdfs:comment "Human-readable rationale for a component or product mapping assertion."@en-GB .
 dl:regulatoryContext a owl:ObjectProperty ; rdfs:domain dl:ComponentRegulatoryMapping ; rdfs:range dl:DataRegulationLandscapeEntry ; rdfs:label "regulatory context"@en-GB .
 dl:regulatoryRequirementReference a owl:DatatypeProperty ; rdfs:domain dl:ComponentRegulatoryMapping ; rdfs:range xsd:string ; rdfs:label "regulatory requirement reference"@en-GB .
+
+dl:hasPersonalDataPosture a owl:ObjectProperty ; rdfs:domain dl:DataProduct ; rdfs:range dl:PersonalDataPosture ; rdfs:label "has personal-data posture"@en-GB .
+dl:inIndustryVertical a owl:ObjectProperty ; rdfs:domain dl:DataProduct ; rdfs:range dl:IndustryVertical ; rdfs:label "in industry vertical"@en-GB .
+dl:hasDesignJurisdiction a owl:ObjectProperty ; rdfs:domain dl:DataProduct ; rdfs:range dl:Jurisdiction ; rdfs:label "has design jurisdiction"@en-GB ;
+  rdfs:comment "Optional multi-valued design prompt pointing readers at regulation APPLIES_IN neighbourhoods. Not a determination that any regulation applies to the product or organisation."@en-GB .
+dl:productRationale a owl:DatatypeProperty ; rdfs:domain dl:DataProduct ; rdfs:range xsd:string ; rdfs:label "product rationale"@en-GB ;
+  rdfs:comment "Short note explaining why this curated product example exists and what it is intended to illustrate."@en-GB .
+dl:forDataProduct a owl:ObjectProperty ; rdfs:domain dl:ProductMapping ; rdfs:range dl:DataProduct ; rdfs:label "for data product"@en-GB .
+dl:considersStandard a owl:ObjectProperty ; rdfs:domain dl:ProductStandardRelevance ; rdfs:range dl:DataStandardLandscapeEntry ; rdfs:label "considers standard"@en-GB ;
+  rdfs:comment "Links a product-standard relevance assertion to the Data Standard Landscape entry the assertion concerns. When hasMappingRelation is no-coverage, the entry is the standard that is explicitly not covering the product example."@en-GB .
+dl:considersRegulation a owl:ObjectProperty ; rdfs:domain dl:ProductRegulatoryRelevance ; rdfs:range dl:DataRegulationLandscapeEntry ; rdfs:label "considers regulation"@en-GB ;
+  rdfs:comment "Links a product-regulatory relevance assertion to the Data Regulation Landscape entry that should be considered. Not a claim of applicability or compliance."@en-GB .
 
 dl:attestationId a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:string ; rdfs:label "attestation identifier"@en-GB .
 dl:pipelineId a owl:DatatypeProperty ; rdfs:domain dl:Attestation ; rdfs:range xsd:string ; rdfs:label "pipeline identifier"@en-GB .

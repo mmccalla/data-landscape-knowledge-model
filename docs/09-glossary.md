@@ -46,6 +46,10 @@ A datatype property links a resource to a literal value. An object property link
 
 Semantic declarations describing the expected subject and object of an RDF property.
 
+## Design jurisdiction
+
+Optional multi-valued prompt on a curated data product pointing at regulation `APPLIES_IN` neighbourhoods. It is not a determination that any regulation applies to the product or organisation.
+
 ## Evidence status
 
 A marker identifying whether a statement was directly observed, normalised, identity-reviewed, sourced from an official document or introduced as modelling vocabulary.
@@ -77,6 +81,14 @@ A namespace provides the stable IRI base. A prefix such as `dl:` is a readable a
 ## Ontology
 
 A formal definition of classes, properties, relationships and meanings in a domain.
+
+## ODPS (naming collision)
+
+Two different landscape standard records display as “ODPS”: Bitol Open Data Product Specification (`odps`) and LF ODPS-spec (`odpspec`). They are distinct IRIs and commercial/metadata emphases. Product examples that need a product-definition prompt should prefer Bitol ODPS unless the modeller deliberately chooses LF ODPS-spec; do not merge the entries.
+
+## Personal-data posture
+
+A curated inspection aid on a data product (`PII` / `NO_PII`). It is not a legal determination of whether personal data is processed.
 
 ## OWL, RDF and RDFS
 

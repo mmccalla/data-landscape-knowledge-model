@@ -28,9 +28,9 @@ class StandaloneGraphPageTest(unittest.TestCase):
         )
         self.assertIsNotNone(match)
         graph = json.loads(match.group(1))
-        self.assertEqual(414, len(graph["nodes"]))
-        self.assertEqual(963, len(graph["links"]))
-        self.assertEqual(29, len(graph["mappingExplanations"]))
+        self.assertEqual(499, len(graph["nodes"]))
+        self.assertEqual(1136, len(graph["links"]))
+        self.assertEqual(36, len(graph["mappingExplanations"]))
 
         node_ids = {node["id"] for node in graph["nodes"]}
         self.assertEqual(len(graph["nodes"]), len(node_ids))
@@ -50,12 +50,22 @@ class StandaloneGraphPageTest(unittest.TestCase):
             "ingestion-patterns",
             "ingestion-modules",
             "ingestion-components",
+            "data-products",
+            "vertical-sectors",
+            "product-standard-relevance",
+            "product-regulatory-relevance",
         ):
             self.assertIn(f'id="filter-{filter_id}"', self.html)
 
         self.assertNotIn('id="filter-landscape-entries"', self.html)
         self.assertIn('data-group="standardLandscapeEntry"', self.html)
         self.assertIn('data-group="regulationLandscapeEntry"', self.html)
+        self.assertIn('data-group="industryVertical"', self.html)
+        self.assertIn('labels.includes("IndustryVertical")', self.html)
+        self.assertIn('id="vertical-select"', self.html)
+        self.assertIn('id="product-select"', self.html)
+        self.assertIn('id="posture-select"', self.html)
+        self.assertIn("productScopeFor", self.html)
 
     def test_node_and_edge_label_toggles_are_present(self):
         self.assertIn('id="toggle-node-labels"', self.html)
@@ -76,7 +86,9 @@ class StandaloneGraphPageTest(unittest.TestCase):
         self.assertIn("const pinnedPositions = new Map()", self.html)
         self.assertIn("pinnedPositions.set(item.id", self.html)
         self.assertIn("function setGraphFrozen", self.html)
-        self.assertNotIn("simulation.alphaTarget(.25).restart()", self.html)
+        # Dragging pins only the moved node; the force layout keeps settling others.
+        self.assertIn("simulation.alphaTarget(0.3).restart()", self.html)
+        self.assertIn("simulation.alphaTarget(0)", self.html)
         self.assertNotIn("item.fx = null", self.html)
         self.assertNotIn("item.fy = null", self.html)
 
@@ -218,7 +230,7 @@ class StandaloneGraphPageTest(unittest.TestCase):
             node for node in graph["nodes"]
             if "ComponentRegulatoryMapping" in node["labels"]
         ]
-        self.assertEqual(33, len(mappings))
+        self.assertEqual(38, len(mappings))
         for mapping in mappings:
             self.assertEqual("CURATED_REGULATORY_RELEVANCE", mapping["evidenceStatus"])
             self.assertEqual("REVIEWED", mapping["mappingStatus"])

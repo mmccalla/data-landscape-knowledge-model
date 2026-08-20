@@ -2,146 +2,256 @@
   "component-mapping:data-product-definition-odps": {
     "rationale": "ODPS provides a machine-readable metadata model for describing a data product's business, technical and governance characteristics.",
     "boundary": "It describes the product; it does not build, publish or operate the product.",
-    "sources": ["https://opendataproducts.org/v4.1/"]
+    "sources": [
+      "https://opendataproducts.org/v4.1/"
+    ]
   },
   "component-mapping:data-contract-definition-odcs": {
     "rationale": "ODCS defines a portable data contract covering schema, semantics, quality requirements, ownership and service expectations.",
     "boundary": "The standard defines the contract; separate tooling is required to validate or enforce it at runtime.",
-    "sources": ["https://docs.datacontract.com/open-data-contract-standard"]
+    "sources": [
+      "https://docs.datacontract.com/open-data-contract-standard"
+    ]
   },
   "component-mapping:semantic-description-ossie": {
     "rationale": "Apache Ossie defines vendor-neutral semantic metadata for metrics, dimensions and relationships across analytics and AI platforms.",
     "boundary": "It supplies a semantic description and exchange format, not a complete semantic governance platform.",
-    "sources": ["https://ossie.apache.org/"]
+    "sources": [
+      "https://ossie.apache.org/"
+    ]
   },
   "component-mapping:trigger-invocation-cloudevents": {
     "rationale": "CloudEvents standardises the event envelope used to communicate an event that can trigger pipeline work.",
     "boundary": "It does not deliver the event or invoke the workload; a broker, endpoint or event runtime is still required.",
-    "sources": ["https://cloudevents.io/"]
+    "sources": [
+      "https://cloudevents.io/"
+    ]
   },
   "component-mapping:workload-planning-airflow": {
     "rationale": "Airflow DAGs define task dependencies, schedules, retries and execution order for planned workloads.",
     "boundary": "Planning is expressed as code and scheduling configuration; Airflow does not determine business priorities or capacity requirements automatically.",
-    "sources": ["https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html"]
+    "sources": [
+      "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html"
+    ]
   },
   "component-mapping:workload-planning-prefect": {
     "rationale": "Prefect flows and deployments define task dependencies, schedules and execution policy.",
     "boundary": "Prefect plans executable workflow structure; business prioritisation and infrastructure capacity planning remain external concerns.",
-    "sources": ["https://docs.prefect.io/v3/concepts/flows"]
+    "sources": [
+      "https://docs.prefect.io/v3/concepts/flows"
+    ]
   },
   "component-mapping:workload-planning-temporal": {
     "rationale": "Temporal Schedules can start Workflow Executions according to time-based specifications.",
     "boundary": "Temporal is primarily a durable workflow execution platform rather than a general workload or capacity-planning system.",
-    "sources": ["https://docs.temporal.io/schedule"]
+    "sources": [
+      "https://docs.temporal.io/schedule"
+    ]
   },
   "component-mapping:secure-read-access-opa": {
     "rationale": "OPA can evaluate authorisation policy for a request to read a protected resource.",
     "boundary": "OPA is the policy decision point; the calling service, gateway or storage platform must enforce the decision.",
-    "sources": ["https://www.openpolicyagent.org/docs/deploy"]
+    "sources": [
+      "https://www.openpolicyagent.org/docs/deploy"
+    ]
   },
   "component-mapping:source-connectivity-adbc": {
     "rationale": "ADBC provides a standard API for efficient, Arrow-native connectivity to database systems.",
     "boundary": "A compatible ADBC driver is required for each source system.",
-    "sources": ["https://arrow.apache.org/adbc/current/format/specification.html"]
+    "sources": [
+      "https://arrow.apache.org/adbc/current/format/specification.html"
+    ]
   },
   "component-mapping:source-connectivity-jdbc": {
     "rationale": "JDBC provides the standard Java API used to connect to and operate on relational data sources.",
     "boundary": "A source-specific JDBC driver and appropriate authentication configuration are still required.",
-    "sources": ["https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html"]
+    "sources": [
+      "https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html"
+    ]
   },
   "component-mapping:source-connectivity-odbc": {
     "rationale": "ODBC provides a language- and vendor-neutral interface for accessing database management systems.",
     "boundary": "A compatible ODBC driver and source-specific configuration are still required.",
-    "sources": ["https://learn.microsoft.com/en-us/sql/odbc/reference/odbc-overview"]
+    "sources": [
+      "https://learn.microsoft.com/en-us/sql/odbc/reference/odbc-overview"
+    ]
   },
   "component-mapping:source-connectivity-http": {
     "rationale": "HTTP provides the application protocol used to connect to API-based data sources.",
     "boundary": "HTTP does not define the source API, authentication scheme, payload format or data contract.",
-    "sources": ["https://www.rfc-editor.org/rfc/rfc9110"]
+    "sources": [
+      "https://www.rfc-editor.org/rfc/rfc9110"
+    ]
   },
   "component-mapping:workload-execution-orchestration-airflow": {
     "rationale": "Airflow schedules and executes dependency-ordered tasks while tracking task-instance state and retries.",
     "boundary": "Task code and external side effects remain the responsibility of the pipeline implementation.",
-    "sources": ["https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/tasks.html"]
+    "sources": [
+      "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/tasks.html"
+    ]
   },
   "component-mapping:workload-execution-orchestration-prefect": {
     "rationale": "Prefect executes flows and tasks with dependency tracking, states, retries and timeouts.",
     "boundary": "The flow implementation must still provide the domain logic and control external side effects.",
-    "sources": ["https://docs.prefect.io/v3/concepts/tasks"]
+    "sources": [
+      "https://docs.prefect.io/v3/concepts/tasks"
+    ]
   },
   "component-mapping:workload-execution-orchestration-temporal": {
     "rationale": "Temporal provides durable workflow execution that resumes after process or infrastructure failure.",
     "boundary": "Workflow and Activity code still provide the domain logic and integrations.",
-    "sources": ["https://docs.temporal.io/"]
+    "sources": [
+      "https://docs.temporal.io/"
+    ]
   },
   "component-mapping:workload-execution-orchestration-dbt": {
     "rationale": "dbt resolves and executes the dependency graph for data transformation models.",
     "boundary": "This mapping is limited to transformation-graph execution; broader pipeline scheduling requires dbt jobs or an external orchestrator.",
-    "sources": ["https://docs.getdbt.com/reference/commands/build"]
+    "sources": [
+      "https://docs.getdbt.com/reference/commands/build"
+    ]
+  },
+  "component-mapping:lineage-emission-openlineage": {
+    "rationale": "OpenLineage defines an interoperable job, run and dataset event model so pipelines can emit operational lineage during execution.",
+    "boundary": "OpenLineage is the lineage event contract, not the orchestrator. Tools such as Airflow may emit OpenLineage events via a provider; that does not make Airflow itself OpenLineage.",
+    "sources": [
+      "https://openlineage.io/docs/spec/object-model/",
+      "https://openlineage.io/docs/",
+      "https://airflow.apache.org/docs/apache-airflow-providers-openlineage/stable/index.html"
+    ]
   },
   "component-mapping:state-and-idempotency-airflow": {
     "rationale": "Airflow records task-instance state and supports controlled retries of failed tasks.",
     "boundary": "Airflow expects task implementations to be idempotent; it does not make external actions idempotent automatically.",
-    "sources": ["https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html"]
+    "sources": [
+      "https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html"
+    ]
   },
   "component-mapping:state-and-idempotency-prefect": {
     "rationale": "Prefect persists run states and can use result caching to avoid repeating completed work.",
     "boundary": "Result persistence must be configured, and task side effects still require idempotent design.",
-    "sources": ["https://docs.prefect.io/v3/concepts/caching"]
+    "sources": [
+      "https://docs.prefect.io/v3/concepts/caching"
+    ]
   },
   "component-mapping:state-and-idempotency-temporal": {
     "rationale": "Temporal durably records workflow history and replays deterministic workflow code to recover state.",
     "boundary": "Activities that change external systems must still be designed to tolerate retries and duplicate requests.",
-    "sources": ["https://docs.temporal.io/workflow-execution"]
+    "sources": [
+      "https://docs.temporal.io/workflow-execution"
+    ]
   },
   "component-mapping:validation-and-contract-binding-odcs": {
     "rationale": "ODCS supplies a machine-readable contract and validation constraints that tooling can bind to a pipeline interface.",
     "boundary": "The ODCS specification does not itself perform runtime validation; an implementation such as Data Contract CLI is required.",
-    "sources": ["https://docs.datacontract.com/open-data-contract-standard"]
+    "sources": [
+      "https://docs.datacontract.com/open-data-contract-standard"
+    ]
   },
   "component-mapping:validation-and-contract-binding-dbt-tests": {
     "rationale": "dbt data tests validate assertions about models and their data during transformation workflows.",
     "boundary": "Data tests do not by themselves bind an external ODCS contract; model contracts or explicit translation are required for contract binding.",
-    "sources": ["https://docs.getdbt.com/docs/build/data-tests", "https://docs.getdbt.com/docs/mesh/govern/model-contracts"]
+    "sources": [
+      "https://docs.getdbt.com/docs/build/data-tests",
+      "https://docs.getdbt.com/docs/mesh/govern/model-contracts"
+    ]
   },
   "component-mapping:failure-isolation-airflow": {
     "rationale": "Airflow tracks failure and retry state independently at the task-instance boundary.",
     "boundary": "Isolation applies to orchestrated task execution; external side effects require their own transaction or compensation design.",
-    "sources": ["https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/tasks.html"]
+    "sources": [
+      "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/tasks.html"
+    ]
   },
   "component-mapping:failure-isolation-prefect": {
     "rationale": "Prefect can contain failures at task boundaries and apply task-specific retry and timeout policies.",
     "boundary": "Effective isolation depends on decomposing work into separate tasks and safely handling external side effects.",
-    "sources": ["https://docs.prefect.io/v3/concepts/tasks"]
+    "sources": [
+      "https://docs.prefect.io/v3/concepts/tasks"
+    ]
   },
   "component-mapping:failure-isolation-temporal": {
     "rationale": "Temporal isolates failures at Workflow and Activity boundaries and provides configurable retries, timeouts and failure propagation.",
     "boundary": "External systems are outside Temporal's transaction boundary and may require compensation or idempotency controls.",
-    "sources": ["https://docs.temporal.io/encyclopedia/retry-policies"]
+    "sources": [
+      "https://docs.temporal.io/encyclopedia/retry-policies"
+    ]
   },
   "component-mapping:secure-write-access-opa": {
     "rationale": "OPA can evaluate authorisation policy for a request to write to a protected resource.",
     "boundary": "OPA is the policy decision point; the calling service, gateway or storage platform must enforce the decision.",
-    "sources": ["https://www.openpolicyagent.org/docs/deploy"]
+    "sources": [
+      "https://www.openpolicyagent.org/docs/deploy"
+    ]
   },
   "component-mapping:metadata-registration-iceberg-catalog": {
     "rationale": "The Iceberg REST Catalog API registers and manages Iceberg table metadata and catalog operations.",
     "boundary": "It is an Iceberg table catalog, not a general enterprise metadata catalogue or business glossary.",
-    "sources": ["https://iceberg.apache.org/rest-catalog-spec/"]
+    "sources": [
+      "https://iceberg.apache.org/rest-catalog-spec/"
+    ]
   },
   "component-mapping:store-write-data-product-iceberg": {
     "rationale": "Iceberg supplies a transactional open-table representation for the stored tabular output of a data product.",
     "boundary": "It represents the table asset, not the complete data product, contract, ownership or operational controls.",
-    "sources": ["https://iceberg.apache.org/docs/latest/"]
+    "sources": [
+      "https://iceberg.apache.org/docs/latest/"
+    ]
   },
   "component-mapping:store-write-data-product-delta": {
     "rationale": "Delta Lake provides transactional table storage with schema enforcement and batch and streaming support.",
     "boundary": "It implements the stored tabular asset rather than the complete data product and its governance metadata.",
-    "sources": ["https://docs.delta.io/"]
+    "sources": [
+      "https://docs.delta.io/"
+    ]
   },
   "component-mapping:store-write-data-product-hudi": {
     "rationale": "Apache Hudi manages transactional tables and supports incremental and streaming-oriented writes.",
     "boundary": "It implements the stored tabular asset rather than the complete data product and its governance metadata.",
-    "sources": ["https://hudi.apache.org/docs/overview/"]
+    "sources": [
+      "https://hudi.apache.org/docs/overview/"
+    ]
+  },
+  "component-mapping:source-connectivity-kafka": {
+    "rationale": "Apache Kafka provides a durable, partitioned log that pipelines can consume as an event source.",
+    "boundary": "Kafka supplies transport and retention for events; schema contracts, exactly-once semantics and consumer application logic remain separate.",
+    "sources": [
+      "https://kafka.apache.org/documentation/"
+    ]
+  },
+  "component-mapping:workload-execution-orchestration-spark": {
+    "rationale": "Apache Spark executes distributed transformations and actions across a cluster as a processing workload.",
+    "boundary": "Spark runs jobs; upstream orchestration still schedules when those jobs should run and with which credentials.",
+    "sources": [
+      "https://spark.apache.org/docs/latest/"
+    ]
+  },
+  "component-mapping:store-write-data-product-parquet": {
+    "rationale": "Apache Parquet is a columnar on-disk format commonly used for analytical outputs written by pipelines.",
+    "boundary": "Parquet encodes files; transactional table semantics require a table format such as Iceberg, Delta or Hudi when needed.",
+    "sources": [
+      "https://parquet.apache.org/docs/"
+    ]
+  },
+  "component-mapping:data-contract-definition-json-schema": {
+    "rationale": "JSON Schema expresses structural and constraint rules that a data contract can embed or reference.",
+    "boundary": "It defines validation rules; publishing, ownership and SLAs of the contract remain outside JSON Schema itself.",
+    "sources": [
+      "https://json-schema.org/"
+    ]
+  },
+  "component-mapping:data-contract-definition-openapi": {
+    "rationale": "OpenAPI describes HTTP APIs and payload schemas that can form the interface side of a data contract.",
+    "boundary": "OpenAPI documents an API surface; runtime enforcement and data-product metadata still need other artefacts.",
+    "sources": [
+      "https://spec.openapis.org/oas/latest.html"
+    ]
+  },
+  "component-mapping:data-contract-definition-avro": {
+    "rationale": "Apache Avro supplies a compact schema and serialization format suited to contract-bound record exchange.",
+    "boundary": "Avro covers schema and encoding; registry policy, compatibility rules and product ownership remain separate.",
+    "sources": [
+      "https://avro.apache.org/docs/"
+    ]
   }
 }

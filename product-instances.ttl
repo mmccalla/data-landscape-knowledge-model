@@ -1,0 +1,696 @@
+# Curated data-product typology examples for design inspection.
+# Catalogue data copyright (c) 2026 Entropy Data; derived model copyright (c) 2026 Mark McCalla.
+# Upstream data is MIT-licensed; see ATTRIBUTION.md and LICENSE in this package.
+
+@prefix dl: <https://polymathic.co.uk/data-landscape/ontology/> .
+@prefix inst: <https://polymathic.co.uk/data-landscape/instance/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix tax: <https://polymathic.co.uk/data-landscape/taxonomy/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# --- Products ---
+
+inst:product-retail-stock-data-product a dl:DataProduct ;
+  dl:identifier "retail-stock-data-product" ;
+  skos:prefLabel "Retail Stock Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-no-pii ;
+  dl:inIndustryVertical tax:industry-vertical-retail ;
+  dl:hasDesignJurisdiction tax:jurisdiction-global ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated retail stock / catalogue product example (inspired by Entropy Data's shelf-warmers demo). Marked no PII so the regulatory consideration set stays thin on purpose. OpenLineage and Iceberg are explicit no-coverage mappings: this example does not adopt lineage emission, and the demo product is a Snowflake table rather than an Iceberg table (Snowflake is not a landscape standard entry)." .
+
+inst:product-banking-customer-data-product a dl:DataProduct ;
+  dl:identifier "banking-customer-data-product" ;
+  skos:prefLabel "Banking Customer Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-banking ;
+  dl:hasDesignJurisdiction tax:jurisdiction-uk ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated banking customer data product for UK/EU financial-services design inspection. Not a client artefact. Personal data and banking vertical surface GDPR and DORA as considerations; this does not assert that either instrument applies to a given organisation." .
+
+inst:product-health-customer-data-product a dl:DataProduct ;
+  dl:identifier "health-customer-data-product" ;
+  skos:prefLabel "Health Customer Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-health ;
+  dl:hasDesignJurisdiction tax:jurisdiction-us ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated health customer / patient-facing data product for design inspection across US care settings. Design jurisdiction is United States so HIPAA is an appropriate consideration prompt; this does not assert applicability for a given provider." .
+
+# --- Retail stock: standards to consider ---
+
+inst:product-standard-retail-stock-odps a dl:ProductStandardRelevance ;
+  dl:identifier "retail-stock-odps" ;
+  dl:forDataProduct inst:product-retail-stock-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider when publishing a retail stock data product with explicit product metadata." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-retail-stock-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "retail-stock-odcs" ;
+  dl:forDataProduct inst:product-retail-stock-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for schema, quality and delivery expectations on a retail stock product interface." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-retail-stock-dbt a dl:ProductStandardRelevance ;
+  dl:identifier "retail-stock-dbt" ;
+  dl:forDataProduct inst:product-retail-stock-data-product ;
+  dl:considersStandard inst:standard-dbt ;
+  dl:mappingRationale "dbt is a common transformation and test tooling option to consider when building the retail stock product's analytical pipeline." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://www.getdbt.com"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-retail-stock-openlineage a dl:ProductStandardRelevance ;
+  dl:identifier "retail-stock-openlineage" ;
+  dl:forDataProduct inst:product-retail-stock-data-product ;
+  dl:considersStandard inst:standard-openlineage ;
+  dl:hasMappingRelation tax:mapping-relation-no-coverage ;
+  dl:mappingRationale "OpenLineage is an ADOPT lineage-emission option on the Orchestrate module, but this curated retail stock example deliberately does not adopt lineage emission; the non-link is explicit rather than silent." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://openlineage.io/docs/spec/object-model/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-retail-stock-iceberg a dl:ProductStandardRelevance ;
+  dl:identifier "retail-stock-iceberg" ;
+  dl:forDataProduct inst:product-retail-stock-data-product ;
+  dl:considersStandard inst:standard-iceberg ;
+  dl:hasMappingRelation tax:mapping-relation-no-coverage ;
+  dl:mappingRationale "Iceberg is a store/write option in the pipeline typology, but the Entropy shelf-warmers-inspired demo product is a Snowflake table rather than an Iceberg table; Snowflake is not minted as a landscape standard here." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://iceberg.apache.org"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+# --- Banking customer: standards and regulations to consider ---
+
+inst:product-standard-banking-customer-odps a dl:ProductStandardRelevance ;
+  dl:identifier "banking-customer-odps" ;
+  dl:forDataProduct inst:product-banking-customer-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider when publishing a banking customer data product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-banking-customer-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "banking-customer-odcs" ;
+  dl:forDataProduct inst:product-banking-customer-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for enforceable interface and quality expectations on customer data products." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-banking-customer-openlineage a dl:ProductStandardRelevance ;
+  dl:identifier "banking-customer-openlineage" ;
+  dl:forDataProduct inst:product-banking-customer-data-product ;
+  dl:considersStandard inst:standard-openlineage ;
+  dl:mappingRationale "OpenLineage is worth considering for a banking customer product so operational job, run and dataset lineage can support ICT resilience and change-impact analysis; selection remains optional and does not assert DORA compliance." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://openlineage.io/docs/spec/object-model/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-banking-customer-gdpr a dl:ProductRegulatoryRelevance ;
+  dl:identifier "banking-customer-gdpr" ;
+  dl:forDataProduct inst:product-banking-customer-data-product ;
+  dl:considersRegulation inst:regulation-gdpr ;
+  dl:mappingRationale "A banking customer data product that holds personal data should prompt GDPR consideration for lawful basis, purpose limitation, subject rights and records of processing. This is a design prompt, not a finding of applicability." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2016/679/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2016/679" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+inst:product-regulatory-banking-customer-dora a dl:ProductRegulatoryRelevance ;
+  dl:identifier "banking-customer-dora" ;
+  dl:forDataProduct inst:product-banking-customer-data-product ;
+  dl:considersRegulation inst:regulation-dora ;
+  dl:mappingRationale "A banking customer data product in an EU financial entity context should prompt DORA consideration for ICT risk, access control and third-party dependencies. This is a design prompt, not a finding of applicability." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2022/2554/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2022/2554" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Health customer: standards and regulations to consider ---
+
+inst:product-standard-health-customer-odps a dl:ProductStandardRelevance ;
+  dl:identifier "health-customer-odps" ;
+  dl:forDataProduct inst:product-health-customer-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider when publishing a health customer data product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-health-customer-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "health-customer-odcs" ;
+  dl:forDataProduct inst:product-health-customer-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for interface and quality expectations on health customer data products." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-health-customer-hipaa a dl:ProductRegulatoryRelevance ;
+  dl:identifier "health-customer-hipaa" ;
+  dl:forDataProduct inst:product-health-customer-data-product ;
+  dl:considersRegulation inst:regulation-hipaa ;
+  dl:mappingRationale "A health customer data product that may hold protected health information should prompt HIPAA Security Rule consideration for access, integrity and audit controls. This is a design prompt, not a finding of applicability for a given care setting or jurisdiction." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html"^^xsd:anyURI ;
+  dl:sourceVersion "HIPAA Security Rule currently in effect" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Additional curated products ---
+
+inst:product-insurance-policy-data-product a dl:DataProduct ;
+  dl:identifier "insurance-policy-data-product" ;
+  skos:prefLabel "Insurance Policy Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-insurance ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:hasDesignJurisdiction tax:jurisdiction-uk ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated insurance policy master data product for design inspection. Holds policyholder personal data; not a client artefact." .
+
+inst:product-insurance-claims-data-product a dl:DataProduct ;
+  dl:identifier "insurance-claims-data-product" ;
+  skos:prefLabel "Insurance Claims Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-insurance ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:hasDesignJurisdiction tax:jurisdiction-uk ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated insurance claims event data product for design inspection. Claimant personal data and loss detail; not a client artefact." .
+
+inst:product-capital-markets-trade-data-product a dl:DataProduct ;
+  dl:identifier "capital-markets-trade-data-product" ;
+  skos:prefLabel "Capital Markets Trade Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-no-pii ;
+  dl:inIndustryVertical tax:industry-vertical-banking ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:hasDesignJurisdiction tax:jurisdiction-global ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated capital-markets trade / market-data style product with no personal data. Surfaces risk-data and operational-resilience considerations for banking/markets teams; not a client artefact." .
+
+inst:product-wealth-client-portfolio-data-product a dl:DataProduct ;
+  dl:identifier "wealth-client-portfolio-data-product" ;
+  skos:prefLabel "Wealth Client Portfolio Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-banking ;
+  dl:hasDesignJurisdiction tax:jurisdiction-uk ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated wealth-management client portfolio product holding client personal and holdings data. Design-inspection example only." .
+
+inst:product-retail-customer-loyalty-data-product a dl:DataProduct ;
+  dl:identifier "retail-customer-loyalty-data-product" ;
+  skos:prefLabel "Retail Customer Loyalty Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-retail ;
+  dl:hasDesignJurisdiction tax:jurisdiction-us ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated retail loyalty / CRM-style customer product with personal data. Contrasts with the no-PII Retail Stock Data Product; not a client artefact." .
+
+inst:product-hospital-admissions-data-product a dl:DataProduct ;
+  dl:identifier "hospital-admissions-data-product" ;
+  skos:prefLabel "Hospital Admissions Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-health ;
+  dl:hasDesignJurisdiction tax:jurisdiction-us ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated hospital admissions / encounter product that may hold protected health information. Design-inspection example for acute care settings; not a client artefact." .
+
+inst:product-care-home-resident-data-product a dl:DataProduct ;
+  dl:identifier "care-home-resident-data-product" ;
+  skos:prefLabel "Care Home Resident Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-health ;
+  dl:hasDesignJurisdiction tax:jurisdiction-uk ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated care-home resident care record product for UK/EU-style care settings. Personal data considerations emphasised via GDPR; not a client artefact and not a finding of applicability." .
+
+inst:product-public-sector-reference-codes-data-product a dl:DataProduct ;
+  dl:identifier "public-sector-reference-codes-data-product" ;
+  skos:prefLabel "Public Sector Reference Codes Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-no-pii ;
+  dl:inIndustryVertical tax:industry-vertical-public-sector ;
+  dl:hasDesignJurisdiction tax:jurisdiction-uk ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated public-sector reference / code-list product (for example geography or statistical classifications) with no personal data. Emphasises product definition, contracts and metadata-registry considerations for government data sharing." .
+
+inst:product-telecoms-subscriber-data-product a dl:DataProduct ;
+  dl:identifier "telecoms-subscriber-data-product" ;
+  skos:prefLabel "Telecoms Subscriber Data Product"@en-GB ;
+  dl:hasPersonalDataPosture tax:personal-data-posture-pii ;
+  dl:inIndustryVertical tax:industry-vertical-telecoms ;
+  dl:hasDesignJurisdiction tax:jurisdiction-eu ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:evidenceStatus "CURATED_PRODUCT_EXAMPLE" ;
+  dl:productRationale "Curated telecoms subscriber / customer-account product for design inspection. Personal data and digital-infrastructure stance surface GDPR and NIS2 as considerations; this does not assert applicability for a given operator or member state." .
+
+# --- Insurance policy ---
+
+inst:product-standard-insurance-policy-odps a dl:ProductStandardRelevance ;
+  dl:identifier "insurance-policy-odps" ;
+  dl:forDataProduct inst:product-insurance-policy-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider when publishing an insurance policy data product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-insurance-policy-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "insurance-policy-odcs" ;
+  dl:forDataProduct inst:product-insurance-policy-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for policy schema and quality expectations." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-insurance-policy-gdpr a dl:ProductRegulatoryRelevance ;
+  dl:identifier "insurance-policy-gdpr" ;
+  dl:forDataProduct inst:product-insurance-policy-data-product ;
+  dl:considersRegulation inst:regulation-gdpr ;
+  dl:mappingRationale "An insurance policy product holding policyholder personal data should prompt GDPR consideration for lawful basis, retention and subject rights. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2016/679/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2016/679" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Insurance claims ---
+
+inst:product-standard-insurance-claims-odps a dl:ProductStandardRelevance ;
+  dl:identifier "insurance-claims-odps" ;
+  dl:forDataProduct inst:product-insurance-claims-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider when publishing an insurance claims data product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-insurance-claims-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "insurance-claims-odcs" ;
+  dl:forDataProduct inst:product-insurance-claims-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for claims event schemas and quality rules." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-insurance-claims-gdpr a dl:ProductRegulatoryRelevance ;
+  dl:identifier "insurance-claims-gdpr" ;
+  dl:forDataProduct inst:product-insurance-claims-data-product ;
+  dl:considersRegulation inst:regulation-gdpr ;
+  dl:mappingRationale "Claims products typically contain claimant personal data and should prompt GDPR consideration. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2016/679/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2016/679" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+inst:product-regulatory-insurance-claims-iso-27001 a dl:ProductRegulatoryRelevance ;
+  dl:identifier "insurance-claims-iso-27001" ;
+  dl:forDataProduct inst:product-insurance-claims-data-product ;
+  dl:considersRegulation inst:regulation-iso-27001 ;
+  dl:mappingRationale "Claims platforms often sit under information-security management expectations; ISO/IEC 27001 is a common consideration for evidencing controls. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://www.iso.org/standard/27001"^^xsd:anyURI ;
+  dl:sourceVersion "ISO/IEC 27001:2022" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Capital markets trade ---
+
+inst:product-standard-capital-markets-trade-odps a dl:ProductStandardRelevance ;
+  dl:identifier "capital-markets-trade-odps" ;
+  dl:forDataProduct inst:product-capital-markets-trade-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider for a capital-markets trade data product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-capital-markets-trade-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "capital-markets-trade-odcs" ;
+  dl:forDataProduct inst:product-capital-markets-trade-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for trade schema and delivery SLAs." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-capital-markets-trade-iceberg a dl:ProductStandardRelevance ;
+  dl:identifier "capital-markets-trade-iceberg" ;
+  dl:forDataProduct inst:product-capital-markets-trade-data-product ;
+  dl:considersStandard inst:standard-iceberg ;
+  dl:mappingRationale "Iceberg is a common open table-format option to consider when storing high-volume trade history for analytics." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://iceberg.apache.org"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-capital-markets-trade-openlineage a dl:ProductStandardRelevance ;
+  dl:identifier "capital-markets-trade-openlineage" ;
+  dl:forDataProduct inst:product-capital-markets-trade-data-product ;
+  dl:considersStandard inst:standard-openlineage ;
+  dl:mappingRationale "OpenLineage is worth considering for capital-markets trade pipelines so lineage across ingestion and aggregation jobs can support BCBS 239-style risk-data explainability; it does not itself satisfy supervisory expectations." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://openlineage.io/docs/spec/object-model/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-capital-markets-trade-bcbs-239 a dl:ProductRegulatoryRelevance ;
+  dl:identifier "capital-markets-trade-bcbs-239" ;
+  dl:forDataProduct inst:product-capital-markets-trade-data-product ;
+  dl:considersRegulation inst:regulation-bcbs-239 ;
+  dl:mappingRationale "Trade and risk-aggregation products in banking should prompt BCBS 239 consideration for accuracy, completeness and timeliness of risk data. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://www.bis.org/publ/bcbs239.htm"^^xsd:anyURI ;
+  dl:sourceVersion "BCBS 239 (January 2013)" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+inst:product-regulatory-capital-markets-trade-dora a dl:ProductRegulatoryRelevance ;
+  dl:identifier "capital-markets-trade-dora" ;
+  dl:forDataProduct inst:product-capital-markets-trade-data-product ;
+  dl:considersRegulation inst:regulation-dora ;
+  dl:mappingRationale "Market-data and trade platforms supporting financial entities should prompt DORA consideration for ICT resilience. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2022/2554/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2022/2554" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Wealth client portfolio ---
+
+inst:product-standard-wealth-client-portfolio-odps a dl:ProductStandardRelevance ;
+  dl:identifier "wealth-client-portfolio-odps" ;
+  dl:forDataProduct inst:product-wealth-client-portfolio-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider for a wealth client portfolio product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-wealth-client-portfolio-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "wealth-client-portfolio-odcs" ;
+  dl:forDataProduct inst:product-wealth-client-portfolio-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for portfolio holdings interfaces." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-wealth-client-portfolio-gdpr a dl:ProductRegulatoryRelevance ;
+  dl:identifier "wealth-client-portfolio-gdpr" ;
+  dl:forDataProduct inst:product-wealth-client-portfolio-data-product ;
+  dl:considersRegulation inst:regulation-gdpr ;
+  dl:mappingRationale "Wealth portfolio products hold client personal data and should prompt GDPR consideration. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2016/679/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2016/679" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+inst:product-regulatory-wealth-client-portfolio-dora a dl:ProductRegulatoryRelevance ;
+  dl:identifier "wealth-client-portfolio-dora" ;
+  dl:forDataProduct inst:product-wealth-client-portfolio-data-product ;
+  dl:considersRegulation inst:regulation-dora ;
+  dl:mappingRationale "Wealth platforms operated by in-scope financial entities should prompt DORA consideration for ICT risk. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2022/2554/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2022/2554" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+inst:product-regulatory-wealth-client-portfolio-bcbs-239 a dl:ProductRegulatoryRelevance ;
+  dl:identifier "wealth-client-portfolio-bcbs-239" ;
+  dl:forDataProduct inst:product-wealth-client-portfolio-data-product ;
+  dl:considersRegulation inst:regulation-bcbs-239 ;
+  dl:mappingRationale "Client portfolio and holdings products that feed risk or client-asset reporting should prompt BCBS 239 consideration for accuracy and aggregation of risk-relevant data. Design prompt only; deliberately no OpenLineage link here so banking products stay differentiated." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://www.bis.org/publ/bcbs239.htm"^^xsd:anyURI ;
+  dl:sourceVersion "BCBS 239 (January 2013)" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Retail customer loyalty ---
+
+inst:product-standard-retail-customer-loyalty-odps a dl:ProductStandardRelevance ;
+  dl:identifier "retail-customer-loyalty-odps" ;
+  dl:forDataProduct inst:product-retail-customer-loyalty-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider for a retail loyalty customer product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-retail-customer-loyalty-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "retail-customer-loyalty-odcs" ;
+  dl:forDataProduct inst:product-retail-customer-loyalty-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for loyalty profile schemas and quality rules." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-retail-customer-loyalty-gdpr a dl:ProductRegulatoryRelevance ;
+  dl:identifier "retail-customer-loyalty-gdpr" ;
+  dl:forDataProduct inst:product-retail-customer-loyalty-data-product ;
+  dl:considersRegulation inst:regulation-gdpr ;
+  dl:mappingRationale "Loyalty products holding EU customer personal data should prompt GDPR consideration. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2016/679/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2016/679" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+inst:product-regulatory-retail-customer-loyalty-ccpa-cpra a dl:ProductRegulatoryRelevance ;
+  dl:identifier "retail-customer-loyalty-ccpa-cpra" ;
+  dl:forDataProduct inst:product-retail-customer-loyalty-data-product ;
+  dl:considersRegulation inst:regulation-ccpa-cpra ;
+  dl:mappingRationale "US retail loyalty products should prompt CCPA/CPRA consideration for consumer privacy rights and opt-out paths. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://oag.ca.gov/privacy/ccpa"^^xsd:anyURI ;
+  dl:sourceVersion "CCPA as amended by CPRA" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Hospital admissions ---
+
+inst:product-standard-hospital-admissions-odps a dl:ProductStandardRelevance ;
+  dl:identifier "hospital-admissions-odps" ;
+  dl:forDataProduct inst:product-hospital-admissions-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider for a hospital admissions product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-hospital-admissions-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "hospital-admissions-odcs" ;
+  dl:forDataProduct inst:product-hospital-admissions-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for admissions encounter schemas." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-hospital-admissions-hipaa a dl:ProductRegulatoryRelevance ;
+  dl:identifier "hospital-admissions-hipaa" ;
+  dl:forDataProduct inst:product-hospital-admissions-data-product ;
+  dl:considersRegulation inst:regulation-hipaa ;
+  dl:mappingRationale "Hospital admissions products that may hold ePHI should prompt HIPAA Security Rule consideration. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html"^^xsd:anyURI ;
+  dl:sourceVersion "HIPAA Security Rule currently in effect" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Care home resident ---
+
+inst:product-standard-care-home-resident-odps a dl:ProductStandardRelevance ;
+  dl:identifier "care-home-resident-odps" ;
+  dl:forDataProduct inst:product-care-home-resident-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider for a care-home resident data product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-care-home-resident-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "care-home-resident-odcs" ;
+  dl:forDataProduct inst:product-care-home-resident-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for resident care-record interfaces." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-care-home-resident-gdpr a dl:ProductRegulatoryRelevance ;
+  dl:identifier "care-home-resident-gdpr" ;
+  dl:forDataProduct inst:product-care-home-resident-data-product ;
+  dl:considersRegulation inst:regulation-gdpr ;
+  dl:mappingRationale "UK/EU care-home resident products hold personal (often special-category) data and should prompt GDPR consideration. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2016/679/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2016/679" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Public sector reference codes ---
+
+inst:product-standard-public-sector-reference-codes-odps a dl:ProductStandardRelevance ;
+  dl:identifier "public-sector-reference-codes-odps" ;
+  dl:forDataProduct inst:product-public-sector-reference-codes-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "Prefer Bitol ODPS (standard:odps) for this public-sector reference-codes product; do not confuse it with LF ODPS-spec (standard:odpspec), which shares the ODPS display name but is a different landscape entry." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-public-sector-reference-codes-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "public-sector-reference-codes-odcs" ;
+  dl:forDataProduct inst:product-public-sector-reference-codes-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for reference-code distribution contracts between agencies." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-public-sector-reference-codes-json-schema a dl:ProductStandardRelevance ;
+  dl:identifier "public-sector-reference-codes-json-schema" ;
+  dl:forDataProduct inst:product-public-sector-reference-codes-data-product ;
+  dl:considersStandard inst:standard-json-schema ;
+  dl:mappingRationale "JSON Schema is a common option to consider for portable reference-code structure definitions." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://json-schema.org"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+
+inst:product-standard-public-sector-reference-codes-odpspec a dl:ProductStandardRelevance ;
+  dl:identifier "public-sector-reference-codes-odpspec" ;
+  dl:forDataProduct inst:product-public-sector-reference-codes-data-product ;
+  dl:considersStandard inst:standard-odpspec ;
+  dl:mappingRationale "LF ODPS-spec is retained as a named alternative to inspect beside Bitol ODPS: same display label, different IRI and commercial/metadata emphasis. Designers should choose deliberately rather than merge the two entries." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://opendataproducts.org/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-public-sector-reference-codes-dcat a dl:ProductStandardRelevance ;
+  dl:identifier "public-sector-reference-codes-dcat" ;
+  dl:forDataProduct inst:product-public-sector-reference-codes-data-product ;
+  dl:considersStandard inst:standard-dcat ;
+  dl:mappingRationale "DCAT is worth considering for public-sector reference-code catalogues so dataset and distribution metadata align with open-data and cross-agency discovery practice." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://www.w3.org/TR/vocab-dcat-3/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-public-sector-reference-codes-iso-11179 a dl:ProductRegulatoryRelevance ;
+  dl:identifier "public-sector-reference-codes-iso-11179" ;
+  dl:forDataProduct inst:product-public-sector-reference-codes-data-product ;
+  dl:considersRegulation inst:regulation-iso-11179 ;
+  dl:mappingRationale "Public-sector reference and statistical code products should prompt ISO/IEC 11179 consideration for metadata registry concepts and data-element semantics. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://www.iso.org/standard/78914.html"^^xsd:anyURI ;
+  dl:sourceVersion "ISO/IEC 11179 metadata registry family" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+# --- Telecoms subscriber ---
+
+inst:product-standard-telecoms-subscriber-odps a dl:ProductStandardRelevance ;
+  dl:identifier "telecoms-subscriber-odps" ;
+  dl:forDataProduct inst:product-telecoms-subscriber-data-product ;
+  dl:considersStandard inst:standard-odps ;
+  dl:mappingRationale "ODPS is the product-definition standard to consider when publishing a telecoms subscriber data product." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://github.com/bitol-io/open-data-product-standard"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-standard-telecoms-subscriber-odcs a dl:ProductStandardRelevance ;
+  dl:identifier "telecoms-subscriber-odcs" ;
+  dl:forDataProduct inst:product-telecoms-subscriber-data-product ;
+  dl:considersStandard inst:standard-odcs ;
+  dl:mappingRationale "ODCS is the data-contract standard to consider for subscriber schema and quality expectations." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://bitol-io.github.io/open-data-contract-standard/latest/"^^xsd:anyURI ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_STANDARD_RELEVANCE" .
+
+inst:product-regulatory-telecoms-subscriber-gdpr a dl:ProductRegulatoryRelevance ;
+  dl:identifier "telecoms-subscriber-gdpr" ;
+  dl:forDataProduct inst:product-telecoms-subscriber-data-product ;
+  dl:considersRegulation inst:regulation-gdpr ;
+  dl:mappingRationale "A telecoms subscriber product holding personal data should prompt GDPR consideration for lawful basis, retention and subject rights. Design prompt only." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/reg/2016/679/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Regulation (EU) 2016/679" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
+
+inst:product-regulatory-telecoms-subscriber-nis2 a dl:ProductRegulatoryRelevance ;
+  dl:identifier "telecoms-subscriber-nis2" ;
+  dl:forDataProduct inst:product-telecoms-subscriber-data-product ;
+  dl:considersRegulation inst:regulation-nis2 ;
+  dl:mappingRationale "Telecoms operators often fall within NIS2 digital-infrastructure / essential-entity scope; a subscriber data product should prompt NIS2 cybersecurity risk-management consideration. Design prompt only; national transposition decides applicability." ;
+  dl:assertedBy "Mark McCalla" ;
+  dl:authoritativeSource "https://eur-lex.europa.eu/eli/dir/2022/2555/oj"^^xsd:anyURI ;
+  dl:sourceVersion "Directive (EU) 2022/2555" ;
+  dl:mappingStatus "REVIEWED" ;
+  dl:evidenceStatus "CURATED_PRODUCT_REGULATORY_RELEVANCE" .
