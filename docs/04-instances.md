@@ -21,12 +21,13 @@ Instance: GDPR
 | [`instances.ttl`](../instances.ttl) | 84 standard-landscape entries and 84 assessments. |
 | [`regulation-instances.ttl`](../regulation-instances.ttl) | 73 regulation-landscape entries. |
 | [`mapping-instances.ttl`](../mapping-instances.ttl) | Three officially supported mapping assertions. |
-| [`component-mappings.ttl`](../component-mappings.ttl) | 29 curated component-to-landscape implementation options. |
+| [`component-mappings.ttl`](../component-mappings.ttl) | 30 curated component-to-landscape implementation options. |
 | [`component-regulatory-mappings.ttl`](../component-regulatory-mappings.ttl) | 33 curated component-to-regulatory-context mappings grounded in primary sources. |
+| [`product-instances.ttl`](../product-instances.ttl) | Twelve curated data products across retail, banking, insurance, health, public sector and telecoms, plus sourced product-to-landscape consideration mappings that differ by vertical (including explicit no-coverage gaps where a non-link must stay honest). |
 
 They are separate so each domain can be refreshed without pretending that all statements came from the same source or have the same semantics.
 
-Airflow, Prefect and Temporal are local, officially sourced extensions rather than upstream landscape observations. Their assessments are explicitly editorial. Component mappings are candidate design options, not proof that a tool completely implements a component in every pipeline context.
+Airflow, Prefect and Temporal are local, officially sourced extensions rather than upstream landscape observations. Their assessments are explicitly editorial. Component mappings are candidate design options, not proof that a tool completely implements a component in every pipeline context. Curated products record personal-data posture and industry vertical for inspection; they are not a live catalogue sync.
 
 ## Standard example
 
@@ -54,13 +55,13 @@ Descriptions and reference URLs are included because they are important to under
 
 ## Identity cases
 
-- The two source IDs `odps` and `odpspec` remain separate even though both display “ODPS”.
+- The two source IDs `odps` and `odpspec` remain separate even though both display “ODPS”. Prefer Bitol ODPS (`standard:odps`) versus LF ODPS-spec (`standard:odpspec`) deliberately; the public-sector reference-codes product carries both a preferred ODPS consideration and an explicit odpspec contrast mapping so the collision is inspectable rather than merged.
 - Lance is one standard entry with two standard-category memberships.
 - ODRL and OPA each have one entry per landscape. Confirmed `describesSameResourceAs` links connect the pairs while preserving their source-specific statements.
 
 ## Jurisdiction normalisation
 
-An entry with source text `EU / Germany` receives two `appliesIn` relationships. The source text remains available in `sourceJurisdictionLabel`, so the transformation is reversible and auditable.
+An entry with source text `EU / Germany` receives two `appliesIn` relationships. The source text remains available in `sourceJurisdictionLabel`, so the transformation is reversible and auditable. Product `hasDesignJurisdiction` is a separate design prompt and must not be read as regulation `appliesIn`.
 
 ## What is not included
 

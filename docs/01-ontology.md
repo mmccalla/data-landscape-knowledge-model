@@ -21,6 +21,10 @@ SourcedMapping
 └── ComponentMapping
     ├── ComponentImplementationMapping
     └── ComponentRegulatoryMapping
+DataProduct
+ProductMapping
+├── ProductStandardRelevance
+└── ProductRegulatoryRelevance
 DataIngestionPattern
 DataPipelineModule
 DataPipelineComponent
@@ -36,6 +40,10 @@ Attestation
 | `ComplianceMapping` | A versioned and attributable assertion connecting two entries. |
 | `SourcedMapping` | The shared provenance, version and status boundary for mapping assertions. |
 | `ComponentMapping` | The shared parent for implementation and regulatory component mappings. |
+| `DataProduct` | A curated published data product under inspection, with personal-data posture, industry vertical and optional design-jurisdiction prompts. Orthogonal to pipeline component types. |
+| `ProductMapping` | The shared parent for product-to-landscape consideration mappings. |
+| `ProductStandardRelevance` | A curated assertion linking a named data product to a standard-landscape entry (consideration, or explicit non-coverage via `hasMappingRelation`). |
+| `ProductRegulatoryRelevance` | A curated assertion that a regulation-landscape entry is worth considering for a named data product; not a finding of applicability. |
 | `DataIngestionPattern` | The parent of the six ingestion-pattern classes. |
 | `DataPipelineModule` | The parent of Define, Trigger, Orchestrate, Govern and Store module classes. |
 | `DataPipelineComponent` | The parent of the listed functional component classes. |
@@ -84,9 +92,44 @@ A mapping is a node because it has identity, provenance, version and status. It 
 
 Component regulatory mappings use the same provenance-first pattern. They connect one component type to one `DataRegulationLandscapeEntry` through `regulatoryContext` and require a human-readable requirement reference, rationale and primary source.
 
+## Data products
+
+```text
+DataProduct
+├── identifier / preferred label
+├── hasPersonalDataPosture ──→ PersonalDataPosture (PII / NO_PII)
+├── inIndustryVertical ──────→ IndustryVertical
+├── hasDesignJurisdiction ───→ Jurisdiction (0..*; design prompt only)
+├── assertedBy
+├── evidenceStatus
+└── productRationale
+
+ProductStandardRelevance
+├── forDataProduct ──────────→ DataProduct
+├── considersStandard ───────→ DataStandardLandscapeEntry
+├── hasMappingRelation ──────→ MappingRelation (optional)
+├── mappingRationale
+├── assertedBy
+├── authoritativeSource
+├── mappingStatus
+└── evidenceStatus
+
+ProductRegulatoryRelevance
+├── forDataProduct ──────────→ DataProduct
+├── considersRegulation ─────→ DataRegulationLandscapeEntry
+├── mappingRationale
+├── assertedBy
+├── authoritativeSource
+├── sourceVersion
+├── mappingStatus
+└── evidenceStatus
+```
+
+`DataProduct` is not a subclass of `DataPipelineComponent`. Pipeline type answers how you build; product typology answers what you publish. Links from products to landscape entries are reified sourced mappings — the same provenance pattern as component mappings — so a modeller can ask which standards and regulations to consider for a product in a given vertical. Vertical, personal-data posture and design jurisdiction are curated inspection aids, not legal determinations.
+
 ## Ingestion structure
 
-Each of the six pattern subclasses requires the five module types through `hasModule`. Each module class requires only its listed component types through `hasComponent`. These are schema restrictions; concrete pipelines and pattern instances remain out of scope.
+Each of the six pattern subclasses requires the five module types through `hasModule`. Each module class requires only its listed component types through `hasComponent`. Orchestrate includes lineage emission alongside secure read, source connectivity and workload execution/orchestration; metadata registration remains under Store. These are schema restrictions; concrete pipelines and pattern instances remain out of scope.
 
 ## Attestation traceability
 

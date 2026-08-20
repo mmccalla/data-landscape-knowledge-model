@@ -23,7 +23,7 @@ Use this with a **fresh agent context**. Do not re-litigate authorship, namespac
 | Axis | v1 values |
 |---|---|
 | Personal data posture | `PII` / `NO_PII` |
-| Industry vertical | `banking`, `insurance`, `retail`, `health`, `cross-sector` |
+| Industry vertical | `banking`, `insurance`, `retail`, `health`, `public-sector`, `telecoms` |
 
 - **No** binary `REGULATED` / `UNREGULATED`.
 - Pipeline type stays; product/vertical/PII selectors are orthogonal.
@@ -41,7 +41,7 @@ Use this with a **fresh agent context**. Do not re-litigate authorship, namespac
 
 ## Open choices to resolve in-slice (see plan Unknowns)
 
-- Shelf-warmers vertical: `retail` vs `cross-sector`
+- Shelf-warmers vertical: `retail` (resolved; not a catch-all vertical)
 - Contrast vertical: banking (preferred) vs health
 - Graph UI: filter by vertical and/or product; PII as filter or derived from product
 

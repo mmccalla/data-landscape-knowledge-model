@@ -164,7 +164,19 @@
         <select id="regulation-category-select">
           <option value="all">All data regulation categories</option>
         </select>
-        <p class="hint">Pipeline selections limit structural context. Category selections independently narrow their respective landscape entries and mappings.</p>
+        <label for="vertical-select">Industry vertical</label>
+        <select id="vertical-select">
+          <option value="all">All industry verticals</option>
+        </select>
+        <label for="product-select">Data product</label>
+        <select id="product-select">
+          <option value="all">All data products</option>
+        </select>
+        <label for="posture-select">Personal-data posture</label>
+        <select id="posture-select">
+          <option value="all">All personal-data postures</option>
+        </select>
+        <p class="hint">Pipeline selections limit structural context. Category selections independently narrow their respective landscape entries and mappings. Vertical and product selections scope curated data-product neighbourhoods — including implementation options and component-regulatory context reachable from considered standards — without replacing pipeline type. That neighbourhood is a design view, not a finding that the product must comply.</p>
       </div>
 
       <fieldset>
@@ -191,6 +203,10 @@
           <label class="filter-toggle" style="--swatch:#efad1f"><input id="filter-ingestion-patterns" type="checkbox" data-group="ingestionPattern" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion patterns</span><span class="count" data-count="ingestionPattern"></span></label>
           <label class="filter-toggle" style="--swatch:#268eb7"><input id="filter-ingestion-modules" type="checkbox" data-group="ingestionModule" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion modules</span><span class="count" data-count="ingestionModule"></span></label>
           <label class="filter-toggle" style="--swatch:#d34783"><input id="filter-ingestion-components" type="checkbox" data-group="ingestionComponent" checked><span class="swatch" aria-hidden="true"></span><span>Data ingestion components</span><span class="count" data-count="ingestionComponent"></span></label>
+          <label class="filter-toggle" style="--swatch:#0f766e"><input id="filter-data-products" type="checkbox" data-group="dataProduct" checked><span class="swatch" aria-hidden="true"></span><span>Data products</span><span class="count" data-count="dataProduct"></span></label>
+          <label class="filter-toggle" style="--swatch:#b45309"><input id="filter-vertical-sectors" type="checkbox" data-group="industryVertical" checked><span class="swatch" aria-hidden="true"></span><span>Vertical sectors</span><span class="count" data-count="industryVertical"></span></label>
+          <label class="filter-toggle" style="--swatch:#0d9488"><input id="filter-product-standard-relevance" type="checkbox" data-group="productStandardRelevance" checked><span class="swatch" aria-hidden="true"></span><span>Product standard relevance</span><span class="count" data-count="productStandardRelevance"></span></label>
+          <label class="filter-toggle" style="--swatch:#115e59"><input id="filter-product-regulatory-relevance" type="checkbox" data-group="productRegulatoryRelevance" checked><span class="swatch" aria-hidden="true"></span><span>Product regulatory relevance</span><span class="count" data-count="productRegulatoryRelevance"></span></label>
         </div>
       </fieldset>
       <fieldset style="margin-top:18px">
@@ -224,7 +240,7 @@
           <title id="svg-title">Data Landscape knowledge graph</title>
           <desc id="svg-description">A force-directed graph. Use the filters and pipeline selector to change the visible subgraph. Focus a node and press Enter to inspect it.</desc>
         </svg>
-        <div class="empty-state" id="empty-state"><p>No nodes match the current filters. Enable a node type or reset the pipeline selection.</p></div>
+        <div class="empty-state" id="empty-state"><p>No nodes match the current filters. Enable a node type, or reset the pipeline and product filters.</p></div>
       </div>
       <p id="graph-summary" class="visually-hidden" aria-live="polite"></p>
     </section>
@@ -261,6 +277,9 @@
     const componentSelect = document.getElementById("component-select");
     const standardCategorySelect = document.getElementById("standard-category-select");
     const regulationCategorySelect = document.getElementById("regulation-category-select");
+    const verticalSelect = document.getElementById("vertical-select");
+    const productSelect = document.getElementById("product-select");
+    const postureSelect = document.getElementById("posture-select");
     const layoutInputs = [...document.querySelectorAll('input[name="graph-layout"]')];
     const nodeLabelsToggle = document.getElementById("toggle-node-labels");
     const edgeLabelsToggle = document.getElementById("toggle-edge-labels");
@@ -288,12 +307,17 @@
       standardCategory: "#3156d3", regulationCategory: "#b75016", governanceType: "#6a45a6",
       standardLandscapeEntry: "#168062", regulationLandscapeEntry: "#2b7f9e",
       complianceMapping: "#d55220", componentRegulatoryMapping: "#8b5a2b", ingestionPattern: "#efad1f",
-      ingestionModule: "#268eb7", ingestionComponent: "#d34783"
+      ingestionModule: "#268eb7", ingestionComponent: "#d34783", dataProduct: "#0f766e",
+      industryVertical: "#b45309", productStandardRelevance: "#0d9488", productRegulatoryRelevance: "#115e59"
     };
-    const radii = { standardLandscapeEntry: 6, regulationLandscapeEntry: 6, standardCategory: 9, regulationCategory: 9, governanceType: 10, complianceMapping: 11, componentRegulatoryMapping: 11, ingestionPattern: 14, ingestionModule: 12, ingestionComponent: 9 };
+    const radii = { standardLandscapeEntry: 6, regulationLandscapeEntry: 6, standardCategory: 9, regulationCategory: 9, governanceType: 10, complianceMapping: 11, componentRegulatoryMapping: 11, ingestionPattern: 14, ingestionModule: 12, ingestionComponent: 9, dataProduct: 12, industryVertical: 10, productStandardRelevance: 10, productRegulatoryRelevance: 10 };
 
     function groupFor(node) {
       const labels = node.labels;
+      if (labels.includes("IndustryVertical")) return "industryVertical";
+      if (labels.includes("DataProduct") || labels.includes("PersonalDataPosture")) return "dataProduct";
+      if (labels.includes("ProductStandardRelevance")) return "productStandardRelevance";
+      if (labels.includes("ProductRegulatoryRelevance")) return "productRegulatoryRelevance";
       if (labels.includes("DataIngestionPatternType")) return "ingestionPattern";
       if (labels.includes("DataPipelineModuleType")) return "ingestionModule";
       if (labels.includes("DataPipelineComponentType") || labels.includes("ComponentImplementationMapping")) return "ingestionComponent";
@@ -356,6 +380,15 @@
       const regulationCategories = displayNodes.filter(node => node.id.startsWith("regulation-category:"));
       replaceOptions(standardCategorySelect, "All data standard categories", standardCategories, false);
       replaceOptions(regulationCategorySelect, "All data regulation categories", regulationCategories, false);
+    }
+
+    function populateProductOptions(reset = false) {
+      const verticals = displayNodes.filter(node => node.labels.includes("IndustryVertical"));
+      const postures = displayNodes.filter(node => node.labels.includes("PersonalDataPosture"));
+      const products = displayNodes.filter(node => node.labels.includes("DataProduct"));
+      replaceOptions(verticalSelect, "All industry verticals", verticals, reset);
+      replaceOptions(postureSelect, "All personal-data postures", postures, reset);
+      replaceOptions(productSelect, "All data products", products, reset);
     }
 
     function categorySelection() {
@@ -452,6 +485,7 @@
       const explanation = raw.mappingExplanations[node.id];
       const fields = [
         ["Identifier", node.id], ["Type", node.labels.join(", ")], ["Evidence", node.evidenceStatus],
+        ["Personal-data posture", node.personalDataPosture], ["Industry vertical", node.industryVertical],
         ["Status", node.statusStatement], ["Governance", node.governanceStatement], ["First release", node["firstReleaseYear:int"]],
         ["Requirement", node.regulatoryRequirementReference], ["Source version", node.sourceVersion], ["Asserted by", node.assertedBy]
       ].filter(([, value]) => value);
@@ -479,14 +513,23 @@
       const groups = enabledGroups();
       const scope = selectionClosure(pipelineSelect.value, moduleSelect.value, componentSelect.value);
       const categoryScope = categorySelection();
-      const nodes = displayNodes.filter(node => groups.has(groupFor(node)) && scope.has(node.id) && categoryScope.has(node.id)).map(node => {
+      const productScope = productScopeFor({
+        verticalId: verticalSelect.value,
+        productId: productSelect.value,
+        postureId: postureSelect.value,
+      }, displayNodes, displayLinks);
+      const nodes = displayNodes.filter(node => {
+        if (!groups.has(groupFor(node)) || !scope.has(node.id) || !categoryScope.has(node.id)) return false;
+        if (productScope && !productScope.has(node.id)) return false;
+        return true;
+      }).map(node => {
         const position = pinnedPositions.get(node.id);
         return position ? {...node, ...position, x: position.fx, y: position.fy} : {...node};
       });
       const visibleIds = new Set(nodes.map(node => node.id));
       const links = displayLinks.filter(link => visibleIds.has(link.source) && visibleIds.has(link.target)).map(link => ({...link}));
       render(nodes, links);
-      const selectionLabels = [pipelineSelect, moduleSelect, componentSelect, standardCategorySelect, regulationCategorySelect]
+      const selectionLabels = [pipelineSelect, moduleSelect, componentSelect, standardCategorySelect, regulationCategorySelect, verticalSelect, productSelect, postureSelect]
         .map(select => select.options[select.selectedIndex].text)
         .filter(label => !label.startsWith("All "));
       const selectionDescription = selectionLabels.length ? selectionLabels.join(" · ") : "All pipeline types and landscape entries";
@@ -494,13 +537,17 @@
       document.getElementById("visible-count").textContent = message;
       document.getElementById("graph-summary").textContent = message;
       document.getElementById("empty-state").style.display = nodes.length ? "none" : "grid";
-      updateCounts(scope, categoryScope);
+      updateCounts(scope, categoryScope, productScope);
     }
 
-    function updateCounts(scope, categoryScope) {
+    function updateCounts(scope, categoryScope, productScope) {
       for (const element of document.querySelectorAll("[data-count]")) {
         const group = element.dataset.count;
-        element.textContent = displayNodes.filter(node => groupFor(node) === group && scope.has(node.id) && categoryScope.has(node.id)).length;
+        element.textContent = displayNodes.filter(node => {
+          if (groupFor(node) !== group || !scope.has(node.id) || !categoryScope.has(node.id)) return false;
+          if (productScope && !productScope.has(node.id)) return false;
+          return true;
+        }).length;
       }
     }
 
@@ -511,9 +558,11 @@
     }
 
     function semanticLevel(node) {
+      if (node.labels.includes("DataProduct")) return 0;
       if (node.labels.includes("DataIngestionPatternType")) return 0;
       if (node.labels.includes("DataPipelineModuleType")) return 1;
       if (node.labels.includes("DataPipelineComponentType")) return 2;
+      if (node.labels.includes("ProductStandardRelevance") || node.labels.includes("ProductRegulatoryRelevance")) return 3;
       if (node.labels.includes("ComponentImplementationMapping") || node.labels.includes("ComponentRegulatoryMapping")) return 3;
       if (node.labels.includes("DataStandardLandscapeEntry") || node.labels.includes("DataRegulationLandscapeEntry")) return 4;
       return 5;
@@ -697,18 +746,24 @@
       }
 
       const drag = d3.drag()
-        .on("start", (_, item) => { item.fx = item.x; item.fy = item.y; })
+        .on("start", (event, item) => {
+          item.fx = item.x;
+          item.fy = item.y;
+          // Keep the moved node pinned; reheat the force layout so others can settle.
+          if (simulation && !graphFrozen && !event.active) simulation.alphaTarget(0.3).restart();
+        })
         .on("drag", (event, item) => {
           item.fx = event.x;
           item.fy = event.y;
           item.x = event.x;
           item.y = event.y;
           pinnedPositions.set(item.id, {fx: item.fx, fy: item.fy});
-          updatePositions();
+          if (!simulation || graphFrozen) updatePositions();
         })
-        .on("end", (_, item) => {
+        .on("end", (event, item) => {
           pinnedPositions.set(item.id, {fx: item.fx, fy: item.fy});
-          updatePositions();
+          if (simulation && !graphFrozen && !event.active) simulation.alphaTarget(0);
+          else updatePositions();
         });
       node.call(drag);
       highlightSelection();
@@ -762,6 +817,15 @@
     componentSelect.addEventListener("change", applyFilters);
     standardCategorySelect.addEventListener("change", applyFilters);
     regulationCategorySelect.addEventListener("change", applyFilters);
+    verticalSelect.addEventListener("change", () => {
+      populateProductOptions(true);
+      applyFilters();
+    });
+    postureSelect.addEventListener("change", () => {
+      populateProductOptions(true);
+      applyFilters();
+    });
+    productSelect.addEventListener("change", applyFilters);
     layoutInputs.forEach(input => input.addEventListener("change", changeLayout));
     nodeLabelsToggle.addEventListener("change", applyFilters);
     edgeLabelsToggle.addEventListener("change", applyFilters);
@@ -775,6 +839,7 @@
     populateModuleOptions();
     populateComponentOptions();
     populateCategoryOptions();
+    populateProductOptions();
     applyFilters();
   </script>
 </body>

@@ -16,6 +16,7 @@ TURTLE_FILES = (
     "mapping-instances.ttl",
     "component-mappings.ttl",
     "component-regulatory-mappings.ttl",
+    "product-instances.ttl",
 )
 
 
