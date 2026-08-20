@@ -15,6 +15,9 @@ CREATE CONSTRAINT action_id_unique IF NOT EXISTS FOR (n:Action) REQUIRE n.action
 CREATE CONSTRAINT risk_id_unique IF NOT EXISTS FOR (n:Risk) REQUIRE n.riskId IS UNIQUE;
 CREATE CONSTRAINT control_id_unique IF NOT EXISTS FOR (n:Control) REQUIRE n.controlId IS UNIQUE;
 CREATE CONSTRAINT evidence_id_unique IF NOT EXISTS FOR (n:ControlEvidence) REQUIRE n.evidenceId IS UNIQUE;
+CREATE CONSTRAINT data_product_id_unique IF NOT EXISTS FOR (n:DataProduct) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT product_standard_relevance_id_unique IF NOT EXISTS FOR (n:ProductStandardRelevance) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT product_regulatory_relevance_id_unique IF NOT EXISTS FOR (n:ProductRegulatoryRelevance) REQUIRE n.id IS UNIQUE;
 CREATE CONSTRAINT concept_id_unique IF NOT EXISTS FOR (n:Concept) REQUIRE n.id IS UNIQUE;
 CREATE INDEX landscape_entry_name IF NOT EXISTS FOR (n:LandscapeEntry) ON (n.name);
 CREATE INDEX landscape_entry_release_year IF NOT EXISTS FOR (n:LandscapeEntry) ON (n.firstReleaseYear);

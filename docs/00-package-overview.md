@@ -45,6 +45,20 @@ ComponentRegulatoryMapping
 ├── MAPS_COMPONENT_TYPE ───────→ DataPipelineComponent
 └── REGULATORY_CONTEXT ────────→ DataRegulationLandscapeEntry
 
+DataProduct
+├── HAS_PERSONAL_DATA_POSTURE ─→ PersonalDataPosture (PII / NO_PII)
+├── IN_INDUSTRY_VERTICAL ──────→ IndustryVertical
+└── HAS_DESIGN_JURISDICTION ───→ Jurisdiction (0..*; design prompt)
+
+ProductStandardRelevance
+├── FOR_DATA_PRODUCT ──────────→ DataProduct
+├── CONSIDERS_STANDARD ────────→ DataStandardLandscapeEntry
+└── HAS_MAPPING_RELATION ──────→ MappingRelation (optional; e.g. no-coverage)
+
+ProductRegulatoryRelevance
+├── FOR_DATA_PRODUCT ──────────→ DataProduct
+└── CONSIDERS_REGULATION ──────→ DataRegulationLandscapeEntry
+
 DataIngestionPattern
 ├── BatchFileIngestion
 ├── APIPullIngestion
@@ -63,7 +77,7 @@ Attestation
 └── RECORDS_EVIDENCE ───────────→ ControlEvidence ── EVIDENCE_FOR_CONTROL ──→ Control
 ```
 
-Subclass names record membership in a landscape. A `DataRegulationLandscapeEntry` may be a law, a standard, a control catalogue or an assurance scheme. `GovernanceType` records how the entry is established or stewarded.
+Subclass names record membership in a landscape. A `DataRegulationLandscapeEntry` may be a law, a standard, a control catalogue or an assurance scheme. `GovernanceType` records how the entry is established or stewarded. `DataProduct` is orthogonal to pipeline component types. Product-to-landscape links are reified sourced mappings so creators can ask which standards and regulations to consider for a product in a given vertical.
 
 ## Why the assessment is separate
 
@@ -93,7 +107,8 @@ The package includes three such mappings, each with a cited official source:
 | [`mapping-instances.ttl`](../mapping-instances.ttl) | Officially supported mapping assertions. | [Mappings](10-compliance-mappings.md) |
 | [`component-mappings.ttl`](../component-mappings.ttl) | Curated implementation options linking pipeline components to landscape entries. | [Instances](04-instances.md) |
 | [`component-regulatory-mappings.ttl`](../component-regulatory-mappings.ttl) | Curated, primary-source-backed regulatory context for pipeline components. | [Mappings](10-compliance-mappings.md) |
-| [`graph.html`](../graph.html) | Standalone D3 visualisation with node-type filters and pipeline-scoped views. | Open directly in a browser. |
+| [`product-instances.ttl`](../product-instances.ttl) | Curated data-product typology examples (personal-data posture and industry vertical). | [Instances](04-instances.md) |
+| [`graph.html`](../graph.html) | Standalone D3 visualisation with node-type filters, pipeline-scoped and product-scoped views. | Open directly in a browser. |
 | [`nodes.csv`](../nodes.csv) | Neo4j nodes for all RDF resources. | [Neo4j CSV](05-neo4j-csv.md) |
 | [`relationships.csv`](../relationships.csv) | Neo4j relationships. | [Neo4j CSV](05-neo4j-csv.md) |
 | [`neo4j-schema.cypher`](../neo4j-schema.cypher) | Neo4j keys, constraints and indexes. | [Neo4j schema](06-neo4j-schema.md) |
@@ -109,6 +124,12 @@ The package includes three such mappings, each with a cited official source:
 
 1. Open [`graph.html`](../graph.html) and scope a pipeline type.
 2. [Compliance mappings](10-compliance-mappings.md)
+3. [Design decisions](08-design-decisions.md)
+
+### I have a data product and need the attached standards and sector context
+
+1. Open [`graph.html`](../graph.html) and scope an industry vertical or data product.
+2. Compare Retail Stock (thin regulation), Banking Customer (GDPR/DORA) and Health Customer (HIPAA).
 3. [Design decisions](08-design-decisions.md)
 
 ### I am completely new to knowledge modelling
@@ -148,12 +169,19 @@ The package includes three such mappings, each with a cited official source:
 | Normalised jurisdiction memberships | 81 |
 | Confirmed cross-landscape identity links | 2 pairs: ODRL and OPA |
 | Official mapping assertions | 3 |
-| Component implementation mappings | 29 |
-| Component regulatory mappings | 33 |
-| Neo4j nodes | 414 |
-| Neo4j relationships | 963 |
+| Component implementation mappings | 36 |
+| Component regulatory mappings | 38 |
+| Curated data products | 12 |
+| Product standard relevance mappings | 33 |
+| Product regulatory relevance mappings | 18 |
+| Industry vertical concepts | 6 |
+| Personal-data posture concepts | 2 |
+| Neo4j nodes | 499 |
+| Neo4j relationships | 1136 |
 
 Compound jurisdiction labels explain why 73 regulation entries produce 81 jurisdiction memberships. For example, `EU / Germany` becomes links to both European Union and Germany, while the original text is kept.
+
+Most ADOPT standards and many regulations remain catalogue-only by design: inclusion is not a requirement to invent a component or product hang-point. See [design decisions](08-design-decisions.md) for Batch B and P2 debt.
 
 ## Direct, normalised and modelled information
 
@@ -168,6 +196,9 @@ The `evidenceStatus` value records how a statement entered the graph:
 - `EDITORIAL_ASSESSMENT`: a locally curated judgement and tier rather than an upstream statement;
 - `CURATED_DESIGN_MAPPING`: a design-time implementation option, not a claim of complete capability coverage.
 - `CURATED_REGULATORY_RELEVANCE`: a curated component-to-requirement relevance assertion grounded in a primary source; not regulator endorsement and not proof of compliance.
+- `CURATED_PRODUCT_EXAMPLE`: a curated data-product typology example used for design inspection; not a live catalogue sync and not a legal determination of sector or personal-data applicability.
+- `CURATED_PRODUCT_STANDARD_RELEVANCE`: a curated assertion linking a named data product to a standard-landscape entry; absent `hasMappingRelation` means consider the standard, while `no-coverage` records an explicit non-link. Not proof of implementation coverage.
+- `CURATED_PRODUCT_REGULATORY_RELEVANCE`: a curated assertion that a regulation-landscape entry is worth considering for a named data product; not a finding of applicability or compliance.
 
 ## Namespace
 

@@ -101,3 +101,35 @@ dl:ControlEvidenceShape a sh:NodeShape ; sh:targetClass dl:ControlEvidence ;
 dl:ConceptLabelShape a sh:NodeShape ; sh:targetClass skos:Concept ;
   sh:property [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:uniqueLang true ] ;
   sh:property [ sh:path skos:inScheme ; sh:class skos:ConceptScheme ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+dl:DataProductShape a sh:NodeShape ; sh:targetClass dl:DataProduct ;
+  sh:property [ sh:path dl:identifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:pattern "^[a-z0-9]+(?:-[a-z0-9]+)*$" ] ;
+  sh:property [ sh:path skos:prefLabel ; sh:uniqueLang true ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:hasPersonalDataPosture ; sh:class dl:PersonalDataPosture ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:inIndustryVertical ; sh:class dl:IndustryVertical ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:hasDesignJurisdiction ; sh:class dl:Jurisdiction ; sh:nodeKind sh:IRI ; sh:minCount 0 ] ;
+  sh:property [ sh:path dl:evidenceStatus ; sh:datatype xsd:string ; sh:hasValue "CURATED_PRODUCT_EXAMPLE" ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:assertedBy ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:productRationale ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+dl:ProductStandardRelevanceShape a sh:NodeShape ; sh:targetClass dl:ProductStandardRelevance ;
+  sh:property [ sh:path dl:identifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:forDataProduct ; sh:class dl:DataProduct ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:considersStandard ; sh:class dl:DataStandardLandscapeEntry ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:hasMappingRelation ; sh:class dl:MappingRelation ; sh:nodeKind sh:IRI ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingRationale ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:assertedBy ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:authoritativeSource ; sh:datatype xsd:anyURI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:mappingStatus ; sh:datatype xsd:string ; sh:hasValue "REVIEWED" ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:evidenceStatus ; sh:datatype xsd:string ; sh:hasValue "CURATED_PRODUCT_STANDARD_RELEVANCE" ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+dl:ProductRegulatoryRelevanceShape a sh:NodeShape ; sh:targetClass dl:ProductRegulatoryRelevance ;
+  sh:property [ sh:path dl:identifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:forDataProduct ; sh:class dl:DataProduct ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:considersRegulation ; sh:class dl:DataRegulationLandscapeEntry ; sh:nodeKind sh:IRI ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingRationale ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:assertedBy ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:authoritativeSource ; sh:datatype xsd:anyURI ; sh:minCount 1 ] ;
+  sh:property [ sh:path dl:sourceVersion ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:mappingStatus ; sh:datatype xsd:string ; sh:hasValue "REVIEWED" ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path dl:evidenceStatus ; sh:datatype xsd:string ; sh:hasValue "CURATED_PRODUCT_REGULATORY_RELEVANCE" ; sh:minCount 1 ; sh:maxCount 1 ] .
