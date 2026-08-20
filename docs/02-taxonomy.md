@@ -19,9 +19,13 @@ The package contains separate schemes for:
 - governance types;
 - jurisdictions;
 - mapping relations;
-- mapping authority types.
+- mapping authority types;
+- industry verticals;
+- personal-data postures.
 
 The two category schemes remain separate because “Policies” in the standards landscape and “Usage Policy & Rights” in the regulation landscape serve different classification systems.
+
+Industry verticals in v1 are banking, insurance, retail, health, public sector and telecoms. Personal-data postures are `PII` and `NO_PII`. Both schemes classify curated data products for design inspection; they do not replace regulation categories or jurisdictions.
 
 ## Data Standard Landscape categories
 

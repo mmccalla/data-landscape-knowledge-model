@@ -22,6 +22,9 @@ ComponentRegulatoryMapping
 DataIngestionPatternType
 DataPipelineModuleType
 DataPipelineComponentType
+DataProduct
+ProductStandardRelevance
+ProductRegulatoryRelevance
 Concept
 ├── StandardCategory
 ├── RegulationCategory
@@ -30,7 +33,9 @@ Concept
 ├── GovernanceType
 ├── Jurisdiction
 ├── MappingRelation
-└── MappingAuthorityType
+├── MappingAuthorityType
+├── IndustryVertical
+└── PersonalDataPosture
 ```
 
 Every standard or regulation entry also has `LandscapeEntry`, enabling queries across both catalogues.
@@ -78,6 +83,12 @@ HAS_AUTHORITY_TYPE
 MAPS_COMPONENT_TYPE
 IMPLEMENTATION_OPTION
 REGULATORY_CONTEXT
+HAS_PERSONAL_DATA_POSTURE
+IN_INDUSTRY_VERTICAL
+HAS_DESIGN_JURISDICTION
+FOR_DATA_PRODUCT
+CONSIDERS_STANDARD
+CONSIDERS_REGULATION
 ```
 
 Ingestion structure uses `HAS_MODULE` and `HAS_COMPONENT`. Future runtime attestations use the ontology's actor, action, risk, control and evidence relationships; no concrete runtime attestations are included yet.
@@ -86,7 +97,7 @@ Ingestion structure uses `HAS_MODULE` and `HAS_COMPONENT`. Future runtime attest
 
 ## Counts
 
-The delivered projection contains **414 nodes** and **963 relationships**. Counts are generated rather than handwritten; the validation process checks unique import IDs and every relationship endpoint.
+The delivered projection contains **499 nodes** and **1136 relationships**. Counts are generated rather than handwritten; the validation process checks unique import IDs and every relationship endpoint.
 
 ## RDF-to-property-graph mapping
 

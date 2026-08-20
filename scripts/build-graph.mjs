@@ -67,7 +67,7 @@ const graphData = JSON.stringify({ nodes, links, mappingExplanations }).replaceA
 const output = template
   .replace("/*__D3__*/", () => d3Bundle)
   .replace("/*__LAYOUT_ORDERING__*/", () => layoutOrdering.replace("export function", "function"))
-  .replace("/*__GRAPH_SELECTION__*/", () => graphSelection.replace("export function", "function"))
+  .replace("/*__GRAPH_SELECTION__*/", () => graphSelection.replaceAll("export function", "function"))
   .replace("/*__GRAPH_DATA__*/", () => graphData);
 
 await writeFile(join(root, "graph.html"), output, "utf8");

@@ -4,6 +4,22 @@ Inspired by [Dr Simon Harrer](https://www.data-landscape.com/)’s Data Landscap
 
 **Licence:** catalogue data © Entropy Data, MIT; transformation by Mark McCalla. Retain [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md) if you redistribute the package.
 
+## Data Products
+
+Open [`graph.html`](graph.html) and choose an **Industry vertical** or **Data product** — beside the pipeline type selector — to see which standards and regulations are curated as considerations for that product.
+
+I ran Entropy Data’s shelf-warmers demo through the model to see what a real product looks like on that path. The product ties cleanly to ODPS, ODCS and dbt. OpenLineage and Iceberg are explicit no-coverage mappings for this example: lineage emission exists as a pipeline capability, but this curated product does not adopt it, and the demo is a Snowflake table rather than Iceberg. The regulation entries stay thin; the product is marked no PII and low risk.
+
+Three worked examples among twelve curated products:
+
+- **Retail Stock Data Product** (`retail`, no PII) — consider ODPS, ODCS and dbt. Regulatory considerations stay thin on purpose. OpenLineage and Iceberg are explicit no-coverage mappings: this example does not adopt lineage emission, and the Entropy shelf-warmers-inspired demo is a Snowflake table rather than Iceberg.
+- **Banking Customer Data Product** (`banking`, PII) — consider ODPS, ODCS and OpenLineage, plus GDPR and DORA as design prompts for UK/EU financial-services audiences.
+- **Health Customer Data Product** (`health`, PII) — consider ODPS and ODCS, plus HIPAA as a design prompt for care-setting products that may hold protected health information.
+
+Further examples cover insurance policy and claims (ISO 27001 on claims), capital-markets trades (Iceberg, OpenLineage, BCBS 239), wealth portfolios (BCBS 239 without OpenLineage), retail loyalty (CCPA/CPRA), hospital admissions, care-home residents (GDPR), public-sector reference codes (JSON Schema, DCAT, ISO 11179) and telecoms subscribers (NIS2).
+
+Each consideration is a sourced mapping node (same provenance pattern as component mappings), not a bare “uses” or “relevant” edge. Vertical and personal-data posture are inspection aids, not legal determinations of applicability. Vertical selectors change the consideration neighbourhood in a human-explainable way; OpenLineage is not hung on every product for symmetry.
+
 ## Data Pipelines
 
 An architect choosing how to ingest data — for example CDC of EU personal data in a bank — still too often picks a tool, names a standard in a slide, and discovers the regulation later. In 2026 the same pipelines may sit under GDPR, DORA, NIS2 and the AI Act. This model records those links so they can be inspected rather than reconstructed from slides. The catalogues remain the public reference: [data-landscape.com](https://www.data-landscape.com/) and the [regulation map](https://www.data-landscape.com/regulation.html). What this package adds is a queryable path through them: ingestion pattern → component → standard and regulatory context, each statement carrying an evidence grade.
@@ -12,16 +28,13 @@ Open [`graph.html`](graph.html) in a browser as a local file. No server is requi
 
 ![Batch file ingestion pattern scoped to related modules, components, and regulatory context](docs/images/pipeline-graph.png)
 
-## Data Products
-
-I ran Entropy Data’s shelf-warmers demo through the model to see what a real product looks like on that path. The product ties cleanly to the Open Data Product Standard (ODPS), the Open Data Contract Standard (ODCS) and dbt. OpenLineage is in the landscape, but it is not linked to a pipeline component, so lineage does not connect. Store and marketplace metadata do not connect either: the graph’s options are Iceberg and Iceberg Catalogue, and this product is a Snowflake table published in Entropy Data. The regulation entries do not apply; the product is marked no PII and low risk.
-
 The package details and counts are in the [package overview](docs/00-package-overview.md). How to run the checks is in [Contributors](docs/contributors.md). How to rebuild [`graph.html`](graph.html) is in [Rebuild the standalone graph](docs/rebuild-graph.md).
 
 ## Important limitations
 
 - This package is not legal advice.
 - A mapping is not proof that an organisation, system or processing activity complies.
+- Industry vertical and personal-data posture on curated products are inspection aids, not legal sector classification or applicability determinations.
 - Status text may contain edition and applicability information but is not converted into legal lifecycle dates.
 - Only mappings supported by the cited official sources are included.
 - Source descriptions and editorial wording remain attributable to the upstream landscape.

@@ -20,6 +20,7 @@ DATA_FILES = (
     ROOT / "mapping-instances.ttl",
     ROOT / "component-mappings.ttl",
     ROOT / "component-regulatory-mappings.ttl",
+    ROOT / "product-instances.ttl",
 )
 
 
