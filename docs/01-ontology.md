@@ -1,6 +1,6 @@
 # Ontology walkthrough
 
-[← README](../README.md) · [Next: Taxonomy →](02-taxonomy.md)
+[← Package overview](00-package-overview.md) · [README](../README.md) · [Next: Taxonomy →](02-taxonomy.md)
 
 ## What is an ontology?
 
