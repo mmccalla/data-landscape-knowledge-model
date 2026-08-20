@@ -6,7 +6,9 @@ Inspired by [Dr Simon Harrer](https://www.data-landscape.com/)’s Data Landscap
 
 ## Data Products
 
-Open [`graph.html`](graph.html) and choose an **Industry vertical** or **Data product** — beside the pipeline type selector — to see which standards and regulations are curated as considerations for that product.
+Open [`graph.html`](graph.html) in a browser as a local file. No server is required. Choose a **Data product** to scope the view. The figure below is Retail Stock Data Product.
+
+![Retail Stock Data Product scoped to curated standard and regulatory considerations](docs/images/product-graph.png)
 
 I ran Entropy Data’s shelf-warmers demo through the model to see what a real product looks like on that path. The product ties cleanly to ODPS, ODCS and dbt. OpenLineage and Iceberg are explicit no-coverage mappings for this example: lineage emission exists as a pipeline capability, but this curated product does not adopt it, and the demo is a Snowflake table rather than Iceberg. The regulation entries stay thin; the product is marked no PII and low risk.
 

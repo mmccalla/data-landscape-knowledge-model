@@ -9,3 +9,9 @@ npm install
 npm run build
 npm test
 ```
+
+To refresh the README product hero ([`docs/images/product-graph.png`](images/product-graph.png)) after graph UI or product-scope changes:
+
+```sh
+node scripts/capture-readme-heroes.mjs
+```
