@@ -26,9 +26,11 @@ class NamespaceConsistencyTests(unittest.TestCase):
             self.assertNotIn(OLD_HOST, text, name)
             self.assertIn(f"@prefix dl: <{ONTOLOGY}> .", text, name)
 
-        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        overview = (ROOT / "docs" / "00-package-overview.md").read_text(encoding="utf-8")
         docs = (ROOT / "docs" / "01-ontology.md").read_text(encoding="utf-8")
-        for document, text in (("README.md", readme), ("docs/01-ontology.md", docs)):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn(OLD_HOST, readme, "README.md")
+        for document, text in (("docs/00-package-overview.md", overview), ("docs/01-ontology.md", docs)):
             self.assertNotIn(OLD_HOST, text, document)
             self.assertIn(ONTOLOGY, text, document)
             self.assertIn(TAXONOMY, text, document)
