@@ -52,3 +52,6 @@ logs/
 HANDOFF-*.md
 *-plan.md
 *plan.md
+
+# Local courtesy drafts (do not commit)
+COURTESY-*.md
