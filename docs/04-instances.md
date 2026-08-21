@@ -21,8 +21,8 @@ Instance: GDPR
 | [`instances.ttl`](../instances.ttl) | 84 standard-landscape entries and 84 assessments. |
 | [`regulation-instances.ttl`](../regulation-instances.ttl) | 73 regulation-landscape entries. |
 | [`mapping-instances.ttl`](../mapping-instances.ttl) | Three officially supported mapping assertions. |
-| [`component-mappings.ttl`](../component-mappings.ttl) | 30 curated component-to-landscape implementation options. |
-| [`component-regulatory-mappings.ttl`](../component-regulatory-mappings.ttl) | 33 curated component-to-regulatory-context mappings grounded in primary sources. |
+| [`component-mappings.ttl`](../component-mappings.ttl) | 36 curated component-to-landscape implementation options. |
+| [`component-regulatory-mappings.ttl`](../component-regulatory-mappings.ttl) | 38 curated component-to-regulatory-context mappings grounded in primary sources. |
 | [`product-instances.ttl`](../product-instances.ttl) | Twelve curated data products across retail, banking, insurance, health, public sector and telecoms, plus sourced product-to-landscape consideration mappings that differ by vertical (including explicit no-coverage gaps where a non-link must stay honest). |
 
 They are separate so each domain can be refreshed without pretending that all statements came from the same source or have the same semantics.
