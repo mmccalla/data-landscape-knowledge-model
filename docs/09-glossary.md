@@ -38,6 +38,10 @@ An approved set of values used consistently instead of arbitrary strings.
 
 Neo4j's graph query language.
 
+## Data product
+
+A curated publishable data asset in this package (`DataProduct`), with industry vertical and personal-data posture as inspection aids. It is not a live catalogue sync and does not assert legal applicability or organisational compliance.
+
 ## Datatype property and object property
 
 A datatype property links a resource to a literal value. An object property links one resource to another resource.
@@ -58,6 +62,10 @@ A marker identifying whether a statement was directly observed, normalised, iden
 
 A graph contains identifiable things and named connections. Neo4j calls the things nodes and the connections relationships.
 
+## Industry vertical
+
+A controlled classification of a curated data product’s industry stance (for example retail, banking or health). It shapes which standards and regulations are worth considering as design prompts; it is not a determination of regulatory applicability.
+
 ## IRI
 
 An Internationalised Resource Identifier: RDF's globally scoped identifier for a resource or vocabulary term.
@@ -69,6 +77,10 @@ In RDF/SKOS, human-readable text. In Neo4j, a node type such as `LandscapeEntry`
 ## Labelled property graph
 
 Neo4j's graph model, in which nodes and relationships carry labels or types and key-value properties.
+
+## Lineage emission / OpenLineage
+
+Lineage emission is an Orchestrate pipeline component for emitting job, run and dataset lineage events. OpenLineage is its primary curated implementation option (CIM). Neither asserts that a product or organisation meets supervisory lineage expectations; product links remain optional design prompts or explicit no-coverage gaps.
 
 ## Literal
 

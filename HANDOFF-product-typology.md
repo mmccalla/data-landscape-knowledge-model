@@ -1,5 +1,7 @@
 # Handoff: thin product typology
 
+> Status: historical — work landed on main (through 1.0.9 / 1.0.10). Not a living runbook.
+
 Use this with a **fresh agent context**. Do not re-litigate authorship, namespaces, or shopfront decisions unless the plan conflicts with the repo.
 
 ## Repo state (after Docs Updates / tag 1.0.8)

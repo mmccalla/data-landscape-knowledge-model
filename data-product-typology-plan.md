@@ -25,6 +25,8 @@ isProject: false
 
 # Thin product typology
 
+> Status: historical — work landed on main (through 1.0.9 / 1.0.10). Not a living runbook.
+
 ## Overview
 
 **Goal.** An architect can ask of a **data product**, not only a pipeline pattern: given personal-data posture and **industry vertical**, which standards and obligations are relevant, with sources — and see the gaps the shelf-warmers note already describes.

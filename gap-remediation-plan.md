@@ -27,7 +27,11 @@ todos:
     content: npm test, pre-commit, private-repo check; update package counts and design-decisions ADR notes
     status: completed
 isProject: false
----# Gap remediation plan
+---
+
+# Gap remediation plan
+
+> Status: historical — work landed on main (through 1.0.9 / 1.0.10). Not a living runbook.
 
 ## Overview
 
