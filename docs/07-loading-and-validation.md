@@ -17,6 +17,7 @@ riot --validate regulation-instances.ttl
 riot --validate mapping-instances.ttl
 riot --validate component-mappings.ttl
 riot --validate component-regulatory-mappings.ttl
+riot --validate product-instances.ttl
 ```
 
 Combine the data graph and run SHACL:
@@ -27,7 +28,8 @@ python3 scripts/check-shacl.py
 riot --formatted=turtle \
   ontology.ttl taxonomy.ttl instances.ttl \
   regulation-instances.ttl mapping-instances.ttl \
-  component-mappings.ttl component-regulatory-mappings.ttl > bundle.ttl
+  component-mappings.ttl component-regulatory-mappings.ttl \
+  product-instances.ttl > bundle.ttl
 
 pyshacl -s shapes.ttl bundle.ttl
 ```
@@ -61,7 +63,7 @@ MATCH (n:DataStandardLandscapeEntry) RETURN count(n);   // 84
 MATCH (n:DataRegulationLandscapeEntry) RETURN count(n); // 73
 MATCH (n:LandscapeAssessment) RETURN count(n);          // 84
 MATCH (n:ComplianceMapping) RETURN count(n);             // 3
-MATCH (n:ComponentRegulatoryMapping) RETURN count(n);    // 33
+MATCH (n:ComponentRegulatoryMapping) RETURN count(n);    // 38
 MATCH (n:LandscapeEntry)-[:APPLIES_IN]->() RETURN count(*); // 81
 ```
 
@@ -119,8 +121,8 @@ The build must verify:
 - 81 normalised jurisdiction memberships;
 - two cross-landscape identity pairs;
 - three official mappings;
-- 29 component implementation mappings;
-- 33 component regulatory mappings;
+- 36 component implementation mappings;
+- 38 component regulatory mappings;
 - unique CSV import IDs;
 - no dangling relationship endpoints;
 - consistent CSV column widths;

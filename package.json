@@ -1,7 +1,7 @@
 {
   "name": "data-landscape-knowledge-model-visualisation",
   "private": true,
-  "version": "1.0.10",
+  "version": "1.0.11",
   "scripts": {
     "build": "node scripts/build-graph.mjs",
     "test": "npm run build && node --test tests/layout-ordering.test.mjs tests/graph-selection.test.mjs && python3 -m unittest tests/test_visualisation.py tests/test_authorship_consistency.py tests/test_namespace_consistency.py tests/test_check_secrets.py tests/test_check_cruft.py tests/test_check_csv_projection.py tests/test_product_typology.py tests/test_lineage_capability.py tests/test_p1_coherence.py tests/test_p1_jurisdiction.py",
