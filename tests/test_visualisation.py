@@ -20,6 +20,15 @@ class StandaloneGraphPageTest(unittest.TestCase):
         self.assertNotRegex(self.html, r"<link[^>]+href=")
         self.assertIn("D3.js v7.9.0", self.html)
 
+    def test_header_and_footer_credit_upstream_landscapes_without_email(self):
+        self.assertIn("https://www.entropy-data.com/", self.html)
+        self.assertIn("https://www.data-landscape.com/", self.html)
+        self.assertIn("https://www.data-landscape.com/regulation.html", self.html)
+        self.assertIn("Thank you", self.html)
+        self.assertIn("https://github.com/mmccalla/data-landscape-knowledge-model/issues", self.html)
+        self.assertIn("https://www.linkedin.com/in/mark001/", self.html)
+        self.assertNotIn("mailto:", self.html)
+
     def test_embedded_graph_matches_the_neo4j_projection(self):
         match = re.search(
             r'<script id="graph-data" type="application/json">(.*?)</script>',

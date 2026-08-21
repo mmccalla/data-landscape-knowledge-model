@@ -27,6 +27,9 @@ class AuthorshipConsistencyTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         ontology = (ROOT / "ontology.ttl").read_text(encoding="utf-8")
         template = (ROOT / "src" / "graph.template.html").read_text(encoding="utf-8")
+        citation_bib = (ROOT / "CITATION.bib").read_text(encoding="utf-8")
+        citation_cff = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
+        contributing = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
 
         self.assertIn(f"Copyright (c) 2026 {TRANSFORMATION_AUTHOR}", attribution)
         self.assertNotIn(
@@ -39,12 +42,28 @@ class AuthorshipConsistencyTests(unittest.TestCase):
         )
         self.assertIn("catalogue data © Entropy Data", readme)
         self.assertIn(f"transformation by {TRANSFORMATION_AUTHOR}", readme)
-        self.assertIn(AFFILIATION, readme)
-        self.assertIn(AFFILIATION, (ROOT / "CITATION.bib").read_text(encoding="utf-8"))
-        self.assertIn(AFFILIATION, template)
+        self.assertIn(f"{TRANSFORMATION_AUTHOR}’s derived model", attribution)
         self.assertIn(f"copyright (c) 2026 {TRANSFORMATION_AUTHOR}".lower(), ontology.lower())
-        self.assertNotIn(AFFILIATION, ontology)
         self.assertNotIn("Entropy Data · Knowledge model", template)
+        self.assertRegex(template, rf'<p class="eyebrow">{re.escape(TRANSFORMATION_AUTHOR)}</p>')
+        self.assertIn('href="https://www.entropy-data.com/"', template)
+        self.assertIn('href="https://www.data-landscape.com/"', template)
+        self.assertIn('href="https://www.data-landscape.com/regulation.html"', template)
+        self.assertIn("Thank you", template)
+        self.assertIn("https://github.com/mmccalla/data-landscape-knowledge-model/issues", template)
+        self.assertIn("https://www.linkedin.com/in/mark001/", template)
+        self.assertNotIn("mailto:", template)
+
+        for label, text in (
+            ("README", readme),
+            ("ATTRIBUTION", attribution),
+            ("CITATION.bib", citation_bib),
+            ("CITATION.cff", citation_cff),
+            ("CONTRIBUTING", contributing),
+            ("graph template", template),
+            ("ontology", ontology),
+        ):
+            self.assertNotIn(AFFILIATION, text, f"{label} must not name the Ltd affiliation")
 
     def test_component_regulatory_mappings_are_asserted_by_the_transformation_author(self):
         turtle = (ROOT / "component-regulatory-mappings.ttl").read_text(encoding="utf-8")
