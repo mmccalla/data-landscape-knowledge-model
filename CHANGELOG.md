@@ -2,6 +2,18 @@
 
 All notable changes to this package are recorded here. Versions follow the annotated git tags on `main`.
 
+## [1.0.13] — 2026-08-21
+
+### Changed
+
+- Removed Enterprise Solutions Consulting Ltd from authorship surfaces.
+- Capitalised the visualisation title to **Data Landscape Graph**.
+- Added Entropy Data / data-landscape.com courtesy credits in the graph header and footer (no email published).
+
+### Notes
+
+- Repository is public; GitHub Pages, branch protection on `main`, and immutable releases are enabled.
+
 ## [1.0.12] — 2026-08-21
 
 ### Added
