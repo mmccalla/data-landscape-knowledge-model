@@ -30,6 +30,8 @@ jobs:
           mkdir -p _site
           cp graph.html _site/index.html
           cp graph.html _site/graph.html
+          cp CITATION.bib _site/CITATION.bib
+          cp CITATION.cff _site/CITATION.cff
 
       - name: Upload Pages artefact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
