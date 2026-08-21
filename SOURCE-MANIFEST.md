@@ -1,10 +1,10 @@
 # Source manifest
 
-This manifest records the machine-readable inputs used to generate the package on 29 July 2026.
+This manifest records the machine-readable inputs used to generate the package on 21 August 2026.
 
 | Source | Records | SHA-256 |
 |---|---:|---|
-| `https://www.data-landscape.com/standards.json` | 81 | `a523ce0b9029c3a65e5a6a0bc16938dfc0a6155f9f768613498ac84c0e93b19c` |
+| `https://www.data-landscape.com/standards.json` | 81 | `3c383ed32cba51b739b6013a8fad448e2daffe8cc56e5c3fd71ca2d9ded1dcd3` |
 | [`standard-extensions.json`](standard-extensions.json) | 3 | `65899eb780a37c025a6290dc185e89a70bb5f2730f4831610127cc43a36febf0` |
 | `https://www.data-landscape.com/regulation.json` | 73 | `5175284093e98f652cb6205a3308cddd4f5c88043b200086d7151622761602ee` |
 
