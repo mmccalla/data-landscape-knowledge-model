@@ -1,5 +1,7 @@
 # Handoff: gap remediation
 
+> Status: historical — work landed on main (through 1.0.9 / 1.0.10). Not a living runbook.
+
 Use this with a **fresh agent context**. Do not re-litigate authorship, namespaces, shopfront, or public/Pages decisions unless the plan conflicts with the repo.
 
 ## Repo state

@@ -16,6 +16,9 @@ Unique `id` constraints are created for:
 - `ComponentRegulatoryMapping`;
 - ingestion pattern, module and component types;
 - attestation, actor, action, risk, control and evidence identifiers;
+- `DataProduct`;
+- `ProductStandardRelevance`;
+- `ProductRegulatoryRelevance`;
 - `Concept`.
 
 ```cypher
