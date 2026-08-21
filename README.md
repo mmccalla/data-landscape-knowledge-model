@@ -30,7 +30,7 @@ Open [`graph.html`](graph.html) in a browser as a local file. No server is requi
 
 ![Batch file ingestion pattern scoped to related modules, components, and regulatory context](docs/images/pipeline-graph.png)
 
-The package details and counts are in the [package overview](docs/00-package-overview.md). How to run the checks is in [Contributors](docs/contributors.md). How to rebuild [`graph.html`](graph.html) is in [Rebuild the standalone graph](docs/rebuild-graph.md).
+The package details and counts are in the [package overview](docs/00-package-overview.md). How to run the checks is in [Contributors](docs/contributors.md) and [CONTRIBUTING.md](CONTRIBUTING.md). How to rebuild [`graph.html`](graph.html) is in [Rebuild the standalone graph](docs/rebuild-graph.md). Security reports: [SECURITY.md](SECURITY.md). Release notes: [CHANGELOG.md](CHANGELOG.md).
 
 ## Important limitations
 

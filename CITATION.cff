@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: If you use this package, please cite it as below.
+type: software
+title: Data Landscape knowledge model
+authors:
+  - family-names: McCalla
+    given-names: Mark
+    affiliation: Enterprise Solutions Consulting Ltd
+repository-code: https://github.com/mmccalla/data-landscape-knowledge-model
+url: https://mmccalla.github.io/data-landscape-knowledge-model/
+license: MIT
+version: 1.0.12
+date-released: "2026-08-21"
+abstract: >-
+  Schema-first knowledge model over Entropy Data’s Data Landscape catalogues:
+  from ingestion pattern and data product to regulatory context, with sources.
+  Catalogue data © Entropy Data (MIT); derived model © Mark McCalla.
+keywords:
+  - data-architecture
+  - data-governance
+  - knowledge-graph
+  - regulation
+  - data-mesh
+references:
+  - type: artwork
+    authors:
+      - family-names: Harrer
+        given-names: Simon
+    title: "Data Landscape: Open Standards for Modern Data Architecture"
+    year: 2026
+    publisher:
+      name: Entropy Data
+    url: https://www.data-landscape.com/
+  - type: artwork
+    authors:
+      - family-names: Harrer
+        given-names: Simon
+    title: "Data Landscape for Regulation: Laws and Compliance Frameworks for Data"
+    year: 2026
+    publisher:
+      name: Entropy Data
+    url: https://www.data-landscape.com/regulation.html
+    notes: Original regulation sub-landscape donated by Mark McCalla; since curated by Simon Harrer.
