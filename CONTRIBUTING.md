@@ -31,4 +31,4 @@ npm run build
 
 ## Authorship boundary
 
-Catalogue wording and publisher assessments remain attributable to Entropy Data / Simon Harrer. Ontology structure, SHACL, curated component and product mappings, Neo4j projection and this repository’s documentation are Mark McCalla’s derived work. Enterprise Solutions Consulting Ltd is an affiliation on citation metadata where present, not the copyright holder.
+Catalogue wording and publisher assessments remain attributable to Entropy Data / Simon Harrer. Ontology structure, SHACL, curated component and product mappings, Neo4j projection and this repository’s documentation are Mark McCalla’s derived work.

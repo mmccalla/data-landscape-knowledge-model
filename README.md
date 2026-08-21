@@ -1,6 +1,6 @@
 # Data Landscape knowledge model
 
-Inspired by [Dr Simon Harrer](https://www.data-landscape.com/)’s Data Landscape, I wanted a way to join the open-standards map to the regulation map, so an architect can ask of a real pipeline which standards apply and which UK and EU obligations are relevant, with sources. I originally donated the regulation sub-landscape; Simon has since curated it. The catalogues remain his, and Entropy Data’s, under the MIT licence. This repository is my derived model of those catalogues, prepared with Enterprise Solutions Consulting Ltd.
+Inspired by [Dr Simon Harrer](https://www.data-landscape.com/)’s Data Landscape, I wanted a way to join the open-standards map to the regulation map, so an architect can ask of a real pipeline which standards apply and which UK and EU obligations are relevant, with sources. I originally donated the regulation sub-landscape; Simon has since curated it. The catalogues remain his, and Entropy Data’s, under the MIT licence. This repository is my derived model of those catalogues.
 
 **Licence:** catalogue data © Entropy Data, MIT; transformation by Mark McCalla. Retain [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md) if you redistribute the package.
 

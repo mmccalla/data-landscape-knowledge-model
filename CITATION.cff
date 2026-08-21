@@ -5,7 +5,6 @@ title: Data Landscape knowledge model
 authors:
   - family-names: McCalla
     given-names: Mark
-    affiliation: Enterprise Solutions Consulting Ltd
 repository-code: https://github.com/mmccalla/data-landscape-knowledge-model
 url: https://mmccalla.github.io/data-landscape-knowledge-model/
 license: MIT

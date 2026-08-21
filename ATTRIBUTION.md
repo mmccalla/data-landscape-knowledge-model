@@ -44,7 +44,7 @@ Component regulatory mappings are original curated interpretations by Mark McCal
 
 ## Original transformation work
 
-The ontology structure, SKOS schemes, SHACL constraints, normalisation rules, compliance-mapping representation, RDF-to-Neo4j projection, CSVs, Cypher schema and explanatory documentation are transformation work built around the attributed source data. They must not be represented as authored by the upstream project. This GitHub repository is Mark McCalla’s derived model, not a publication by Entropy Data. Enterprise Solutions Consulting Ltd is the author’s affiliation, not the copyright holder.
+The ontology structure, SKOS schemes, SHACL constraints, normalisation rules, compliance-mapping representation, RDF-to-Neo4j projection, CSVs, Cypher schema and explanatory documentation are transformation work built around the attributed source data. They must not be represented as authored by the upstream project. This GitHub repository is Mark McCalla’s derived model, not a publication by Entropy Data.
 
 ## Responsible reuse
 
