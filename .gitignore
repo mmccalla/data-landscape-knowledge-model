@@ -47,8 +47,8 @@ logs/
 *.bak
 *.tmp
 *.temp
-data-landscape-knowledge-model-plan.md
-HANDOFF-product-typology.md
-HANDOFF-product-typology.md
-HANDOFF-gap-remediation.md
-HANDOFF-product-typology.md
+
+# Working plans and agent handoffs (local only — never commit)
+HANDOFF-*.md
+*-plan.md
+*plan.md
