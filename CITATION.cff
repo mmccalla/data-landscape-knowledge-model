@@ -8,7 +8,7 @@ authors:
 repository-code: https://github.com/mmccalla/data-landscape-knowledge-model
 url: https://mmccalla.github.io/data-landscape-knowledge-model/
 license: MIT
-version: 1.0.12
+version: 1.0.13
 date-released: "2026-08-21"
 abstract: >-
   Schema-first knowledge model over Entropy Data’s Data Landscape catalogues:
