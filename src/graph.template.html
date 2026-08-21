@@ -53,23 +53,59 @@
       border-top: 1px solid var(--line);
     }
     .page-footer h2 { margin: 0 0 10px; font-size: 1.25rem; }
-    .page-footer p { margin: 0 0 12px; max-width: 820px; color: var(--muted); }
+    .page-footer > p { margin: 0 0 12px; max-width: 820px; color: var(--muted); }
     .page-footer a { color: #3430aa; }
-    .cite-box {
-      margin: 18px 0 0;
-      padding: 14px 16px;
+    .cite-section { margin: 28px 0 0; }
+    .cite-section > h2 { margin: 0 0 10px; font-size: 1.25rem; }
+    .cite-section > p { margin: 0 0 14px; max-width: 820px; color: var(--muted); }
+    .cite-panel {
+      margin: 0 0 10px;
       border: 1px solid var(--line);
       border-radius: 12px;
       background: var(--panel);
       color: var(--ink);
       font-size: .92rem;
+      overflow: hidden;
     }
+    .cite-panel summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 14px 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .cite-panel summary::-webkit-details-marker { display: none; }
+    .cite-panel summary::after {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-right: 2px solid var(--muted);
+      border-bottom: 2px solid var(--muted);
+      transform: rotate(45deg);
+      transition: transform .15s ease;
+      flex: 0 0 auto;
+    }
+    .cite-panel[open] summary::after { transform: rotate(-135deg); }
+    .cite-panel .cite-body {
+      margin: 0;
+      padding: 0 16px 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .86rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .cite-download { margin: 8px 0 0; font-size: .92rem; }
     .cta-box {
       margin-top: 22px;
       padding: 22px 18px;
       border-radius: 16px;
       background: #eef0ff;
       text-align: center;
+      width: 100%;
     }
     .cta-box p { margin: 0 auto 8px; max-width: 560px; color: var(--ink); }
     .cta-box .cta-lede { color: var(--muted); margin-bottom: 16px; }
@@ -295,10 +331,27 @@
 
   <footer class="page-footer">
     <h2>Thank you</h2>
-    <p>This graph is a derived knowledge model over catalogues curated by <a href="https://www.entropy-data.com/" rel="noopener">Entropy Data</a>. The open-standards map lives at <a href="https://www.data-landscape.com/" rel="noopener">data-landscape.com</a>; the regulation map at <a href="https://www.data-landscape.com/regulation.html" rel="noopener">data-landscape.com/regulation</a>. Transformation, curated mappings and this visualisation are by Mark McCalla. Catalogue data remains © Entropy Data under the MIT licence.</p>
-    <div class="cite-box">
-      <strong>Cite this model.</strong> Prefer the GitHub repository and retain <code>LICENSE</code>, <code>ATTRIBUTION.md</code> and <code>CITATION.cff</code> when you redistribute a substantial part of the package.
-    </div>
+    <p>This graph is a derived knowledge model over catalogues curated by <a href="https://www.entropy-data.com/" rel="noopener">Entropy Data</a>, with grateful thanks to <a href="https://www.data-landscape.com/" rel="noopener">Simon Harrer</a> for his support, suggestions and discussions. The open-standards map lives at <a href="https://www.data-landscape.com/" rel="noopener">data-landscape.com</a>; the regulation map at <a href="https://www.data-landscape.com/regulation.html" rel="noopener">data-landscape.com/regulation</a>. Transformation, curated mappings and this visualisation are by Mark McCalla. Catalogue data remains © Entropy Data under the MIT licence.</p>
+    <section class="cite-section" aria-labelledby="cite-heading">
+      <h2 id="cite-heading">Cite this model</h2>
+      <p>If you reference this derived knowledge model in a talk, paper, or blog post, the canonical link is <a href="https://github.com/mmccalla/data-landscape-knowledge-model" rel="noopener">https://github.com/mmccalla/data-landscape-knowledge-model</a>. A BibTeX file is also available as <a href="CITATION.bib" rel="noopener">CITATION.bib</a>. When citing the upstream catalogues themselves, use the Harrer entries in that file. Retain <code>LICENSE</code>, <code>ATTRIBUTION.md</code> and <code>CITATION.cff</code> if you redistribute a substantial part of the package.</p>
+      <details class="cite-panel">
+        <summary>Plain text (APA-style)</summary>
+        <pre class="cite-body">McCalla, M. (2026). <em>Data Landscape knowledge model</em>. https://github.com/mmccalla/data-landscape-knowledge-model/</pre>
+      </details>
+      <details class="cite-panel">
+        <summary>BibTeX</summary>
+        <pre class="cite-body">@misc{mccalla2026datalandscapeknowledgemodel,
+  author       = {McCalla, Mark},
+  title        = {Data Landscape knowledge model},
+  year         = {2026},
+  month        = aug,
+  howpublished = {\url{https://github.com/mmccalla/data-landscape-knowledge-model}},
+  note         = {Derived model over Entropy Data catalogues; not published by Entropy Data}
+}</pre>
+        <p class="cite-download">Download: <a href="CITATION.bib" rel="noopener">CITATION.bib</a></p>
+      </details>
+    </section>
     <div class="cta-box">
       <p><strong>Spotted a mapping gap or a documentation error?</strong></p>
       <p class="cta-lede">Suggestions and corrections are welcome. No email address is published here.</p>

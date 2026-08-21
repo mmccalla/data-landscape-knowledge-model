@@ -2,6 +2,19 @@
 
 All notable changes to this package are recorded here. Versions follow the annotated git tags on `main`.
 
+## [1.0.14] — 2026-08-21
+
+### Added
+
+- Graph footer **Cite this model** section with APA and BibTeX concertinas (closed by default).
+- Grateful thanks to Simon Harrer in the Thank you footer.
+- Pages deploy now publishes `CITATION.bib` and `CITATION.cff` beside the graph.
+
+### Changed
+
+- Cite panels and feedback CTA span the full footer width; prose keeps a readable measure.
+- Enriched the package BibTeX entry with month and canonical URL.
+
 ## [1.0.13] — 2026-08-21
 
 ### Changed
